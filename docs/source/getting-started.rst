@@ -5,7 +5,7 @@ Getting Started
 ===============
 
 | **Welcome to Facelift!**
-| This page should hopefully provide you with enough information to get you started defining, serializing, and validating config instances.
+| This page should hopefully provide you with enough information to get you started detecting and recognizing faces.
 
 Installation and Setup
 ======================

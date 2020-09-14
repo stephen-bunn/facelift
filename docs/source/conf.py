@@ -55,7 +55,50 @@ release = metadata["version"]
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx.ext.viewcode"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx_autodoc_typehints",
+    "sphinx_tabs.tabs",
+    "hoverxref.extension",
+]
+
+# Napoleon settings
+napoleon_google_docstring = True
+napoleon_numpy_docstring = True
+napoleon_include_init_with_doc = False
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
+napoleon_type_aliases = None
+
+# Autodoc typehints settings
+set_type_checking_flag = True
+typehints_fully_qualified = False
+always_document_param_types = True
+typehints_document_rtype = True
+
+# Hoverxref settings
+hoverxref_role_types = {
+    "hoverxref": "modal",
+    "ref": "modal",
+    "confval": "tooltip",
+    "mod": "tooltip",
+    "class": "tooltip",
+}
+hoverxref_default_type = "tooltip"
+hoverxref_auto_ref = True
+hoverxref_ignore_refs = ["genindex", "modindex", "search"]
+hoverxref_domains = ["py"]
+hoverxref_roles = []
+hoverxref_sphinxtabs = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -90,27 +133,37 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "alabaster"
+html_theme = "sphinx_material"
+html_short_title = "Home"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    "description": metadata["description"],
-    "github_user": "stephen-bunn",
-    "github_repo": "facelift",
-    "github_type": "star",
-    "page_width": "1000px",
-    "sidebar_width": "220px",
-    "sidebar_collapse": True,
-    "fixed_sidebar": True,
+    "nav_title": "Facelift",
+    "base_url": "https://facelift.readthedocs.io/",
+    "color_primary": "indigo",
+    "color_accent": "light-blue",
+    "repo_url": "https://github.com/stephen-bunn/facelift",
+    "repo_name": "stephen-bunn/facelift",
+    "repo_type": "github",
+    "logo_icon": "&#xe87c",
+    "globaltoc_depth": 1,
+    "globaltoc_collapse": True,
+    "globaltoc_includehidden": False,
+    "html_minify": True,
+    "css_minify": True,
+    "master_doc": True,
+    "nav_links": [],
+    "heros": {},
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+html_css_files = ["css/tweaks.css"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -120,8 +173,9 @@ html_static_path = ["_static"]
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
-
+html_sidebars = {
+    "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
+}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

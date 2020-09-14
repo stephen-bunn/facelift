@@ -1,0 +1,16 @@
+dl.py code.sig-name {
+  font-weight: bold;
+}
+
+.md-nav__link.caption {
+  margin-top: 1.5rem;
+}
+
+h1#index--page-root {
+  text-align: center;
+  font-size: 3rem;
+}
+
+a.headerlink:hover {
+  opacity: 1;
+}

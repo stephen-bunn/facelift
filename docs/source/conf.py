@@ -156,7 +156,7 @@ html_theme_options = {
     "css_minify": True,
     "master_doc": True,
     "nav_links": [],
-    "heros": {},
+    "heroes": {},
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

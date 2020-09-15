@@ -16,10 +16,11 @@ User Documentation
 ------------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    getting-started
    contributing
+   code-of-conduct
    changelog
    license
 

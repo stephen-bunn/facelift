@@ -33,12 +33,16 @@ class MediaType(Enum):
     """Defines the acceptable media types for processing.
 
     Attributes:
-        VIDEO (MediaType): Defines media that contains multiple frames to process
         IMAGE (MediaType): Defines media that contains a single frame to process
+        VIDEO (MediaType): Defines media that contains a known number of frames to
+            process that is more than more than 1
+        STREAM (MediaType): Defines media that contains an unknown number of frames to
+            process
     """
 
-    VIDEO = "video"
     IMAGE = "image"
+    VIDEO = "video"
+    STREAM = "stream"
 
 
 def get_mimetype(

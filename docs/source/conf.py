@@ -16,6 +16,7 @@
 import pathlib
 import sys
 
+import sphinx_rtd_theme
 import toml
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent.parent
@@ -63,6 +64,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_tabs.tabs",
     "hoverxref.extension",
+    "sphinx_rtd_theme",
 ]
 
 # Napoleon settings
@@ -133,30 +135,23 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_material"
-html_short_title = "Home"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    "nav_title": "Facelift",
-    "base_url": "https://facelift.readthedocs.io/",
-    "color_primary": "indigo",
-    "color_accent": "light-blue",
-    "repo_url": "https://github.com/stephen-bunn/facelift",
-    "repo_name": "stephen-bunn/facelift",
-    "repo_type": "github",
-    "logo_icon": "&#xe87c",
-    "globaltoc_depth": 1,
-    "globaltoc_collapse": True,
-    "globaltoc_includehidden": False,
-    "html_minify": True,
-    "css_minify": True,
-    "master_doc": True,
-    "nav_links": [],
-    "heroes": {},
+    "logo_only": False,
+    "display_version": True,
+    "prev_next_buttons_location": "bottom",
+    "style_nav_header_background": "#343131",
+    "collapse_navigation": True,
+    "sticky_navigation": True,
+    "navigation_depth": 4,
+    "includehidden": True,
+    "titles_only": False,
+    "style_external_links": False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

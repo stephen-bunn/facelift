@@ -1,9 +1,22 @@
 .. _facelift:
 
+
 Facelift Package
 ================
 
 .. automodule:: facelift
    :members:
-   :undoc-members:
-   :show-inheritance:
+
+
+``facelift.content``
+--------------------
+
+.. automodule:: facelift.content
+   :members:
+
+
+``facelift.content.magic``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: facelift.content.magic
+   :members:

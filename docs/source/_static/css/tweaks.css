@@ -1,16 +1,7 @@
-dl.py code.sig-name {
-  font-weight: bold;
+.ui.tabular.menu {
+  font-size: 16px;
 }
 
-.md-nav__link.caption {
-  margin-top: 1.5rem;
-}
-
-h1#index--page-root {
-  text-align: center;
-  font-size: 3rem;
-}
-
-a.headerlink:hover {
-  opacity: 1;
+.ui.sphinx-tab.tab {
+  font-size: 16px;
 }

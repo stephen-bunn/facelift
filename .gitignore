@@ -136,5 +136,6 @@ dmypy.json
 coverage.xml
 
 # misc
+.DS_Store
 reports/
 main.py

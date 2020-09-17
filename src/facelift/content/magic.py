@@ -17,6 +17,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
+from .types import MediaType
+
 try:
     import magic
 except ImportError as exc:  # pragma: no cover
@@ -27,22 +29,6 @@ except ImportError as exc:  # pragma: no cover
 
 
 DEFAULT_MAGIC_BUFFER_SIZE = 2 ** 11
-
-
-class MediaType(Enum):
-    """Defines the acceptable media types for processing.
-
-    Attributes:
-        IMAGE (MediaType): Defines media that contains a single frame to process
-        VIDEO (MediaType): Defines media that contains a known number of frames to
-            process that is more than more than 1
-        STREAM (MediaType): Defines media that contains an unknown number of frames to
-            process
-    """
-
-    IMAGE = "image"
-    VIDEO = "video"
-    STREAM = "stream"
 
 
 def get_mimetype(

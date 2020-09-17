@@ -60,6 +60,7 @@ opencv-python = "^4.4.0"
 numpy = "^1.19.2"
 python-magic = { version = "^0.4.18", markers = "sys_platform != 'win32'" }
 python-magic-bin = { version = "^0.4.14", markers = "sys_platform == 'win32'" }
+attrs = "^20.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

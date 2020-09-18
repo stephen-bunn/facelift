@@ -10,11 +10,13 @@ Attributes:
 """
 
 from enum import Enum
-from typing import Type
+from typing import List, Tuple, Type
 
 import numpy
 
 Frame = Type[numpy.ndarray]
+Point = Tuple[int, int]  # FIXME: this type is actually NDArray[2]
+Line = List[Point]  # FIXME: This type is actually NDArray[Any, 2]
 
 
 class MediaType(Enum):

@@ -6,18 +6,21 @@
 
 from glob import glob
 from pathlib import Path
-from typing import List, Tuple, cast
+from typing import List, Optional, Tuple, cast
 
+import numpy
+from hypothesis.extra.numpy import arrays as numpy_arrays
 from hypothesis.strategies import (
     SearchStrategy,
     composite,
+    integers,
     just,
     one_of,
     sampled_from,
     tuples,
 )
 
-from facelift.content.types import MediaType
+from facelift.content.types import Frame, MediaType
 
 from ..constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
 from .constants import SAMPLE_MAGIC
@@ -67,5 +70,33 @@ def media(draw) -> SearchStrategy[Tuple[Path, MediaType]]:
         one_of(
             tuples(image_path(), just(MediaType.IMAGE)),
             tuples(video_path(), just(MediaType.VIDEO)),
+        )
+    )
+
+
+@composite
+def frame(
+    draw,
+    width_strategy: Optional[SearchStrategy[int]] = None,
+    height_strategy: Optional[SearchStrategy[int]] = None,
+) -> SearchStrategy[Frame]:
+    """Composite strategy for building a random frame as produced by opencv."""
+
+    return draw(
+        numpy_arrays(
+            numpy.uint8,
+            (
+                draw(
+                    height_strategy
+                    if height_strategy
+                    else integers(min_value=1, max_value=512)
+                ),
+                draw(
+                    width_strategy
+                    if width_strategy
+                    else integers(min_value=1, max_value=512)
+                ),
+                3,
+            ),
         )
     )

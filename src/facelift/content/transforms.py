@@ -43,6 +43,15 @@ def scale(
     Following this logic, a scale factor of 1 would result in absolutely no change to
     the given frame.
 
+    .. important::
+        This transformation will return the exact same ``frame`` instance as the one
+        provided in the following cases:
+            1. If a factor of exactly ``1`` is given.
+                In this case the scale operation would result in no change.
+            2. The given frame has factor less than ``1`` a width or height of 1px.
+                In this case we are attempting to scale down the given frame and we
+                cannot scale down the frame any further without producing a 0px frame.
+
     Args:
         frame (Frame): The frame to scale
         factor (float): The factor to scale the given frame
@@ -62,6 +71,10 @@ def scale(
         )
 
     if factor == 1:
+        return frame
+
+    height, width, *_ = frame.shape
+    if factor < 1 and (height == 1 or width == 1):
         return frame
 
     return cv2.resize(
@@ -101,6 +114,9 @@ def resize(
         Frame: The newly resized frame
     """
 
+    if width == 0 or height == 0:
+        raise ValueError("Cannot resize frame to a width or height of 0")
+
     if width is None and height is None:
         return frame
 
@@ -124,7 +140,7 @@ def resize(
         )
 
     if height is not None:
-        relative_width = int(frame_width * (height / float(frame_height)))
+        relative_width = int(frame_width * (height / float(frame_height))) or 1
         return cv2.resize(
             src=frame,
             dsize=(relative_width, height),
@@ -133,7 +149,7 @@ def resize(
             interpolation=interpolation,
         )
     elif width is not None:
-        realative_height = int(frame_height * (width / float(frame_width)))
+        realative_height = int(frame_height * (width / float(frame_width))) or 1
         return cv2.resize(
             src=frame,
             dsize=(width, realative_height),
@@ -142,7 +158,7 @@ def resize(
             interpolation=interpolation,
         )
 
-    return frame
+    return frame  # pragma: no cover
 
 
 def rotate(
@@ -156,6 +172,8 @@ def rotate(
         This means if we do a perfect 45 degree rotation on a 512x512 frame we will
         produce a 724x724 frame since the 512x512 frame is now on a angle that requires
         a larger container.
+        **This really only the case for frames equal to or larger than 90px in either
+        or width.**
 
         Be cautious when using rotation.
         Most of the time you do not need to rotate on any angles other than 90, 180, and

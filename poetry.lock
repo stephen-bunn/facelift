@@ -278,11 +278,15 @@ description = "A library for property-based testing"
 name = "hypothesis"
 optional = false
 python-versions = ">=3.6"
-version = "5.35.2"
+version = "5.35.3"
 
 [package.dependencies]
 attrs = ">=19.2.0"
 sortedcontainers = ">=2.1.0,<3.0.0"
+
+[package.dependencies.numpy]
+optional = true
+version = ">=1.9.0"
 
 [package.extras]
 all = ["black (>=19.10b0)", "click (>=7.0)", "django (>=2.2)", "dpcontracts (>=0.4)", "lark-parser (>=0.6.5)", "numpy (>=1.9.0)", "pandas (>=0.19)", "pytest (>=4.3)", "python-dateutil (>=1.4)", "pytz (>=2014.1)"]
@@ -1229,7 +1233,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 profile = []
 
 [metadata]
-content-hash = "d5bbca3c0feb9282efde13cb9457b04fd8a42bdb995a0b29bdb6857beafa0dd4"
+content-hash = "96bbd362500559ebc49d63f2b90e11dfb6847f4be33bfe65ee5f609aa833e688"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1435,8 +1439,8 @@ flake8-docstrings = [
     {file = "flake8_docstrings-1.5.0-py2.py3-none-any.whl", hash = "sha256:a256ba91bc52307bef1de59e2a009c3cf61c3d0952dbe035d6ff7208940c2edc"},
 ]
 hypothesis = [
-    {file = "hypothesis-5.35.2-py3-none-any.whl", hash = "sha256:e6efd20bbc0feb5c30c790287575bd8e991799fa906e8884e29a612e4e0922db"},
-    {file = "hypothesis-5.35.2.tar.gz", hash = "sha256:b392075490f33141789e3fac6526394d9bf0e313c7e543d4d7c9e2ccd3774896"},
+    {file = "hypothesis-5.35.3-py3-none-any.whl", hash = "sha256:ee7bad5a617beed17090375f6e8e0f4f06677e9db92eaf598a186e69479843fa"},
+    {file = "hypothesis-5.35.3.tar.gz", hash = "sha256:a480386934cdfb2e69adb3333e7156ad9149b1935a910e44041a87c5bd8374dd"},
 ]
 identify = [
     {file = "identify-1.5.2-py2.py3-none-any.whl", hash = "sha256:e5cc8ba10ca658c278f841813c5f1556804141c93f82a7e620a938528a0c3f32"},

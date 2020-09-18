@@ -69,7 +69,7 @@ colorama = "^0.4.3"
 coverage = { version = "^5.2.1", extras = ["toml"] }
 flake8 = "^3.8.3"
 flake8-docstrings = "^1.5.0"
-hypothesis = "^5.29.3"
+hypothesis = {extras = ["numpy"], version = "^5.35.3"}
 invoke = "^1.4.1"
 isort = "^5.4.2"
 mypy = "^0.782"

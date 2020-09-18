@@ -5,13 +5,14 @@
 """Contains tests for the content frame capture logic."""
 
 from pathlib import Path
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 from unittest.mock import MagicMock, patch
 
 import cv2
+import numpy
 import pytest
 from hypothesis import given
-from hypothesis.strategies import just, one_of, sampled_from, tuples
+from hypothesis.strategies import integers, just, none, one_of, sampled_from, tuples
 
 from facelift.content.capture import (
     _iter_capture,
@@ -119,3 +120,39 @@ def test_file_capture_yields_video_media_capture(filepath: Path):
         mocked_media_capture.assert_called_once_with(
             filepath.as_posix(), MediaType.VIDEO
         )
+
+
+def test_stream_capture_default():
+    with patch("facelift.content.capture.media_capture") as mocked_media_capture:
+        with stream_capture():
+            pass
+
+        mocked_media_capture.assert_called_once_with(0, MediaType.STREAM)
+
+
+@given(integers(min_value=0, max_value=99))
+def test_stream_capture_custom_stream_type(stream_type: int):
+    with patch("facelift.content.capture.media_capture") as mocked_media_capture:
+        with stream_capture(stream_type):
+            pass
+
+        mocked_media_capture.assert_called_once_with(stream_type, MediaType.STREAM)
+
+
+@given(one_of(none(), integers(min_value=0, max_value=99)))
+def test_stream_capture_raises_ValueError_on_failure_to_open_device(
+    stream_type: Optional[int],
+):
+    with patch("facelift.content.capture.media_capture") as mocked_media_capture:
+        mocked_media_capture.side_effect = ValueError
+
+        with pytest.raises(ValueError):
+            with stream_capture(stream_type):
+                pass
+
+
+@given(one_of(image_path(), video_path()))
+def test_iter_media_frames(media_filepath: Path):
+    assert all(
+        isinstance(frame, numpy.ndarray) for frame in iter_media_frames(media_filepath)
+    )

@@ -133,7 +133,7 @@ def _iter_capture(capture: cv2.VideoCapture) -> Generator[Frame, None, None]:
     """
 
     read_success = True
-    while read_success:
+    while read_success:  # pragma: no cover
         read_success, frame = capture.read()
         if not isinstance(frame, numpy.ndarray):
             break
@@ -157,7 +157,7 @@ def iter_media_frames(media_filepath: Path) -> Generator[Frame, None, None]:
 
 def iter_stream_frames(
     stream_type: Optional[int] = None,
-) -> Generator[Frame, None, None]:
+) -> Generator[Frame, None, None]:  # pragma: no cover
     """Iterate over frames from a given streaming device.
 
     By default this iterator will attempt to connect to the first available webcam and

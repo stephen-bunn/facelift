@@ -13,7 +13,6 @@ Attributes:
         when making a guess at the mimetype of some file.
 """
 
-from enum import Enum
 from pathlib import Path
 from typing import Optional
 

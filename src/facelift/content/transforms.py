@@ -4,8 +4,7 @@
 
 """Contains some common necessary frame transformation helper methods."""
 
-import warnings
-from typing import Optional, Tuple
+from typing import Optional
 
 import cv2
 import numpy

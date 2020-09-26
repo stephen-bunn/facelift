@@ -135,7 +135,7 @@ def _iter_capture(capture: cv2.VideoCapture) -> Generator[Frame, None, None]:
     read_success = True
     while read_success:  # pragma: no cover
         read_success, frame = capture.read()
-        if not isinstance(frame, numpy.ndarray):
+        if not read_success or not isinstance(frame, numpy.ndarray):
             break
 
         yield frame

@@ -9,7 +9,7 @@ or anything more complex than just displaying frames.
 """
 
 from contextlib import AbstractContextManager
-from enum import Enum, IntEnum
+from enum import IntEnum
 from types import TracebackType
 from typing import Optional, Tuple, Type
 

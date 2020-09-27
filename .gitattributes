@@ -1,1 +1,4 @@
 src/facelift/data/landmarks filter=lfs diff=lfs merge=lfs -text
+src/facelift/data/landmarks/shape_predictor_5_face_landmarks.dat filter=lfs diff=lfs merge=lfs -text
+src/facelift/data/landmarks/shape_predictor_68_face_landmarks.dat filter=lfs diff=lfs merge=lfs -text
+src/facelift/data/landmarks/shape_predictor_81_face_landmarks.dat filter=lfs diff=lfs merge=lfs -text

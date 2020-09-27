@@ -32,7 +32,7 @@ def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     left_eye = face.landmarks.get(FaceFeature.LEFT_EYE)
     right_eye = face.landmarks.get(FaceFeature.RIGHT_EYE)
 
-    if not left_eye or not right_eye:
+    if left_eye is None or right_eye is None:
         raise ValueError(f"Face {face!r} doesn't have required eye landmarks")
 
     return (

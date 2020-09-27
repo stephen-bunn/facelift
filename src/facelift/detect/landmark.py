@@ -137,7 +137,7 @@ class BaseLandmarkDetector(abc.ABC):
             PointSequence: The newly created sequence of points.
         """
 
-        points: PointSequence = numpy.zeros((shape.num_parts, 2), dtype=dtype)
+        points = numpy.zeros((shape.num_parts, 2), dtype=dtype)
         for index in range(shape.num_parts):
             points[index] = (shape.part(index).x, shape.part(index).y)
 

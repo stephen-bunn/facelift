@@ -20,7 +20,7 @@ from .strategies import frame
 @given(frame())
 def test_copy(frame: Frame):
     copied_frame = transforms.copy(frame)
-    assert (frame == copied_frame).all()
+    assert (frame == copied_frame).all()  # type: ignore
     assert frame is not copied_frame
 
 
@@ -33,7 +33,7 @@ def test_scale_raises_ValueError_with_non_positive_factor(frame: Frame, factor: 
 @given(frame())
 def test_scale_returns_same_frame_with_default_factor(frame: Frame):
     transformed_frame = transforms.scale(frame, 1)
-    assert (frame == transformed_frame).all()
+    assert (frame == transformed_frame).all()  # type: ignore
     assert frame is transformed_frame
 
 
@@ -43,7 +43,7 @@ def test_scale_returns_same_frame_with_default_factor(frame: Frame):
 )
 def test_scale_returns_same_frame_with_too_small_frame(frame: Frame, factor: float):
     transformed_frame = transforms.scale(frame, factor)
-    assert (frame == transformed_frame).all()
+    assert (frame == transformed_frame).all()  # type: ignore
     assert frame is transformed_frame
 
 
@@ -73,7 +73,7 @@ def test_resize_raises_ValueError_for_height_or_width_of_zero(frame: Frame):
 @given(frame())
 def test_resize_returns_same_frame_with_no_width_and_height(frame: Frame):
     transformed_frame = transforms.resize(frame)
-    assert (frame == transformed_frame).all()
+    assert (frame == transformed_frame).all()  # type: ignore
     assert frame is transformed_frame
 
 
@@ -148,7 +148,7 @@ def test_resize_returns_relative_sized_frame(frame: Frame, size: int):
 @given(frame(), sampled_from([0, 360, -360]))
 def test_rotate_returns_same_frame_with_no_rotation(frame: Frame, degrees: int):
     transformed_frame = transforms.rotate(frame, degrees)
-    assert (transformed_frame == frame).all()
+    assert (transformed_frame == frame).all()  # type: ignore
     assert transformed_frame is frame
 
 
@@ -162,7 +162,7 @@ def test_rotate(frame: Frame, degrees: int):
 @given(frame())
 def test_translate_returns_same_frame_with_no_delta(frame: Frame):
     transformed_frame = transforms.translate(frame)
-    assert (transformed_frame == frame).all()
+    assert (transformed_frame == frame).all()  # type: ignore
     assert transformed_frame is frame
 
 

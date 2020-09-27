@@ -99,8 +99,8 @@ def draw_line(
     for (start, end) in sequence:
         cv2.line(
             img=frame,
-            pt1=tuple(line[start]),
-            pt2=tuple(line[end]),
+            pt1=tuple(line[start]),  # type: ignore
+            pt2=tuple(line[end]),  # type: ignore
             color=color,
             thickness=thickness,
             lineType=line_type.value,

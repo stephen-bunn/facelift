@@ -12,7 +12,7 @@ from hypothesis import given
 from hypothesis.strategies import floats, integers, just, sampled_from
 
 from facelift.content import transforms
-from facelift.content.types import Frame
+from facelift.types import Frame
 
 from .strategies import frame
 

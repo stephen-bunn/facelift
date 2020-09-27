@@ -11,8 +11,8 @@ from typing import Generator, Optional, Union
 import cv2
 import numpy
 
+from ..types import Frame, MediaType
 from .magic import get_media_type
-from .types import Frame, MediaType
 
 
 @contextmanager

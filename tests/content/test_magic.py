@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import pytest
 from hypothesis import assume, given
-from hypothesis.strategies import one_of, sampled_from, text
+from hypothesis.strategies import text
 
 from facelift.content import magic
 

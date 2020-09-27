@@ -8,21 +8,18 @@ from pathlib import Path
 from typing import Any, Optional, Tuple
 from unittest.mock import MagicMock, patch
 
-import cv2
 import numpy
 import pytest
 from hypothesis import given
-from hypothesis.strategies import integers, just, none, one_of, sampled_from, tuples
+from hypothesis.strategies import integers, just, none, one_of, sampled_from
 
 from facelift.content.capture import (
-    _iter_capture,
     file_capture,
     iter_media_frames,
-    iter_stream_frames,
     media_capture,
     stream_capture,
 )
-from facelift.content.types import MediaType
+from facelift.types import MediaType
 
 from ..strategies import builtin_types, pathlib_path
 from .strategies import image_path, media, video_path

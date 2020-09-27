@@ -16,7 +16,7 @@ Attributes:
 from pathlib import Path
 from typing import Optional
 
-from .types import MediaType
+from ..types import MediaType
 
 try:
     import magic

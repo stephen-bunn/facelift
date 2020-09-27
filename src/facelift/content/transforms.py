@@ -4,12 +4,13 @@
 
 """Contains some common necessary frame transformation helper methods."""
 
-from typing import Optional
+import warnings
+from typing import Optional, Tuple
 
 import cv2
 import numpy
 
-from .types import Frame
+from ..types import Frame
 
 DEFAULT_INTERPOLATION: int = cv2.INTER_AREA
 
@@ -214,6 +215,44 @@ def rotate(
         dsize=(new_width, new_height),
         flags=interpolation,
     )
+
+
+def crop(frame: Frame, start: Tuple[int, int], end: Tuple[int, int]) -> Frame:
+    """Crop the given frame between two top-left to bottom-right points.
+
+    Args:
+        frame (Frame): The frame to crop
+        start (Tuple[int, int]): The top-left point to start the crop at
+        end (Tuple[int, int]): The bottom-right point to end the crop at
+
+    Raises:
+        ValueError: When the given starting crop point appears after the given ending
+            crop point
+
+    Returns:
+        Frame: The newly cropped frame
+    """
+
+    left, top = start
+    right, bottom = end
+
+    if right <= left or bottom <= top:
+        raise ValueError(
+            "Starting crop point cannot be greater than the ending crop point, "
+            f"(start={start}, end={end})"
+        )
+
+    width = right - left
+    height = bottom - top
+
+    if width <= 0 or height <= 0:
+        warnings.warn(
+            "crop is performed top-left to bottom-right, "
+            f"deltas should likely be positive (width={width}, height={height})",
+            UserWarning,
+        )
+
+    return frame[top : top + height, left : left + width]
 
 
 def translate(

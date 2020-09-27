@@ -11,12 +11,12 @@ or anything more complex than just displaying frames.
 from contextlib import AbstractContextManager
 from enum import IntEnum
 from types import TracebackType
-from typing import Optional, Tuple, Type
+from typing import List, Optional, Tuple, Type
 
 import attr
 import cv2
 
-from .types import Frame, Line, Point
+from ..types import Frame, Point, PointSequence
 
 DEFAULT_COLOR = (255, 255, 255)
 DEFAULT_WINDOW_TITLE = "Facelift"
@@ -25,7 +25,7 @@ DEFAULT_WINDOW_STEP_KEY = 0x20
 
 
 class LineType(IntEnum):
-    """Enumeration of the different available line types for OpenCV."""
+    """Enumeration of the different available PointSequence types for OpenCV."""
 
     FILLED = cv2.FILLED
     DASHED = cv2.LINE_4
@@ -70,19 +70,19 @@ def draw_point(
 
 def draw_line(
     frame: Frame,
-    line: Line,
-    sequence: Optional[Line] = None,
+    line: PointSequence,
+    sequence: Optional[List[Tuple[int, int]]] = None,
     color: Tuple[int, int, int] = DEFAULT_COLOR,
     thickness: int = 1,
-    line_type: LineType = LineType.FILLED,
+    line_type: LineType = LineType.ANTI_ALIASED,
 ) -> Frame:
     """Draw a sequence of connected points on a given frame.
 
     Args:
         frame (Frame): The frame to draw the line on
-        line (Line): The array of points to draw on the given frame
-        sequence (Optional[Line], optional): An optional custom sequence for drawing the
-            given line points. Defaults to None.
+        line (PointSequence): The array of points to draw on the given frame
+        sequence (Optional[List[Tuple[int, int]]], optional): An optional custom
+            sequence for drawing the given line points. Defaults to None.
         color (Tuple[int, int, int], optional): The color of the line.
             Defaults to DEFAULT_COLOR.
         thickness (int, optional): The thickness of the line. Defaults to 1.
@@ -111,7 +111,7 @@ def draw_line(
 
 def draw_contour(
     frame: Frame,
-    line: Line,
+    line: PointSequence,
     color: Tuple[int, int, int] = DEFAULT_COLOR,
     thickness: int = -1,
     line_type=LineType.FILLED,
@@ -120,7 +120,7 @@ def draw_contour(
 
     Args:
         frame (Frame): The frame to draw the contour on
-        line (Line): THe array of poitns to use to form the contour
+        line (PointSequence): THe array of poitns to use to form the contour
         color (Tuple[int, int, int], optional): The color ofthe contour.
             Defaults to DEFAULT_COLOR.
         thickness (int, optional): The thickness of the contour. Defaults to -1.

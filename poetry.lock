@@ -92,6 +92,14 @@ six = ">=1.9.0"
 webencodings = "*"
 
 [[package]]
+category = "main"
+description = "A decorator for caching properties in classes."
+name = "cached-property"
+optional = false
+python-versions = "*"
+version = "1.5.2"
+
+[[package]]
 category = "dev"
 description = "Python package for providing Mozilla's CA Bundle."
 name = "certifi"
@@ -212,6 +220,14 @@ name = "distlib"
 optional = false
 python-versions = "*"
 version = "0.3.1"
+
+[[package]]
+category = "main"
+description = "A toolkit for making real world machine learning and data analysis applications"
+name = "dlib"
+optional = false
+python-versions = "*"
+version = "19.21.0"
 
 [[package]]
 category = "dev"
@@ -1230,7 +1246,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 profile = []
 
 [metadata]
-content-hash = "96bbd362500559ebc49d63f2b90e11dfb6847f4be33bfe65ee5f609aa833e688"
+content-hash = "009281084ca676a51fc3a5be748f54e15e06730beb92b75cb62266a3991526ac"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1265,6 +1281,10 @@ black = [
 bleach = [
     {file = "bleach-3.1.5-py2.py3-none-any.whl", hash = "sha256:2bce3d8fab545a6528c8fa5d9f9ae8ebc85a56da365c7f85180bfe96a35ef22f"},
     {file = "bleach-3.1.5.tar.gz", hash = "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"},
+]
+cached-property = [
+    {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
+    {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
@@ -1413,6 +1433,9 @@ cryptography = [
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
     {file = "distlib-0.3.1.zip", hash = "sha256:edf6116872c863e1aa9d5bb7cb5e05a022c519a4594dc703843343a9ddd9bff1"},
+]
+dlib = [
+    {file = "dlib-19.21.0.tar.gz", hash = "sha256:e79d8e14171b8446d6b5434d7dc3b44a23ca05c8f99266acaf731cc7b268edb6"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},

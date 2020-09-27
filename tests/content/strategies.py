@@ -4,7 +4,6 @@
 
 """Contains composite strategies related to content testing."""
 
-from glob import glob
 from pathlib import Path
 from typing import List, Optional, Tuple, cast
 
@@ -20,7 +19,7 @@ from hypothesis.strategies import (
     tuples,
 )
 
-from facelift.content.types import Frame, MediaType
+from facelift.types import Frame, MediaType
 
 from ..constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
 from .constants import SAMPLE_MAGIC

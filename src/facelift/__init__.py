@@ -5,4 +5,22 @@
 """Facelift.
 
 A simple wrapper for face detection and recognition.
+Basic usage looks something like this:
+
+>>> from facelift import iter_media_frames, PartialFaceDetector
+>>> detector = PartialFaceDetector()
+>>> for frame in iter_media_frames(MEDIA_FILEPATH):
+...     for face in detector.iter_face(frame):
+...         # Do something with the face
 """
+
+from .content import iter_media_frames, iter_stream_frames
+from .detect import BasicFaceDetector, FullFaceDetector, PartialFaceDetector
+
+__all__ = [
+    "iter_media_frames",
+    "iter_stream_frames",
+    "BasicFaceDetector",
+    "FullFaceDetector",
+    "PartialFaceDetector",
+]

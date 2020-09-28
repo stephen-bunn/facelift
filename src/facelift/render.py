@@ -16,7 +16,7 @@ from typing import List, Optional, Tuple, Type
 import attr
 import cv2
 
-from ..types import Frame, Point, PointSequence
+from .types import Frame, Point, PointSequence
 
 DEFAULT_COLOR = (255, 255, 255)
 DEFAULT_WINDOW_TITLE = "Facelift"

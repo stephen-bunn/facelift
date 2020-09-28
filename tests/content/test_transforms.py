@@ -198,6 +198,31 @@ def test_translate(frame: Frame, delta: int):
 
 
 @given(frame())
+def test_flip_returns_same_frame_with_no_axis_specified(frame: Frame):
+    flipped_frame = transform.flip(frame)
+    assert (flipped_frame == frame).all()  # type: ignore
+    assert flipped_frame is frame
+
+
+@given(frame())
+def test_flip_returns_verically_flipped_frame(frame: Frame):
+    flipped_frame = transform.flip(frame, x_axis=True)
+    assert (flipped_frame[0][0] == frame[0][-1]).all()  # type: ignore
+
+
+@given(frame())
+def test_flip_returns_horizontally_flipped_frame(frame: Frame):
+    flipped_frame = transform.flip(frame, y_axis=True)
+    assert (flipped_frame[0][0] == frame[-1][0]).all()  # type: ignore
+
+
+@given(frame())
+def test_flip_returns_inverted_frame(frame: Frame):
+    flipped_frame = transform.flip(frame, x_axis=True, y_axis=True)
+    assert (flipped_frame[-1][-1] == frame[0][0]).all()  # type: ignore
+
+
+@given(frame())
 def test_grayscale(frame: Frame):
     with patch("facelift.content.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
         transform.grayscale(frame)

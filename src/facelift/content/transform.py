@@ -368,6 +368,42 @@ def translate(
     )
 
 
+def flip(frame: Frame, x_axis: bool = False, y_axis: bool = False) -> Frame:
+    """Flip the given frame over either or both the x and y axis.
+
+    Examples:
+        >>> from facelift.content.transform import flip
+        >>> vertically_flipped_frame = flip(frame, x_axis=True)
+        >>> horizontally_flipped_frame = flip(frame, y_axis=True)
+        >>> inverted_frame = flip(frame, x_axis=True, y_axis=True)
+
+    Args:
+        frame (:attr:`~.types.Frame`):
+            The frame to flip
+        x_axis (bool, optional):
+            Flag indicating the frame should be flipped vertically.
+            Defaults to False.
+        y_axis (bool, optional):
+            Flag indicating the frame should be flipped horizontally.
+            Defaults to False.
+
+    Returns:
+        :attr:`~.types.Frame`: The newly flipped frame
+    """
+
+    if not x_axis and not y_axis:
+        return frame
+
+    if x_axis and y_axis:
+        flip_code = -1
+    elif y_axis:
+        flip_code = 0
+    else:
+        flip_code = 1
+
+    return cv2.flip(src=frame, flipCode=flip_code)
+
+
 def grayscale(frame: Frame) -> Frame:
     """Convert the given frame to grayscale.
 

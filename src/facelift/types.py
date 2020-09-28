@@ -4,18 +4,24 @@
 
 """Contains module-wide used types.
 
-Attributes:
-    Frame (nptyping.NDArray[(Any, Any, 3), nptyping.UInt8]): An aliased type for a basic
-        numpy array that gets given to use via opencv.
-    Point (nptyping.NDArray[(2,), nptyping.Int]): A single x, y coordinate that
-        describes a single positional point.
-    PointSequence (nptyping.NDArray(Any, 2), nptyping.Int): A sequence of points that
-        is typically used to describe a face feature or a line during rendering.
+.. _dlib.rectangle:
+    http://dlib.net/python/index.html#dlib.rectangle
+.. _dlib.full_object_detection:
+    http://dlib.net/python/index.html#dlib.full_object_detection
 
-    Detector (Callable[[Frame, int], PointSequence]):
+Attributes:
+    Frame (``NDArray[(Any, Any, 3), UInt8]``):
+        An aliased type for a basic numpy array that gets given to use via OpenCV.
+    Point (``NDArray[(2,), Int32]``):
+        A single x, y coordinate that describes a single positional point.
+    PointSequence (``NDArray[(Any, 2), Int32]``):
+        A sequence of points that is typically used to describe a face feature or a line
+        during rendering.
+
+    Detector (Callable[[:attr:`~Frame`, :class:`int`], :attr:`~PointSequence`]):
         Callable that takes a frame and an upsample count and discovers the bounds of
         a face within the frame.
-    Predictor (Callable[[Frame, dlib.rectangle], dlib.full_object_detection]):
+    Predictor (Callable[[:attr:`~Frame`, dlib.rectangle_], dlib.full_object_detection_])
         Callable which takes a frame and detected face bounds to discover the shape and
         features within the face.
 """
@@ -52,14 +58,16 @@ Predictor = Callable[[Frame, dlib.rectangle], dlib.full_object_detection]
 
 
 class MediaType(Enum):
-    """Defines the acceptable media types for processing.
+    """Enumeration of acceptable media types for processing.
 
     Attributes:
-        IMAGE (MediaType): Defines media that contains a single frame to process
-        VIDEO (MediaType): Defines media that contains a known number of frames to
-            process that is more than more than 1
-        STREAM (MediaType): Defines media that contains an unknown number of frames to
-            process
+        IMAGE:
+            Defines media that contains a single frame to process.
+        VIDEO:
+            Defines media that contains a known number of frames to process that is more
+            than more than 1.
+        STREAM:
+            Defines media that contains an unknown number of frames to process
     """
 
     IMAGE = "image"
@@ -68,7 +76,28 @@ class MediaType(Enum):
 
 
 class FaceFeature(Enum):
-    """Enumeration of features of a face that we can detect."""
+    """Enumeration of features of a face that we can detect.
+
+    Attributes:
+        NOSE:
+            The nose of a face.
+        JAW:
+            The jaw line of a face.
+        MOUTH:
+            The external bounds of the mouth of a face.
+        INNER_MOUTH:
+            The internal bounds of the mouth of a face.
+        RIGHT_EYE:
+            The external and internal bounds of the right eye of a face.
+        LEFT_EYE:
+            The extenral and internal bounds of the left eye of a face.
+        RIGHT_EYEBROW:
+            The right eyebrow of a face.
+        LEFT_EYEBROW:
+            The left eyebrow of a face.
+        FOREHEAD:
+            The forehead curvature of a face.
+    """
 
     NOSE = "nose"
     JAW = "jaw"
@@ -85,10 +114,12 @@ class FaceFeature(Enum):
 class Face:
     """Describes a detected face.
 
-    Attributes:
-        landmarks (Dict[FaceFeature, PointSequence]): Mapping of extracted face features
-            to the sequence of points describing those features.
-        frame (Frame): The base non-normalized cropped frame of just the face.
+    Args:
+        landmarks (Dict[:class:`~FaceFeature`, :attr:`~PointSequence`]):
+            Mapping of extracted face features to the sequence of points describing
+            those features.
+        frame (:class:`~Frame`):
+            The base non-normalized cropped frame of just the face.
     """
 
     landmarks: Dict[FaceFeature, PointSequence]

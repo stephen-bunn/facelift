@@ -18,7 +18,7 @@ Facelift Package
 --------------------
 
 .. automodule:: facelift.content
-   :members:
+
 
 ``facelift.content.capture``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

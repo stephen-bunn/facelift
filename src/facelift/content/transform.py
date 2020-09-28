@@ -97,15 +97,14 @@ def resize(
 ) -> Frame:
     """Resize a given frame to a given width and/or height.
 
-    - If both width and height are given, the frame will be resized accordingly.
-    - If only one of width or height is given, the frame will be resized according to
-        the provided dimension (either width or height).
+    * If both width and height are given, the frame will be resized accordingly.
+    * If only one of width or height is given, the frame will be resized according to
+      the provided dimension (either width or height).
 
-        - As long as ``lock_aspect`` is truthy, the unprovided dimension will be
-            adjusted to maintain the original aspect-ratio of the frame.
-
-        - If ``lock_aspect`` is falsy, the resize operation will only scale the provided
-            dimension while keeping the original size of the unprovided dimension.
+        * As long as ``lock_aspect`` is truthy, the unprovided dimension will be
+          adjusted to maintain the original aspect-ratio of the frame.
+        * If ``lock_aspect`` is falsy, the resize operation will only scale the provided
+          dimension while keeping the original size of the unprovided dimension.
 
     Args:
         frame (Frame): The frame to resize

@@ -2,7 +2,47 @@
 # Copyright (c) 2020 Stephen Bunn <stephen@bunn.io>
 # ISC License <https://choosealicense.com/licenses/isc>
 
-"""Contains helpers and managers for capturing content from various sources."""
+"""Contains helpers and managers for capturing content from various sources.
+
+Among the included functions, :func:`~.iter_media_frames` and
+:func:`~.iter_stream_frames` should really be all you ever care about.
+With these two functions you can iterate over either some image or video (as supported
+by OpenCV) or frames streamed directly from a webcam.
+The frames output by these generators are ``numpy`` arrays that are considered
+:attr:`~.types.Frame` instances and are used throughout the project.
+
+For example, if I had a video file ``~/my-file.mp4`` and wanted to iterate over all
+available frames within the video, I would do use :func:`~.iter_media_frames` like the
+following:
+
+.. code-block:: python
+
+    from pathlib import Path
+    from facelift.content.capture import iter_media_frames
+
+    MY_FILE = Path("~/my-file.mp4").expanduser()
+    for frame in iter_media_frames(MY_FILE):
+        print(frame)
+
+
+The same works for images, however only 1 frame will ever be yielded from the generator.
+
+If you want to instead iterate over the frames from a webcam, you should use the
+:func:`~.iter_stream_frames` like the following:
+
+.. code-block:: python
+
+    from facelift.content.capture import iter_stream_frames
+    # will default the device id to a value of 0
+    # this means OpenCV will attempt to discover the first available webcam
+    for frame in iter_stream_frames():
+        print(frame)
+
+    # if you have 2 webcams enabled and want to instead use the 2nd one, you should
+    # specify a device index of 1 like this
+    for frame in iter_stream_frames(1):
+        print(frame)
+"""
 
 from contextlib import contextmanager
 from pathlib import Path
@@ -29,6 +69,19 @@ def media_capture(
     In most all cases where you just want to build a capture off of your default webcam,
     you should just be giving a ``media`` of ``0``.
 
+    Examples:
+        >>> # build a media capture for a specific media file
+        >>> from facelift.content.capture import media_capture
+        >>> with media_capture("/home/a-user/Desktop/test.mp4") as capture:
+        ...     print(capture)
+        <VideoCapture 0x1234567890>
+
+        >>> # build a media capture around the first available webcam
+        >>> from facelift.content.capture import media_capture
+        >>> with media_capture(0) as capture:
+        ...     print(capture)
+        <VideoCapture 0x1234567890>
+
     Args:
         media (Union[str, int]): The media to build a capturer for
 
@@ -36,7 +89,7 @@ def media_capture(
         ValueError: On failure to open the given media for capture
 
     Yields:
-        cv2.VideoCapture: A capturer that allows for reading subsequential frames
+        cv2.VideoCapture: A capturer that allows for reading sequential frames
     """
 
     if media_type == MediaType.STREAM:
@@ -65,16 +118,28 @@ def media_capture(
 def file_capture(filepath: Path) -> Generator[cv2.VideoCapture, None, None]:
     """Context manager to open a given filepath for frame capture.
 
+    This is just a simple context manager wrapper around the base
+    :func:`~.media_capture` manager to ensure that a given ``filepath`` exists and is a
+    supported media type before attempting to build a capture around it.
+
+    Examples:
+        >>> from pathlib import Path
+        >>> from facelift.content.capture import file_capture
+        >>> MY_FILEPATH = Path("~/my-file.mp4").expanduser()
+        >>> with file_capture(MY_FILEPATH) as capture:
+        ...     print(capture)
+        <VideoCapture 0x1234567890>
+
     Args:
-        filepath (Path): The filepath to open for capture
+        filepath (~pathlib.Path): The filepath to open for capture
 
     Raises:
         FileNotFoundError: When the given filepath doesn't exist
-        ValueError: When the given filepath is not of a supported media type
+        ValueError: When the given filepath is not a supported media type
 
     Yields:
-        cv2.VideoCapture: A capturer that allows for reading frames from the given media
-            filepath
+        cv2.VideoCapture:
+            A capturer that allows for reading frames from the given media filepath
     """
 
     if not filepath.is_file():
@@ -101,6 +166,19 @@ def stream_capture(
     These stream types come directly from the
     `OpenCV video IO enum <https://bit.ly/3cctIN8>`_.
 
+    Examples:
+        >>> # build a frame capture from the first available webcam
+        >>> from facelift.content.capture import stream_capture
+        >>> with stream_capture() as capture:
+        ...     print(capture)
+        <VideoCapture 0x1234567890>
+
+        >>> # build a frame capture from the second available webcam
+        >>> from facelift.content.capture import stream_capture
+        >>> with stream_capture(1) as capture:
+        ...     print(capture)
+        <VideoCapture 0x1234567890>
+
     Args:
         stream_type (Optional[int], optional): The stream type to open
 
@@ -108,8 +186,8 @@ def stream_capture(
         ValueError: When the given stream device fails to be opened for capture
 
     Yields:
-        cv2.VideoCapture: A capturer that allows for reading frames from the defined
-            stream type
+        cv2.VideoCapture:
+            A capturer that allows for reading frames from the defined stream type
     """
 
     capture_index = stream_type or cv2.CAP_ANY
@@ -129,7 +207,7 @@ def _iter_capture(capture: cv2.VideoCapture) -> Generator[Frame, None, None]:
         capture (cv2.VideoCapture): The capture to read and yield frames from
 
     Yields:
-        Frame: A read frame from the given capture
+        :attr:`~.types.Frame`: A read frame from the given capture
     """
 
     read_success = True
@@ -144,11 +222,19 @@ def _iter_capture(capture: cv2.VideoCapture) -> Generator[Frame, None, None]:
 def iter_media_frames(media_filepath: Path) -> Generator[Frame, None, None]:
     """Iterate over frames from a given supported media file.
 
+    Examples:
+        >>> from pathlib import Path
+        >>> from facelift.content.capture import iter_media_frames
+        >>> MEDIA_PATH = Path("~/my-media.mp4").expanduser()
+        >>> for frame in iter_media_frames(MEDIA_PATH):
+        ...     # do something with the frame
+
     Args:
-        media_filepath (Path): The filepath to the media to read frames from
+        media_filepath (~pathlib.Path):
+            The filepath to the media to read frames from
 
     Yields:
-        Frame: A read frame from the given media file
+        :attr:`~.types.Frame`: A frame read from the given media file
     """
 
     with file_capture(media_filepath) as capture:
@@ -165,11 +251,17 @@ def iter_stream_frames(
     You can specifiy the appropriate device index 0-99 (0 being the default), or a
     custom stream type defined by the `OpenCV video IO enum <https://bit.ly/3cctIN8>`_.
 
+    Examples:
+        >>> from facelift.content.capture import iter_stream_frames
+        >>> # iterate over frames available from the second available webcam
+        >>> for frame in iter_stream_frames(1):
+        ...     # do something with the frame
+
     Args:
         stream_type (Optional[int], optional): The stream type to attempt to open.
 
     Yields:
-        Frame: A read frame from the given streaming device
+        :attr:`~.types.Frame`: A read frame from the given streaming device
     """
 
     with stream_capture(stream_type) as capture:

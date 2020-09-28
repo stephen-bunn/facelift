@@ -36,10 +36,11 @@ def get_mimetype(
     """Try and determine the mimetype for content at the given filepath.
 
     Args:
-        media_filepath (pathlib.Path): The filepath to guess the mimetype of
-        buffer_size (Optional[int], optional): The number of bytes to use for guessing
-            the mimetype of the given file. Defaults to the value of
-            :attr:`~facelift.content.magic.DEFAULT_MAGIC_BUFFER_SIZE`.
+        media_filepath (~pathlib.Path):
+            The filepath to guess the mimetype of
+        buffer_size (Optional[int], optional):
+            The number of bytes to use for guessing the mimetype of the given file.
+            Defaults to the value of :attr:`~DEFAULT_MAGIC_BUFFER_SIZE`.
 
     Raises:
         FileNotFoundError: When the provided filepath does not exist
@@ -63,22 +64,27 @@ def get_media_type(
     """Try and determine the media type for content at the given filepath.
 
     Args:
-        media_filepath (pathlib.Path): The filepath to guess the media type of
-        buffer_size (Optional[int], optional): The number of bytes to use for guessing
-            the media type of the given file. Defaults to the value of
-            :attr:`~facelift.content.magic.DEFAULT_MAGIC_BUFFER_SIZE`.
-        validate (bool, optional): If truthy, a :class:`ValueError` will be raised if
-            the given file's mimetype does not match a supported :class:`~MediaType`.
+        media_filepath (~pathlib.Path):
+            The filepath to guess the media type of
+        buffer_size (Optional[int], optional):
+            The number of bytes to use for guessing the media type of the given file.
+            Defaults to the value of :attr:`~DEFAULT_MAGIC_BUFFER_SIZE`.
+        validate (bool, optional):
+            If truthy, a :class:`ValueError` will be raised if the given file's mimetype
+            does not match a supported :class:`~.types.MediaType`.
             Defaults to False.
 
     Raises:
-        FileNotFoundError: When the provided filepath does not exist
-        ValueError: When ``validate`` is truthy and the given filepath does not match a
-            supported :class:`~facelift.content.magic.MediaType`
+        FileNotFoundError:
+            When the provided filepath does not exist
+        ValueError:
+            When ``validate`` is truthy and the given filepath does not match a
+            supported :class:`~.types.MediaType`
 
     Returns:
-        Optional[MediaType]: The appropriate media type enum attribute for the given
-            filepath, if a successful guess and media type match is made
+        Optional[~.types.MediaType]:
+            The appropriate media type enum attribute for the given filepath,
+            if a successful guess and media type match is made
     """
 
     mimetype = get_mimetype(media_filepath, buffer_size=buffer_size)

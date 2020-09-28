@@ -4,6 +4,20 @@
 
 """Contains some common necessary frame transformation helper methods.
 
+These transformation methods are useful for optimizing face detection in frames.
+Typically face detection takes much longer the more pixels there are to consider.
+Therefore, using :func:`~scale` or :func:`~resize` will help you speed up detection.
+
+These helper transforms can be composed together to produce apply multiple operations on
+a single frame.
+For example, if we wanted to first downscale by half and then rotate a frame by 90
+degrees, we could do something like the following:
+
+.. code-block:: python
+
+    from facelift.content.transform import rotate, scale
+    transformed_frame = rotate(scale(frame, 0.5), 90)
+
 Attributes:
     DEFAULT_INTERPOLATION (int):
         The default type of interpolation to use in transforms that require an

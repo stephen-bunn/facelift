@@ -75,7 +75,7 @@ class BaseLandmarkDetector(abc.ABC):
 
     Raises:
         NotImplementedError: If the ``model_filepath`` property is not implemented
-        NotImplementedError: If the ``get_landmarks`` method is not implemented
+        NotImplementedError: If the ``landmark_slices`` property is not implemented
     """
 
     @abc.abstractproperty

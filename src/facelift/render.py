@@ -59,12 +59,48 @@ def draw_point(
 
     cv2.circle(
         img=frame,
-        center=point,
+        center=tuple(point),
         radius=size,
         color=color,
         thickness=thickness,
         lineType=line_type.value,
     )
+    return frame
+
+
+def draw_points(
+    frame: Frame,
+    points: PointSequence,
+    size: int = 1,
+    color: Tuple[int, int, int] = DEFAULT_COLOR,
+    thickness: int = -1,
+    line_type: LineType = LineType.FILLED,
+) -> Frame:
+    """Draw multiple points on a given frame.
+
+    Args:
+        frame (Frame): The frame to draw the points on
+        points (PointSequence): The sequence of points to draw
+        size (int, optional): The size of the points. Defaults to 1.
+        color (Tuple[int, int, int], optional): The color of the points.
+            Defaults to DEFAULT_COLOR.
+        thickness (int, optional): The thickness of the points. Defaults to -1.
+        line_type (LineType, optional): The type of line type to use for the points.
+            Defaults to LineType.FILLED.
+
+    Returns:
+        Frame: The frame with the points drawn on it
+    """
+
+    for point in points:
+        frame = draw_point(
+            frame,
+            point,
+            size=size,
+            color=color,
+            thickness=thickness,
+            line_type=line_type,
+        )
     return frame
 
 
@@ -99,8 +135,8 @@ def draw_line(
     for (start, end) in sequence:
         cv2.line(
             img=frame,
-            pt1=tuple(line[start]),  # type: ignore
-            pt2=tuple(line[end]),  # type: ignore
+            pt1=tuple(line[start]),
+            pt2=tuple(line[end]),
             color=color,
             thickness=thickness,
             lineType=line_type.value,

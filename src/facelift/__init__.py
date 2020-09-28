@@ -10,7 +10,7 @@ Basic usage looks something like this:
 >>> from facelift import iter_media_frames, PartialFaceDetector
 >>> detector = PartialFaceDetector()
 >>> for frame in iter_media_frames(MEDIA_FILEPATH):
-...     for face in detector.iter_face(frame):
+...     for face in detector.iter_faces(frame):
 ...         # Do something with the face
 """
 

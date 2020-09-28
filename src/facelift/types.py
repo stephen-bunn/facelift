@@ -22,7 +22,7 @@ Attributes:
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, Dict, List, Type
+from typing import Callable, Dict, List, Tuple, Type
 
 import dlib
 import numpy
@@ -34,7 +34,7 @@ import numpy
 # (https://github.com/ramonhagenaars/nptyping/issues/34)
 
 Frame = Type[numpy.ndarray]  # FIXME: this type is NDArray[(Any, Any, 3), UInt8]
-Point = Type[numpy.ndarray]  # FIXME: this type is NDArray[(2,), Int]
+Point = Tuple[int, int]  # FIXME: this type is NDArray[(2,), Int]
 PointSequence = List[Point]  # FIXME: this type is NDArray[(Any, 2), Int]
 
 # Type manually derived from `dlib.fhog_object_detector` for mypy's sake

@@ -46,8 +46,10 @@ def scale(
     .. important::
         This transformation will return the exact same ``frame`` instance as the one
         provided in the following cases:
+
             1. If a factor of exactly ``1`` is given.
                 In this case the scale operation would result in no change.
+
             2. The given frame has factor less than ``1`` a width or height of 1px.
                 In this case we are attempting to scale down the given frame and we
                 cannot scale down the frame any further without producing a 0px frame.
@@ -98,8 +100,10 @@ def resize(
     - If both width and height are given, the frame will be resized accordingly.
     - If only one of width or height is given, the frame will be resized according to
         the provided dimension (either width or height).
+
         - As long as ``lock_aspect`` is truthy, the unprovided dimension will be
             adjusted to maintain the original aspect-ratio of the frame.
+
         - If ``lock_aspect`` is falsy, the resize operation will only scale the provided
             dimension while keeping the original size of the unprovided dimension.
 
@@ -244,14 +248,6 @@ def crop(frame: Frame, start: Tuple[int, int], end: Tuple[int, int]) -> Frame:
 
     width = right - left
     height = bottom - top
-
-    if width <= 0 or height <= 0:
-        warnings.warn(
-            "crop is performed top-left to bottom-right, "
-            f"deltas should likely be positive (width={width}, height={height})",
-            UserWarning,
-        )
-
     return frame[top : top + height, left : left + width]
 
 

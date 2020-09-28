@@ -33,7 +33,7 @@ from ..constants import (
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from ..content.transforms import crop
+from ..content.transform import crop
 from ..types import Detector, Face, FaceFeature, Frame, Point, PointSequence, Predictor
 
 

@@ -29,7 +29,7 @@ def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     """Get the center position tuples of eyes from the given face.
 
     Args:
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The face to extract eye positions from.
 
     Raises:
@@ -56,7 +56,7 @@ def get_eye_center_position(face: Face) -> Tuple[int, int]:
     """Get the center position between the eyes of the given face.
 
     Args:
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The face to extract the center position from.
 
     Returns:
@@ -71,7 +71,7 @@ def get_eye_deltas(face: Face) -> Tuple[int, int]:
     """Get the difference between eye positions of the given face.
 
     Args:
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The face to get the eye deltas from.
 
     Returns:
@@ -86,7 +86,7 @@ def get_eye_angle(face: Face) -> numpy.ndarray:
     """Get the angle the eyes are currently at for the given face.
 
     Args:
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The face to get the eye angle from.
 
     Returns:
@@ -102,7 +102,7 @@ def get_eye_distance(face: Face) -> numpy.ndarray:
     """Get the distance between the eyes of the given face.
 
     Args:
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The face to get the eye distance from.
 
     Returns:
@@ -132,7 +132,7 @@ def get_normalized_frame(
     Args:
         frame (:attr:`~.types.Frame`):
             The original frame the face was detected from.
-        face (:attr:`~.types.Face`):
+        face (:class:`~.types.Face`):
             The detected face to use when extracting a normalized face frame.
         desired_width (Optional[int], optional):
             The desired width of the normalized frame. Defaults to None.

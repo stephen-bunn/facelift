@@ -165,7 +165,7 @@ class BaseLandmarkDetector(abc.ABC):
         Helper function to automatically group features when given the feature slice
         definition.
         This feature slice definition is a basic way to easily categorize the features
-        discovered from the dlib predictor as an actual :attr:`~.types.FaceFeature`.
+        discovered from the dlib predictor as an actual :class:`~.types.FaceFeature`.
 
         Examples:
             >>> from facelift.detect.landmark import BasicFaceDetector
@@ -178,11 +178,11 @@ class BaseLandmarkDetector(abc.ABC):
         Args:
             points (:attr:`~.types.PointSequence`):
                 The points to extract feature sequences from.
-            feature_slices (Dict[:attr:`~.types.FaceFeature`, Tuple[int, int]]):
+            feature_slices (Dict[:class:`~.types.FaceFeature`, Tuple[int, int]]):
                 A dictionary of :class:`~.types.FaceFeature` and slice tuples.
 
         Returns:
-            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+            Dict[:class:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
                 The dictionary of features and grouped point sequences.
         """
 
@@ -199,7 +199,7 @@ class BaseLandmarkDetector(abc.ABC):
                 The sequence of extracted points from dlib.
 
         Returns:
-            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+            Dict[:class:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
                 The dictionary of face features and point sequences.
         """
 
@@ -208,7 +208,7 @@ class BaseLandmarkDetector(abc.ABC):
     def iter_faces(
         self, frame: Frame, upsample: int = 0
     ) -> Generator[Face, None, None]:
-        """Iterate over detected faces within a given :class:`~.types.Frame`.
+        """Iterate over detected faces within a given :attr:`~.types.Frame`.
 
         Examples:
             Get detected faces from the first available webcam.
@@ -228,7 +228,7 @@ class BaseLandmarkDetector(abc.ABC):
                 Defaults to 0.
 
         Yields:
-            :attr:`~.types.Face`:
+            :class:`~.types.Face`:
                 A detected face within the image, this has no guarantee of order if
                 multiple faces are detected
         """
@@ -318,7 +318,7 @@ class FullFaceDetector(BaseLandmarkDetector):
                 The sequence of extracted points from dlib.
 
         Returns:
-            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+            Dict[:class:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
                 The dictionary of face features and point sequences.
         """
 

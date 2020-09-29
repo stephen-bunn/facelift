@@ -35,6 +35,46 @@ we unfortunately cannot bundle in this package.
 The following sections will lead you through the installation of the necessary system
 requirements.
 
+``cmake``
+---------
+
+This library is required as `dlib <http://dlib.net/>`_ needs to be built upon install.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      Debian / Ubuntu
+
+      .. code-block:: bash
+
+         apt install cmake
+
+   .. group-tab:: MacOS
+
+      Homebrew
+
+      .. code-block:: bash
+
+         brew install cmake
+
+      Macports
+
+      .. code-block:: bash
+
+         port install cmake
+
+   .. group-tab:: Windows
+
+      `Download the CMake installer <https://cmake.org/download/>`_ and make sure to
+      enable the setting to "Add CMake to the system PATH for all users" when
+      installing.
+      You may need to restart your shell depending on what terminal emulator you are
+      using in Windows.
+
+      Make sure that you can run ``cmake --version`` in your shell without recieving a
+      non-zero exit status code to verify your installation.
+
 ``libmagic``
 ------------
 
@@ -51,18 +91,6 @@ media file since opencv is pretty lacking in this area.
       .. code-block:: bash
 
          apt install libmagic1
-
-      Arch
-
-      .. code-block:: bash
-
-         pacman -S file
-
-      CentOS
-
-      .. code-block:: bash
-
-         yum install file-devel
 
    .. group-tab:: MacOS
 

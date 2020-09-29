@@ -2,7 +2,17 @@
 # Copyright (c) 2020 Stephen Bunn <stephen@bunn.io>
 # ISC License <https://choosealicense.com/licenses/isc>
 
-"""Contains mechanisms to extract details or normalized details for detected faces."""
+"""Contains mechanisms to extract details or normalized details for detected faces.
+
+Attributes:
+    DEFAULT_NORMALIZED_FACE_SIZE (int):
+        The default size of the normalized face frame.
+        Defaults to 256.
+    DEFAULT_NORMALIZED_LEFT_EYE_POSITION (Tuple[float, float]):
+        The default percentage (0.0-1.0) where the left eye should be placed in the
+        normalized face frame.
+        Defaults to (0.35, 0.35).
+"""
 
 from typing import Optional, Tuple
 
@@ -19,7 +29,8 @@ def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     """Get the center position tuples of eyes from the given face.
 
     Args:
-        face (Face): The face to extract eye positions from
+        face (:attr:`~.types.Face`):
+            The face to extract eye positions from.
 
     Raises:
         ValueError: If the given face is missing either left or right eye landmarks
@@ -45,7 +56,8 @@ def get_eye_center_position(face: Face) -> Tuple[int, int]:
     """Get the center position between the eyes of the given face.
 
     Args:
-        face (Face): The face to extract the center position from
+        face (:attr:`~.types.Face`):
+            The face to extract the center position from.
 
     Returns:
         Tuple[int, int]: The position directly between the eyes of the face
@@ -59,7 +71,8 @@ def get_eye_deltas(face: Face) -> Tuple[int, int]:
     """Get the difference between eye positions of the given face.
 
     Args:
-        face (Face): The face to get the eye deltas from
+        face (:attr:`~.types.Face`):
+            The face to get the eye deltas from.
 
     Returns:
         Tuple[int, int]: A tuple of (x delta, y delta) for the given face's eyes
@@ -73,7 +86,8 @@ def get_eye_angle(face: Face) -> numpy.ndarray:
     """Get the angle the eyes are currently at for the given face.
 
     Args:
-        face (Face): The face to get the eye angle from
+        face (:attr:`~.types.Face`):
+            The face to get the eye angle from.
 
     Returns:
         numpy.ndarray:
@@ -88,7 +102,8 @@ def get_eye_distance(face: Face) -> numpy.ndarray:
     """Get the distance between the eyes of the given face.
 
     Args:
-        face (Face): The face to get the eye distance from
+        face (:attr:`~.types.Face`):
+            The face to get the eye distance from.
 
     Returns:
         numpy.ndarray:
@@ -108,19 +123,29 @@ def get_normalized_frame(
 ) -> Frame:
     """Get a normalized face frame where the face is aligned, cropped, and positioned.
 
+    Examples:
+        Get a normalized face frame from a detected face from the given frame:
+
+        >>> from facelift.detect.helpers import get_normalized_frame
+        >>> normalized_frame = get_normalized_frame(frame, face)
+
     Args:
-        frame (Frame): The original frame the face was detected from
-        face (Face): The detected face to use when extracting a normalized face frame
+        frame (:attr:`~.types.Frame`):
+            The original frame the face was detected from.
+        face (:attr:`~.types.Face`):
+            The detected face to use when extracting a normalized face frame.
         desired_width (Optional[int], optional):
             The desired width of the normalized frame. Defaults to None.
         desired_height (Optional[int], optional):
             The desired height of the normalized frame. Defaults to None.
         desired_left_eye_position (Optional[Tuple[float, float]], optional):
-        The desired position point for the left eye (this position is a value between
-            0.0 and 1.0 indicating the percentage of the frame). Defaults to None.
+            The desired position point for the left eye.
+            This position is a value between 0.0 and 1.0 indicating the percentage of
+            the frame.
+            Defaults to None.
 
     Returns:
-        Frame: The normalized face frame.
+        :attr:`~.types.Frame`: The normalized face frame.
     """
 
     if not desired_width:

@@ -2,35 +2,99 @@
 # Copyright (c) 2020 Stephen Bunn <stephen@bunn.io>
 # ISC License <https://choosealicense.com/licenses/isc>
 
-"""Contains some very basic wrappers around utilizing OpenCV for frame display.
+"""Contains some very basic wrappers around drawing things onto frames.
 
-This is not recommended if you are building a product that needs to have event handling
-or anything more complex than just displaying frames.
+When detecting faces, it is kinda nice to be able to see what features are being
+detected and where inaccuracies are being detected.
+With a combination of the :mod:`~.window` module and some of these helper functions, we
+can easily visualize what features are being detected.
+
+For example, if we wanted to draw lines for each detected feature from the
+:class:`~.detect.landmark.PartialFaceDetector` we can do the following:
+
+>>> from facelift.content import iter_stream_frames
+>>> from facelift.window import opencv_window
+>>> from facelift.detect import PartialFaceDetector
+>>> from facelift.render import draw_line
+>>> detector = PartialFaceDetector()
+>>> with opencv_window() as window:
+...     for frame in iter_stream_frames():
+...         for face in detector.iter_faces(frame):
+...             for _, points in face.landmarks.items():
+...                 frame = draw_line(frame, points)
+...         window.render(frame)
+
+Attributes:
+    DEFAULT_COLOR (Tuple[int, int, int]):
+        The default color for all draw helper functions.
+        Defaults to (255, 255, 255), or white.
+    DEFAULT_FONT (int):
+        The default OpenCV HERSHEY font to use for rendering text.
+        Defaults to ``cv2.FONT_HERSHEY_SIMPLEX``
 """
 
-from contextlib import AbstractContextManager
-from enum import IntEnum
-from types import TracebackType
-from typing import List, Optional, Tuple, Type
+from enum import Enum, IntEnum
+from typing import List, Optional, Tuple
 
-import attr
 import cv2
 
 from .types import Frame, Point, PointSequence
 
 DEFAULT_COLOR = (255, 255, 255)
-DEFAULT_WINDOW_TITLE = "Facelift"
-DEFAULT_WINDOW_DELAY = 1
-DEFAULT_WINDOW_STEP_KEY = 0x20
+DEFAULT_FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 
 class LineType(IntEnum):
-    """Enumeration of the different available PointSequence types for OpenCV."""
+    """Enumeration of the different available PointSequence types for OpenCV.
+
+    Attributes:
+        FILLED:
+            Filled line (useful for single points).
+        CONNECTED_4:
+            A 4-point connected line.
+        CONNECTED_8:
+            An 8-point connected line.
+        ANTI_ALIASED:
+            An anti-aliased line (good for drawing curves).
+    """
 
     FILLED = cv2.FILLED
-    DASHED = cv2.LINE_4
-    DOTTED = cv2.LINE_8
+    CONNECTED_4 = cv2.LINE_4
+    CONNECTED_8 = cv2.LINE_8
     ANTI_ALIASED = cv2.LINE_AA
+
+
+class Position(Enum):
+    """Enumeration of available relative positions.
+
+    Attributes:
+        START:
+            Positioned content appears at the left of the container.
+        END:
+            Positioned content appears at the right of the container.
+        CENTER:
+            Positioned content appears in the middle of the container.
+    """
+
+    START = "start"
+    END = "end"
+    CENTER = "center"
+
+
+def _get_positioned_index(
+    index: int,
+    container_size: int,
+    content_size: int,
+    position: Position,
+    offset: Optional[int] = None,
+) -> int:
+    base_index = index
+    if position == Position.CENTER:
+        base_index += (container_size - content_size) // 2
+    elif position == Position.END:
+        base_index += container_size
+
+    return base_index + (offset or 0)
 
 
 def draw_point(
@@ -43,18 +107,32 @@ def draw_point(
 ) -> Frame:
     """Draw a single point on a given frame.
 
+    Examples:
+        Draw a single point a position (10, 10) on a given frame.
+
+        >>> from facelift.render import draw_point
+        >>> frame = draw_point(frame, (10, 10))
+
     Args:
-        frame (Frame): The frame to draw the point
-        point (Point): The pixel coordinates to draw the point
-        size (int, optional): The size of the point. Defaults to 1.
-        color (Tuple[int, int, int], optional): The color of the point.
+        frame (:attr:`~.types.Frame`):
+            The frame to draw the point
+        point (:attr:`~.types.Point`):
+            The pixel coordinates to draw the point
+        size (int, optional):
+            The size of the point.
+            Defaults to 1.
+        color (Tuple[int, int, int], optional):
+            The color of the point.
             Defaults to DEFAULT_COLOR.
-        thickness (int, optional): The thickness of the point. Defaults to -1.
-        line_type (LineType, optional): The type of line type to use for the point.
+        thickness (int, optional):
+            The thickness of the point.
+            Defaults to -1.
+        line_type (LineType, optional):
+            The type of line type to use for the point.
             Defaults to LineType.FILLED.
 
     Returns:
-        Frame: The frame with the point drawn on it
+        :attr:`~.types.Frame` The frame with the point drawn on it
     """
 
     cv2.circle(
@@ -65,6 +143,7 @@ def draw_point(
         thickness=thickness,
         lineType=line_type.value,
     )
+
     return frame
 
 
@@ -78,18 +157,32 @@ def draw_points(
 ) -> Frame:
     """Draw multiple points on a given frame.
 
+    Examples:
+        Draw a sequence of points to a given frame.
+
+        >>> from facelift.render import draw_points
+        >>> frame = draw_points(frame, [(10, 10), (20, 20)])
+
     Args:
-        frame (Frame): The frame to draw the points on
-        points (PointSequence): The sequence of points to draw
-        size (int, optional): The size of the points. Defaults to 1.
-        color (Tuple[int, int, int], optional): The color of the points.
+        frame (:attr:`~.types.Frame`):
+            The frame to draw the points on.
+        points (:attr:`~.types.PointSequence`):
+            The sequence of points to draw.
+        size (int, optional):
+            The size of the points.
+            Defaults to 1.
+        color (Tuple[int, int, int], optional):
+            The color of the points.
             Defaults to DEFAULT_COLOR.
-        thickness (int, optional): The thickness of the points. Defaults to -1.
-        line_type (LineType, optional): The type of line type to use for the points.
+        thickness (int, optional):
+            The thickness of the points.
+            Defaults to -1.
+        line_type (LineType, optional):
+            The type of line type to use for the points.
             Defaults to LineType.FILLED.
 
     Returns:
-        Frame: The frame with the points drawn on it
+        :attr:`~.types.Frame` The frame with the points drawn on it
     """
 
     for point in points:
@@ -114,19 +207,31 @@ def draw_line(
 ) -> Frame:
     """Draw a sequence of connected points on a given frame.
 
+    Examples:
+        Draw a line between a sequence of points.
+
+        >>> from facelift.render import draw_line
+        >>> frame = draw_line(frame, [(10, 10), (20, 20)])
+
     Args:
-        frame (Frame): The frame to draw the line on
-        line (PointSequence): The array of points to draw on the given frame
-        sequence (Optional[List[Tuple[int, int]]], optional): An optional custom
-            sequence for drawing the given line points. Defaults to None.
-        color (Tuple[int, int, int], optional): The color of the line.
+        frame (:attr:`~.types.Frame`):
+            The frame to draw the line on.
+        line (:attr:`~.types.PointSequence`):
+            The array of points to draw on the given frame
+        sequence (Optional[List[Tuple[int, int]]], optional):
+            An optional custom sequence for drawing the given line points.
+            Defaults to None.
+        color (Tuple[int, int, int], optional):
+            The color of the line.
             Defaults to DEFAULT_COLOR.
-        thickness (int, optional): The thickness of the line. Defaults to 1.
-        line_type (LineType, optional): The type of the line.
+        thickness (int, optional):
+            The thickness of the line. Defaults to 1.
+        line_type (LineType, optional):
+            The type of the line.
             Defaults to LineType.FILLED.
 
     Returns:
-        Frame: The frame with the line drawn on it
+        :attr:`~.types.Frame` The frame with the line drawn on it
     """
 
     if not sequence:
@@ -150,22 +255,35 @@ def draw_contour(
     line: PointSequence,
     color: Tuple[int, int, int] = DEFAULT_COLOR,
     thickness: int = -1,
-    line_type=LineType.FILLED,
+    line_type: LineType = LineType.ANTI_ALIASED,
 ) -> Frame:
     """Form and draw a contour for the given line on a frame.
 
+    Examples:
+        Draw a contour between multiple points.
+
+        >>> from facelift.render import draw_contour
+        >>> frame = draw_contour(frame, [(10, 10), (20, 20)])
+
     Args:
-        frame (Frame): The frame to draw the contour on
-        line (PointSequence): THe array of poitns to use to form the contour
-        color (Tuple[int, int, int], optional): The color ofthe contour.
+        frame (:attr:`~.types.Frame`):
+            The frame to draw the contour on.
+        line (:attr:`~.types.PointSequence`):
+            The array of points to use to form the contour.
+        color (Tuple[int, int, int], optional):
+            The color of the contour..
             Defaults to DEFAULT_COLOR.
-        thickness (int, optional): The thickness of the contour. Defaults to -1.
-        line_type ([type], optional): The line type to use for the contour.
-            Defaults to LineType.FILLED.
+        thickness (int, optional):
+            The thickness of the contour.
+            Defaults to -1.
+        line_type (LineType, optional):
+            The line type to use for the contour.
+            Defaults to LineType.ANTI_ALIASED.
 
     Returns:
-        Frame: The frame with the contour drawn on it
+        :attr:`~.types.Frame` The frame with the contour drawn on it
     """
+
     convex_hull = cv2.convexHull(points=line)
     cv2.drawContours(
         image=frame,
@@ -179,78 +297,165 @@ def draw_contour(
     return frame
 
 
-class WindowType(IntEnum):
-    """An enumeration of available OpenCV window types."""
+def draw_rectangle(
+    frame: Frame,
+    start: Point,
+    end: Point,
+    color: Tuple[int, int, int] = DEFAULT_COLOR,
+    thickness: int = 1,
+    line_type: LineType = LineType.ANTI_ALIASED,
+) -> Frame:
+    """Draw a rectangle on the given frame.
 
-    DEFAULT = cv2.WINDOW_NORMAL
-    NORMAL = cv2.WINDOW_GUI_NORMAL
-    EXPANDED = cv2.WINDOW_GUI_EXPANDED
-    FULLSCREEN = cv2.WINDOW_FULLSCREEN
-    FREE_RATIO = cv2.WINDOW_FREERATIO
-    KEEP_RATIO = cv2.WINDOW_KEEPRATIO
-    OPENGL = cv2.WINDOW_OPENGL
+    Examples:
+        Draw a rectangle starting at (10, 10) and ending at (20, 20).
 
-
-@attr.s
-class opencv_window(AbstractContextManager):
-    """Create the window context necessary to display frames in OpenCV.
+        >>> from facelift.render import draw_rectangle
+        >>> frame = draw_rectangle(frame, (10, 10), (20, 20))
 
     Args:
-        title (str): The title of the created window
-        type (WindowType): The type of window to create
-        delay (float): The number of milliseconds to delay
-        auto_step (bool): Flag that indicates if the window should automatically allow
-            for the next render call to proceed unblocked. Defaults to True
-        step_key (int): The integer index of the key to wait until preseed when steps
-            are not allowed to proceed unblocked
+        frame (:attr:`~.types.Frame`):
+            The frame to draw the rectangle on.
+        start (:attr:`~.types.Point`):
+            The starting point of the rectangle.
+        end (:attr:`~.types.Point`):
+            The ending point of the rectangle.
+        color (Tuple[int, int, int], optional):
+            The color of the rectangle.
+            Defaults to DEFAULT_COLOR.
+        thickness (int, optional):
+            The thickness of the rectangle.
+            Defaults to 1.
+        line_type (LineType, optional):
+            The line type to use when drawing the lines of the rectangle.
+            Defaults to LineType.ANTI_ALIASED.
 
-    Yields:
-        opencv_window: The context class that you can use for rendering frames
+    Returns:
+        :attr:`~.types.Frame` The frame with the rectangle drawn on it
     """
 
-    title: str = attr.ib(default=DEFAULT_WINDOW_TITLE)
-    type: WindowType = attr.ib(default=WindowType.DEFAULT)
-    delay: float = attr.ib(default=DEFAULT_WINDOW_DELAY)
-    auto_step: bool = attr.ib(default=True)
-    step_key: int = attr.ib(default=DEFAULT_WINDOW_STEP_KEY)
+    cv2.rectangle(
+        img=frame,
+        pt1=tuple(start),
+        pt2=tuple(end),
+        color=color,
+        thickness=thickness,
+        lineType=line_type,
+    )
 
-    def __enter__(self):
-        """Initialize the state of the window."""
+    return frame
 
-        self.create()
-        return super().__enter__()
 
-    def __exit__(
-        self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
-    ):
-        """Destroy the state of the created window."""
+def draw_text(
+    frame: Frame,
+    text: str,
+    start: Point,
+    end: Point,
+    color: Tuple[int, int, int] = DEFAULT_COLOR,
+    font: int = DEFAULT_FONT,
+    font_scale: float = 1,
+    thickness: int = 1,
+    line_type: LineType = LineType.ANTI_ALIASED,
+    x_position: Position = Position.START,
+    y_position: Position = Position.START,
+    x_offset: int = 0,
+    y_offset: int = 0,
+) -> Frame:
+    """Draw some text on the given frame.
 
-        self.close()
-        return super().__exit__(exc_type, exc_value, traceback)
+    Examples:
+        Draw the text "Hello, World!" right-aligned within the text rectangle from
+        (10, 10) to (20, 20).
 
-    def create(self):
-        """Create a new window with the context's title."""
+        >>> from facelift.render import draw_text, Position
+        >>> frame = draw_text(
+        ...     frame,
+        ...     "Hello, World",
+        ...     (10, 10),
+        ...     (20, 20),
+        ...     x_position=Position.END
+        ... )
 
-        cv2.namedWindow(winname=self.title, flags=self.type.value)
+    Args:
+        frame (:attr:`~.types.Frame`):
+            The frame to draw some text on
+        text (str):
+            The text to draw on the frame
+        start (:attr:`~.types.Point`):
+            The starting point of the text container
+        end (:attr:`~.types.Point`):
+            The ending point of the text container
+        color (Tuple[int, int, int], optional):
+            The color of the text.
+            Defaults to DEFAULT_COLOR.
+        font (int, optional):
+            The OpenCV hershey font to draw the text with.
+            Defaults to DEFAULT_FONT.
+        font_scale (float, optional):
+            The scale of the font.
+            Defaults to 1.
+        thickness (int, optional):
+            The thickness of the font.
+            Defaults to 1.
+        line_type (LineType, optional):
+            The line type of the font.
+            Defaults to LineType.ANTI_ALIASED.
+        x_position (Position, optional):
+            The x-axis position to draw the text in relative to the text container.
+            Defaults to Position.START.
+        y_position (Position, optional):
+            The y-axis position to draw the text in relative to the text container.
+            Defaults to Position.START.
+        x_offset (int, optional):
+            The x-axis offset from the text container to add to the calculated relative
+            position.
+            Defaults to 0.
+        y_offset (int, optional):
+            The y-axis offset from the tex container to add to the calculated relative
+            position.
+            Defaults to 0.
 
-    def close(self):
-        """Close the current window using the context's title."""
+    Returns:
+        :attr:`~.types.Frame` The frame with the text drawn on it
+    """
 
-        cv2.destroyWindow(winname=self.title)
+    start_x, start_y = tuple(start)
+    end_x, end_y = tuple(end)
 
-    def render(self, frame: Frame):
-        """Render a given frame in the current window.
+    width = end_x - start_x
+    height = end_y - start_y
 
-        Args:
-            frame (Frame): The frame to render within the window
-        """
+    text_width, text_height = cv2.getTextSize(
+        text=text,
+        fontFace=font,
+        fontScale=font_scale,
+        thickness=thickness,
+    )[0]
 
-        cv2.imshow(winname=self.title, mat=frame)
-        cv2.waitKey(delay=self.delay)
+    text_x = _get_positioned_index(
+        index=start_x,
+        container_size=width,
+        content_size=text_width,
+        position=x_position,
+        offset=x_offset,
+    )
+    text_y = _get_positioned_index(
+        index=start_y,
+        container_size=height,
+        content_size=text_height,
+        position=y_position,
+        offset=y_offset,
+    )
 
-        if not self.auto_step:
-            while cv2.waitKey(0) != self.step_key:
-                continue
+    cv2.putText(
+        img=frame,
+        text=text,
+        org=(text_x, text_y),
+        fontFace=font,
+        fontScale=font_scale,
+        color=color,
+        thickness=thickness,
+        lineType=line_type,
+    )
+
+    return frame

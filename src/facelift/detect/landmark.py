@@ -15,7 +15,7 @@ Examples:
     >>> detector = BasicFaceDetector()
     >>> for frame in iter_media_frames(MEDIA_FILEPATH):
     ...     for face in detector.iter_faces(frame):
-    ...         # do something with the face
+    ...         print(face)
 """
 
 import abc
@@ -34,7 +34,7 @@ from ..constants import (
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
 from ..content.transform import crop
-from ..types import Detector, Face, FaceFeature, Frame, Point, PointSequence, Predictor
+from ..types import Detector, Face, FaceFeature, Frame, PointSequence, Predictor
 
 
 @lru_cache()
@@ -42,13 +42,14 @@ def get_predictor(model_filepath: Path) -> Predictor:
     """Build a predictor callable for a given landmark model.
 
     Args:
-        model_filepath (Path): The path to the landmark model
+        model_filepath (~pathlib.Path):
+            The path to the landmark model
 
     Raises:
         FileNotFoundError: If the given model filepath does not exist
 
     Returns:
-        Predictor: The new callable to predict face shapes
+        :attr:`~.types.Predictor`: The new callable to predict face shapes
     """
 
     if not model_filepath.is_file():
@@ -64,7 +65,7 @@ def get_detector() -> Detector:
     This detector comes directly from the dlib FHOG frontal face detector.
 
     Returns:
-        Detector: The new callable to detect face bounds
+        :attr:`~.types.Detector`: The new callable to detect face bounds
     """
 
     return dlib.get_frontal_face_detector()
@@ -107,7 +108,7 @@ class BaseLandmarkDetector(abc.ABC):
         """Predictor to use in face landmark detection.
 
         Returns:
-            Predictor: The predictor callable.
+            :attr:`~.types.Predictor`: The predictor callable.
         """
 
         return get_predictor(self.model_filepath)
@@ -117,7 +118,7 @@ class BaseLandmarkDetector(abc.ABC):
         """Detector to use in face bounds detection.
 
         Returns:
-            Detector: The detector callable.
+            :attr:`~.types.Detector`: The detector callable.
         """
 
         return get_detector()
@@ -128,13 +129,25 @@ class BaseLandmarkDetector(abc.ABC):
     ) -> PointSequence:
         """Convert dlib shapes to point sequences.
 
+        Example:
+            After getting a detected face shape from dlib, we need to convert it back
+            into a ``numpy.ndarray`` so OpenCV can use it.
+
+            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> detector = BasicFaceDetector()
+            >>> for face_bounds in detector.detector(frame, 0):
+            ...     face_shape = detector.predictor(frame, face_bounds)
+            ...     face_features = detector.shape_to_points(face_shape)
+
         Args:
-            shape (dlib.full_object_detection): The detected dlib shape
-            dtype (str, optional): The point type to use when converting the given shape
-                to points. Defaults to "int".
+            shape (dlib.full_object_detection_):
+                The detected dlib shape.
+            dtype (str, optional):
+                The point type to use when converting the given shape to points.
+                Defaults to "int".
 
         Returns:
-            PointSequence: The newly created sequence of points.
+            :attr:`~.types.PointSequence`: The newly created sequence of points.
         """
 
         points = numpy.zeros((shape.num_parts, 2), dtype=dtype)
@@ -149,14 +162,28 @@ class BaseLandmarkDetector(abc.ABC):
     ) -> Dict[FaceFeature, PointSequence]:
         """Group point sequences to features based on point index slices.
 
+        Helper function to automatically group features when given the feature slice
+        definition.
+        This feature slice definition is a basic way to easily categorize the features
+        discovered from the dlib predictor as an actual :attr:`~.types.FaceFeature`.
+
+        Examples:
+            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> detector = BasicFaceDetector()
+            >>> for face_bounds in detector.detector(frame, 0):
+            ...     face_shape = detector.predictor(frame, face_bounds)
+            ...     face_features = detector.shape_to_points(face_shape)
+            ...     grouped_features = detector.slices_to_landmarks(face_features)
+
         Args:
-            points (PointSequence): The points to extract feature sequences from
-            feature_slices (Dict[FaceFeature, Tuple[int, int]]): A dictionary of
-                :class:`~.types.FaceFeature` and slice tuples.
+            points (:attr:`~.types.PointSequence`):
+                The points to extract feature sequences from.
+            feature_slices (Dict[:attr:`~.types.FaceFeature`, Tuple[int, int]]):
+                A dictionary of :class:`~.types.FaceFeature` and slice tuples.
 
         Returns:
-            Dict[FaceFeature, PointSequence]: The dictionary of features and grouped
-                point sequences.
+            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+                The dictionary of features and grouped point sequences.
         """
 
         return {
@@ -168,11 +195,12 @@ class BaseLandmarkDetector(abc.ABC):
         """Get the mapping of face features and point sequences for extracted points.
 
         Args:
-            points (PointSequence): The sequence of extracted points from dlib
+            points (:attr:`~.types.PointSequence`):
+                The sequence of extracted points from dlib.
 
         Returns:
-            Dict[~.types.FaceFeature, ~.types.PointSequence]: The dictionary of face
-                features and point sequences
+            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+                The dictionary of face features and point sequences.
         """
 
         return self.slices_to_landmarks(points, self.landmark_slices)
@@ -182,13 +210,26 @@ class BaseLandmarkDetector(abc.ABC):
     ) -> Generator[Face, None, None]:
         """Iterate over detected faces within a given :class:`~.types.Frame`.
 
+        Examples:
+            Get detected faces from the first available webcam.
+
+            >>> from facelift.content.capture import iter_stream_frames
+            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> detector = BasicFaceDetector()
+            >>> for frame in iter_stream_frames():
+            ...     for face in detector.iter_faces(frame):
+            ...         print(face)
+
         Args:
-            frame (Frame): The frame to detect faces in
-            upsample (int, optional): The number of times to scale up the image before
-                detecting frontal faces. Defaults to 0.
+            frame (:attr:`~.types.Frame`):
+                The frame to detect faces in.
+            upsample (int, optional):
+                The number of times to scale up the image before detecting faces.
+                Defaults to 0.
 
         Yields:
-            Face: A detected face within the image, this has no guarantee of order if
+            :attr:`~.types.Face`:
+                A detected face within the image, this has no guarantee of order if
                 multiple faces are detected
         """
 
@@ -273,11 +314,12 @@ class FullFaceDetector(BaseLandmarkDetector):
         """Get the mapping of face features and point sequences for extracted points.
 
         Args:
-            points (PointSequence): The sequence of extracted points from dlib
+            points (:attr:`~.types.PointSequence`):
+                The sequence of extracted points from dlib.
 
         Returns:
-            Dict[~.types.FaceFeature, ~.types.PointSequence]: The dictionary of face
-                features and point sequences
+            Dict[:attr:`~.types.FaceFeature`, :attr:`~.types.PointSequence`]:
+                The dictionary of face features and point sequences.
         """
 
         landmarks = {}

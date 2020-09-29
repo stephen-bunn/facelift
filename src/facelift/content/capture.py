@@ -219,7 +219,9 @@ def _iter_capture(capture: cv2.VideoCapture) -> Generator[Frame, None, None]:
         yield frame
 
 
-def iter_media_frames(media_filepath: Path) -> Generator[Frame, None, None]:
+def iter_media_frames(
+    media_filepath: Path, loop: bool = False
+) -> Generator[Frame, None, None]:
     """Iterate over frames from a given supported media file.
 
     Examples:
@@ -231,14 +233,23 @@ def iter_media_frames(media_filepath: Path) -> Generator[Frame, None, None]:
 
     Args:
         media_filepath (~pathlib.Path):
-            The filepath to the media to read frames from
+            The filepath to the media to read frames from.
+        loop (bool):
+            Flag that indicates if capture should reset to starting frame once all
+            frames have been read.
+            Defaults to False
 
     Yields:
         :attr:`~.types.Frame`: A frame read from the given media file
     """
 
     with file_capture(media_filepath) as capture:
-        yield from _iter_capture(capture)
+        while True:
+            yield from _iter_capture(capture)
+            if not loop:
+                break
+
+            capture.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
 
 def iter_stream_frames(

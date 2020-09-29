@@ -70,3 +70,13 @@ Facelift Package
 
 .. automodule:: facelift.render
    :members:
+
+
+----
+
+
+``facelift.window``
+-------------------
+
+.. automodule:: facelift.window
+   :members:

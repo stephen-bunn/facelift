@@ -67,6 +67,9 @@ extensions = [
     "sphinx_rtd_theme",
 ]
 
+# Autodoc settings
+autodoc_mock_imports = ["cv2", "dlib", "numpy", "magic"]
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True

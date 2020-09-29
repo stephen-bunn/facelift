@@ -1,2 +1,8 @@
 sphinx>=3.0
 toml
+sphinx-rtd-theme
+sphinx-autodoc-typehints
+sphinx-tabs
+sphinx-hoverxref
+attrs
+cached-property

@@ -23,6 +23,17 @@ This context manager will produce a new window for rendering the frames read fro
 
 I wouldn't recommend using this for any kind of production use; mostly the OpenCV window
 is just useful for debugging.
+
+Attributes:
+    DEFAULT_WINDOW_TITLE (str):
+        The default OpenCV window title if none is supplied.
+        Defaults to "Facelift".
+    DEFAULT_WINDOW_DELAY (int):
+        The default number of milliseconds to wait between showing frames.
+        Defaults to 1.
+    DEFAULT_WINDOW_STEP_KEY (int):
+        The default ASCII key index to use as the step key when step is enabled.
+        Defaults to ``0x20`` (Space).
 """
 
 from contextlib import AbstractContextManager

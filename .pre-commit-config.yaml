@@ -18,7 +18,7 @@ repos:
         name: Propogate Third-Party Packages
 
   - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.5.2
+    rev: v5.5.4
     hooks:
       - id: isort
         name: Sort Package Imports

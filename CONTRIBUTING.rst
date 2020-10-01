@@ -90,7 +90,7 @@ environment using the ``shell`` subcommand.
 .. code-block:: console
 
    $ poetry shell
-   pawning shell within ~/.local/share/virtualenvs/my-project-py3.7
+   spawning shell within ~/.local/share/virtualenvs/my-project-py3.7
    ...
 
    $ exit # when you wish to exit the subshell

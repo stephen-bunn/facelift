@@ -21,8 +21,11 @@ from hypothesis.strategies import (
     lists,
     none,
     one_of,
+    sampled_from,
     text,
 )
+
+from facelift.types import FaceFeature
 
 
 @composite
@@ -85,3 +88,10 @@ def pathlib_path(draw) -> SearchStrategy[Path]:
     return draw(
         just(Path(*draw(lists(text(alphabet=printable, min_size=1), min_size=1))))
     )
+
+
+@composite
+def face_feature(draw) -> SearchStrategy[FaceFeature]:
+    """Composite strategy for getting a random :class:`~facelift.types.FaceFeature`."""
+
+    return draw(sampled_from(list(FaceFeature)))

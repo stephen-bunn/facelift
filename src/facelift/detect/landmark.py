@@ -80,7 +80,7 @@ class BaseLandmarkDetector(abc.ABC):
     """
 
     @abc.abstractproperty
-    def model_filepath(self) -> Path:
+    def model_filepath(self) -> Path:  # pragma: no cover
         """Property filepath to the landmarks model that shuold be used for detection.
 
         Raises:
@@ -92,7 +92,7 @@ class BaseLandmarkDetector(abc.ABC):
         )
 
     @abc.abstractproperty
-    def landmark_slices(self) -> Dict[FaceFeature, Tuple[int, int]]:
+    def landmark_slices(self) -> Dict[FaceFeature, Tuple[int, int]]:  # pragma: no cover
         """Property mapping of facial features to face point slices.
 
         Raises:
@@ -114,7 +114,7 @@ class BaseLandmarkDetector(abc.ABC):
         return get_predictor(self.model_filepath)
 
     @cached_property
-    def detector(self) -> Detector:
+    def detector(self) -> Detector:  # pragma: no cover
         """Detector to use in face bounds detection.
 
         Returns:

@@ -4,10 +4,14 @@
 
 """Contains generic composite strategies for package tests."""
 
+import sys
 from pathlib import Path
 from string import printable
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Tuple, Type, cast
 
+import dlib
+import numpy
+from hypothesis.extra.numpy import arrays as numpy_arrays
 from hypothesis.strategies import (
     SearchStrategy,
     binary,
@@ -23,9 +27,19 @@ from hypothesis.strategies import (
     one_of,
     sampled_from,
     text,
+    tuples,
 )
 
-from facelift.types import FaceFeature
+from facelift.constants import (
+    BASIC_FACE_DETECTOR_MODEL_NAME,
+    FULL_FACE_DETECTOR_MODEL_NAME,
+    LANDMARKS_DIRPATH,
+    PARTIAL_FACE_DETECTOR_MODEL_NAME,
+)
+from facelift.types import FaceFeature, Frame, MediaType
+
+from .buffers import SAMPLE_MAGIC
+from .constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
 
 
 @composite
@@ -91,7 +105,137 @@ def pathlib_path(draw) -> SearchStrategy[Path]:
 
 
 @composite
+def media_details(draw) -> Tuple[str, str, List[str], bytes]:
+    """Composite strategy for building the details to produce a sample media file.
+
+    Examples:
+        Sample usage of this composite strategy might look something like this:
+
+        >>> @given(video_details())
+        ... def test_video_file(file_details):
+        ...     file_format, mimetypes, buffer = file_details
+        ...     assert file_format == "mp4"
+        ...     assert "video/mp4" in mimetypes
+    """
+
+    media_name: str = draw(sampled_from(list(SAMPLE_MAGIC.keys())))
+    media_type = cast(str, SAMPLE_MAGIC[media_name]["type"])
+    mimetypes = cast(List[str], SAMPLE_MAGIC[media_name]["mimetypes"])
+    buffer = cast(bytes, SAMPLE_MAGIC[media_name]["buffer"])
+
+    return (media_name, media_type, mimetypes, buffer)
+
+
+@composite
+def image_path(draw) -> SearchStrategy[Path]:
+    """Composite strategy for getting a testing image path."""
+
+    return draw(just(Path(draw(sampled_from(list(IMAGES_DIRPATH.iterdir()))))))
+
+
+@composite
+def video_path(draw) -> SearchStrategy[Path]:
+    """Composite strategy for getting a testing video path."""
+
+    return draw(just(Path(draw(sampled_from(list(VIDEOS_DIRPATH.iterdir()))))))
+
+
+@composite
+def landmark_model_path(draw) -> SearchStrategy[Path]:
+    """Composite strategy for getting an included landmark model path."""
+
+    return draw(
+        just(
+            LANDMARKS_DIRPATH.joinpath(
+                draw(
+                    sampled_from(
+                        [
+                            BASIC_FACE_DETECTOR_MODEL_NAME,
+                            PARTIAL_FACE_DETECTOR_MODEL_NAME,
+                            FULL_FACE_DETECTOR_MODEL_NAME,
+                        ]
+                    )
+                )
+            )
+        )
+    )
+
+
+@composite
+def media(draw) -> SearchStrategy[Tuple[Path, MediaType]]:
+    """Composite strategy for getting a testing filepath and the desired media type."""
+
+    return draw(
+        one_of(
+            tuples(image_path(), just(MediaType.IMAGE)),
+            tuples(video_path(), just(MediaType.VIDEO)),
+        )
+    )
+
+
+@composite
+def frame(
+    draw,
+    width_strategy: Optional[SearchStrategy[int]] = None,
+    height_strategy: Optional[SearchStrategy[int]] = None,
+) -> SearchStrategy[Frame]:
+    """Composite strategy for building a random frame as produced by opencv."""
+
+    return draw(
+        numpy_arrays(
+            numpy.uint8,
+            (
+                draw(
+                    height_strategy
+                    if height_strategy
+                    else integers(min_value=1, max_value=512)
+                ),
+                draw(
+                    width_strategy
+                    if width_strategy
+                    else integers(min_value=1, max_value=512)
+                ),
+                3,
+            ),
+        )
+    )
+
+
+@composite
 def face_feature(draw) -> SearchStrategy[FaceFeature]:
     """Composite strategy for getting a random :class:`~facelift.types.FaceFeature`."""
 
     return draw(sampled_from(list(FaceFeature)))
+
+
+@composite
+def face_shape(draw) -> SearchStrategy[dlib.full_object_detection]:
+    """Composite strategy to build a completely random dlib detected feature."""
+
+    top_left = draw(
+        tuples(
+            integers(min_value=0, max_value=sys.maxsize - 1),
+            integers(min_value=0, max_value=sys.maxsize - 1),
+        )
+    )
+    bottom_right = draw(
+        tuples(
+            integers(min_value=top_left[0] + 1, max_value=sys.maxsize),
+            integers(min_value=top_left[-1] + 1, max_value=sys.maxsize),
+        ),
+    )
+
+    rectangle = dlib.rectangle(*top_left, *bottom_right)
+    points = draw(
+        lists(
+            just(
+                dlib.point(
+                    draw(integers(min_value=top_left[0], max_value=bottom_right[0])),
+                    draw(integers(min_value=top_left[-1], max_value=bottom_right[-1])),
+                )
+            ),
+            min_size=1,
+            unique=True,
+        )
+    )
+    return draw(just(dlib.full_object_detection(rectangle, points)))

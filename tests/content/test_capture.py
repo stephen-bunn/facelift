@@ -22,8 +22,7 @@ from facelift.content.capture import (
 )
 from facelift.types import MediaType
 
-from ..strategies import builtin_types, pathlib_path
-from .strategies import image_path, media, video_path
+from ..strategies import builtin_types, image_path, media, pathlib_path, video_path
 
 
 @given(builtin_types(exclude=[int]), just(MediaType.STREAM))

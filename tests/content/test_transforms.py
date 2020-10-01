@@ -15,7 +15,7 @@ from hypothesis.strategies import floats, integers, just, sampled_from, tuples
 from facelift.content import transform
 from facelift.types import Frame
 
-from .strategies import frame
+from ..strategies import frame
 
 
 @given(frame())

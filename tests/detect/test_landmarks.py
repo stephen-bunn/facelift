@@ -29,9 +29,14 @@ from facelift.detect.landmark import (
 )
 from facelift.types import Face, FaceFeature
 
-from ..content.strategies import image_path, video_path
-from ..strategies import face_feature, pathlib_path
-from .strategies import face_shape, landmark_model_path
+from ..strategies import (
+    face_feature,
+    face_shape,
+    image_path,
+    landmark_model_path,
+    pathlib_path,
+    video_path,
+)
 
 
 @settings(deadline=None)

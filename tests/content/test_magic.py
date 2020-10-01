@@ -17,8 +17,7 @@ from hypothesis.strategies import text
 
 from facelift.content import magic
 
-from ..strategies import pathlib_path
-from .strategies import media_details
+from ..strategies import media_details, pathlib_path
 
 
 @given(pathlib_path())

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Optional, Tuple
 from unittest.mock import MagicMock, patch
 
+import cv2
 import numpy
 import pytest
 from hypothesis import given
@@ -153,3 +154,29 @@ def test_iter_media_frames(media_filepath: Path):
     assert all(
         isinstance(frame, numpy.ndarray) for frame in iter_media_frames(media_filepath)
     )
+
+
+@given(image_path())
+def test_iter_media_frames_attempts_to_loop(media_filepath: Path):
+    mock_capture = MagicMock()
+    with patch("facelift.content.capture.file_capture") as mocked_file_capture, patch(
+        "facelift.content.capture._iter_capture"
+    ) as mock_iter_capture:
+        # mock the context manager's capture
+        mocked_file_capture.return_value.__enter__.return_value = mock_capture
+        # mock the iterators yield to break out of the infinite loop on the second
+        # access. this is ok to do as we are using images which only have 1 frame to
+        # consume anyway
+        mock_iter_capture.side_effect = [[None], RuntimeError]
+
+        # expect the defined RuntimeError to break out of the infinite loop
+        with pytest.raises(RuntimeError):
+            iterator = iter_media_frames(media_filepath, loop=True)
+            # the first thing we get from the iterator is our [None]
+            assert next(iterator) is None
+            # the second time we are breaking out of the infinite loop with RuntimeError
+            next(iterator)
+
+        # with the second access to the iterator we should have attempted to reset the
+        # capture's frame index
+        mock_capture.set.assert_called_once_with(cv2.CAP_PROP_POS_FRAMES, 0)

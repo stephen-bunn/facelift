@@ -1012,6 +1012,7 @@ dev = ["transifex-client", "sphinxcontrib-httpdomain", "bump2version"]
 reference = "15e48fa339640cf231d33da9813ab3f225169543"
 type = "git"
 url = "https://github.com/stephen-bunn/sphinx_rtd_theme"
+
 [[package]]
 category = "dev"
 description = "Tabbed views for Sphinx"

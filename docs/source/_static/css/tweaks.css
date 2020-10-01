@@ -5,3 +5,27 @@
 .ui.sphinx-tab.tab {
   font-size: 16px;
 }
+
+.sphinx-tabs > .ui.attached.tabular.menu {
+  border: none;
+}
+
+.sphinx-tabs .sphinx-menu a.item {
+  color: #f8f8f2 !important;
+}
+
+.sphinx-tabs > .ui .top > a.item {
+  background-color: #3c394e;
+  border: none !important;
+}
+
+.sphinx-tabs > .ui.attached.tabular.menu > a.active.item {
+  background-color: #3c394e;
+  border: none !important;
+  color: #8aff80 !important;
+}
+
+.sphinx-tabs > div.tab {
+  background-color: #3c394e;
+  border: none !important;
+}

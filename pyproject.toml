@@ -43,6 +43,7 @@ include = [
   "CHANGELOG.md",
   "CONTRIBUTING.rst",
   "CONTRIBUTING.md",
+  "src/facelift/data/*"
 ]
 exclude = [
   ".editorconfig",

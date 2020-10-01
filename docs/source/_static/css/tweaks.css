@@ -59,3 +59,15 @@
   background-color: #151320 !important;
   color: #f8f8f8 !important;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #3c394e;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #151320;
+}

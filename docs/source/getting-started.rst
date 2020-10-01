@@ -7,28 +7,8 @@ Getting Started
 | **Welcome to Facelift!**
 | This page should hopefully provide you with enough information to get you started detecting and recognizing faces.
 
-Installation and Setup
-======================
-
-Installing the package should be super duper simple as we utilize Python's setuptools.
-
-.. code-block:: bash
-
-   $ poetry add facelift
-   $ # or if you're old school...
-   $ pip install facelift
-
-Or you can build and install the package from the git repo.
-
-.. code-block:: bash
-
-   $ git clone https://github.com/stephen-bunn/facelift.git
-   $ cd ./facelift
-   $ python setup.py install
-
-
 System Requirements
-~~~~~~~~~~~~~~~~~~~
+===================
 
 There are several required system requirements necessary for this package to work which
 we unfortunately cannot bundle in this package.
@@ -115,3 +95,23 @@ media file since opencv is pretty lacking in this area.
       If you encounter unhandled errors using ``libmagic`` on Windows, please `create an
       issue <https://github.com/stephen-bunn/facelift/issues>`_ to let us know what you
       are experiencing.
+
+
+Package Installation
+====================
+
+Installing the package should be super duper simple as we utilize Python's setuptools.
+
+.. code-block:: bash
+
+   $ poetry add facelift
+   $ # or if you're old school...
+   $ pip install facelift
+
+Or you can build and install the package from the git repo.
+
+.. code-block:: bash
+
+   $ git clone https://github.com/stephen-bunn/facelift.git
+   $ cd ./facelift
+   $ python setup.py install

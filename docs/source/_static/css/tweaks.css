@@ -42,3 +42,16 @@
 .tooltipster-arrow-border {
   border-right-color: #3c394e !important;
 }
+
+.modal__container {
+  background-color: #3c394e !important;
+}
+
+.modal__close {
+  color: #f8f8f2 !important;
+}
+
+.modal__btn {
+  background-color: #151320 !important;
+  color: #f8f8f8 !important;
+}

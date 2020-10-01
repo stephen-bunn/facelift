@@ -139,16 +139,17 @@ pygments_style = None
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+html_logo = "_static/assets/images/facelift.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    "logo_only": False,
+    "logo_only": True,
     "display_version": True,
     "prev_next_buttons_location": "bottom",
-    "style_nav_header_background": "#343131",
+    "style_nav_header_background": "#151320",
     "collapse_navigation": True,
     "sticky_navigation": True,
     "navigation_depth": 4,
@@ -161,7 +162,7 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-html_css_files = ["css/tweaks.css"]
+html_css_files = ["css/style.css", "css/tweaks.css"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.

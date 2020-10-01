@@ -1,8 +1,8 @@
 sphinx>=3.0
 toml
-sphinx-rtd-theme
 sphinx-autodoc-typehints
 sphinx-tabs
 sphinx-hoverxref
 attrs
 cached-property
+-e git://github.com/stephen-bunn/sphinx_rtd_theme.git@dracula-pro#egg=sphinx_rtd_theme

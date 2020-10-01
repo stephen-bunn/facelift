@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap");
+
+.Facelift_Container {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+}
+
+.Facelift_Image {
+  width: 30%;
+  height: auto;
+  object-fit: scale-down;
+}
+
+.Facelift_Content {
+  width: 70%;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  text-align: left;
+  align-self: center;
+}
+
+.Facelift_Title {
+  font-family: Noto Sans, sans-serif;
+  font-size: 74px;
+  font-weight: 700;
+}
+
+.Facelift_Description {
+  margin-bottom: 0.5rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .Facelift_Container {
+    flex-direction: column;
+  }
+
+  .Facelift_Image {
+    width: 50%;
+    max-height: 200px;
+    align-self: center;
+  }
+
+  .Facelift_Content {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .Facelift_Title {
+    text-align: center;
+  }
+}

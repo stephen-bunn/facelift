@@ -65,17 +65,17 @@ def test_BaseLandmarkDetector_shape_to_points(face_shape: dlib.full_object_detec
 
 
 @given(
-    just([0, 1]),
+    just([(0, 0), (1, 1)]),
     dictionaries(face_feature(), just((0, 2)), min_size=1),
 )
 def test_BaseLandmarkDetector_slices_to_landmarks(
-    points: List[int], slices: Dict[FaceFeature, Tuple[int, int]]
+    points: List[Tuple[int, int]], slices: Dict[FaceFeature, Tuple[int, int]]
 ):
     # NOTE: this test is fairly weak as we are just ensuring that the call returns the
     # right structure of data rather than testing all possible edge-cases
     results = BaseLandmarkDetector.slices_to_landmarks(points, slices)
     assert len(results) == len(slices)
-    assert all(points == [0, 1] for points in results.values())
+    assert all(points == [(0, 0), (1, 1)] for points in results.values())
 
 
 def test_BasicFaceDetector_predictor():

@@ -10,7 +10,7 @@ from typing import Dict, List, Tuple
 import dlib
 import numpy
 import pytest
-from hypothesis import assume, given, settings
+from hypothesis import given, settings
 from hypothesis.strategies import dictionaries, just
 
 from facelift.constants import (
@@ -18,6 +18,7 @@ from facelift.constants import (
     FULL_FACE_DETECTOR_MODEL_NAME,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
+from facelift.content.capture import iter_media_frames
 from facelift.detect.landmark import (
     BaseLandmarkDetector,
     BasicFaceDetector,
@@ -26,8 +27,9 @@ from facelift.detect.landmark import (
     get_detector,
     get_predictor,
 )
-from facelift.types import FaceFeature
+from facelift.types import Face, FaceFeature
 
+from ..content.strategies import image_path, video_path
 from ..strategies import face_feature, pathlib_path
 from .strategies import face_shape, landmark_model_path
 
@@ -84,9 +86,25 @@ def test_BasicFaceDetector_predictor():
     assert isinstance(detector.predictor, dlib.shape_predictor)
 
 
-def test_BasicFaceDetector_iter_faces():
-    # TODO: write me
-    pass
+@settings(deadline=None)
+@given(video_path())
+def test_BasicFaceDetector_iter_faces(media_filepath: Path):
+    detector = BasicFaceDetector()
+    for frame in iter_media_frames(media_filepath):
+        for face in detector.iter_faces(frame):
+            assert isinstance(face, Face)
+
+
+@settings(deadline=None)
+@given(image_path())
+def test_BasicFaceDetector_iter_faces_landmarks(media_filepath: Path):
+    detector = BasicFaceDetector()
+    face = next(detector.iter_faces(next(iter_media_frames(media_filepath))))
+    assert isinstance(face, Face)
+    assert all(
+        feature in face.landmarks
+        for feature in [FaceFeature.LEFT_EYE, FaceFeature.RIGHT_EYE, FaceFeature.NOSE]
+    )
 
 
 def test_PartialFaceDetector_predictor():
@@ -95,9 +113,25 @@ def test_PartialFaceDetector_predictor():
     assert isinstance(detector.predictor, dlib.shape_predictor)
 
 
-def test_PartialFaceDetector_iter_faces():
-    # TODO: write me
-    pass
+@settings(deadline=None)
+@given(image_path())
+def test_PartialFaceDetector_iter_faces_landmarks(media_filepath: Path):
+    detector = PartialFaceDetector()
+    face = next(detector.iter_faces(next(iter_media_frames(media_filepath))))
+    assert isinstance(face, Face)
+    assert all(
+        feature in face.landmarks
+        for feature in [
+            FaceFeature.LEFT_EYE,
+            FaceFeature.RIGHT_EYE,
+            FaceFeature.NOSE,
+            FaceFeature.LEFT_EYEBROW,
+            FaceFeature.RIGHT_EYEBROW,
+            FaceFeature.MOUTH,
+            FaceFeature.INNER_MOUTH,
+            FaceFeature.JAW,
+        ]
+    )
 
 
 def test_FullFaceDetector_predictor():
@@ -106,11 +140,23 @@ def test_FullFaceDetector_predictor():
     assert isinstance(detector.predictor, dlib.shape_predictor)
 
 
-def test_FullFaceDetector_iter_faces():
-    # TODO: write me
-    pass
-
-
-def test_FullFaceDetector_get_landmarks():
-    # TODO: write me
-    pass
+@settings(deadline=None)
+@given(image_path())
+def test_FullFaceDetector_iter_faces_landmarks(media_filepath: Path):
+    detector = FullFaceDetector()
+    face = next(detector.iter_faces(next(iter_media_frames(media_filepath))))
+    assert isinstance(face, Face)
+    assert all(
+        feature in face.landmarks
+        for feature in [
+            FaceFeature.LEFT_EYE,
+            FaceFeature.RIGHT_EYE,
+            FaceFeature.NOSE,
+            FaceFeature.LEFT_EYEBROW,
+            FaceFeature.RIGHT_EYEBROW,
+            FaceFeature.MOUTH,
+            FaceFeature.INNER_MOUTH,
+            FaceFeature.JAW,
+            FaceFeature.FOREHEAD,
+        ]
+    )

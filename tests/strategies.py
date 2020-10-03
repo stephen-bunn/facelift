@@ -19,6 +19,7 @@ from hypothesis.strategies import (
     builds,
     complex_numbers,
     composite,
+    dictionaries,
     floats,
     integers,
     just,
@@ -36,7 +37,7 @@ from facelift.constants import (
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from facelift.types import FaceFeature, Frame, MediaType
+from facelift.types import Face, FaceFeature, Frame, MediaType, Point, PointSequence
 
 from .buffers import SAMPLE_MAGIC
 from .constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
@@ -174,6 +175,39 @@ def media(draw) -> SearchStrategy[Tuple[Path, MediaType]]:
 
 
 @composite
+def point(draw) -> SearchStrategy[Point]:
+    """Composite strategy to generate a single Point type."""
+
+    return draw(numpy_arrays(numpy.uint32, 2))
+
+
+@composite
+def point_sequence(
+    draw, min_size: int = 1, max_size: int = 32
+) -> SearchStrategy[PointSequence]:
+    """Composite strategy to generate a PointSequence type.
+
+    Args:
+        min_size (int):
+            The minimum number of points to put in the sequence.
+            Defaults to 1.
+        max_size (int):
+            The maximum number of points to put in the sequence.
+            Defaults to 32.
+
+    Returns:
+        SearchStrategy[PointSequence]:
+            A sequence of points.
+    """
+
+    return draw(
+        numpy_arrays(
+            numpy.uint32, (draw(integers(min_value=min_size, max_value=max_size)), 2)
+        )
+    )
+
+
+@composite
 def frame(
     draw,
     width_strategy: Optional[SearchStrategy[int]] = None,
@@ -239,3 +273,41 @@ def face_shape(draw) -> SearchStrategy[dlib.full_object_detection]:
         )
     )
     return draw(just(dlib.full_object_detection(rectangle, points)))
+
+
+@composite
+def face(
+    draw,
+    frame_strategy: Optional[SearchStrategy[Frame]] = None,
+    landmarks_strategy: Optional[
+        SearchStrategy[Dict[FaceFeature, PointSequence]]
+    ] = None,
+) -> SearchStrategy[Face]:
+    """Composite strategy to generate a random face type.
+
+    It is important to note that this strategy will just generate the random types of
+    data necessary to produce a :class:`~.types.Face` instance. There is no gurantee that
+    this data makes sense in terms of the face existing or the points being in
+    appropriate order of the appropriate number.
+
+    For tests dependent on actual faces existing, please actually detect the face using
+    supplied testing assets through the :func:`image_path` or :func:`video_path`
+    composite strategies.
+    """
+
+    return draw(
+        just(
+            Face(
+                frame=draw(frame_strategy if frame_strategy else frame()),
+                landmarks=draw(
+                    landmarks_strategy
+                    if landmarks_strategy
+                    else dictionaries(
+                        face_feature(),
+                        point_sequence(),
+                        min_size=1,
+                    )
+                ),
+            )
+        )
+    )

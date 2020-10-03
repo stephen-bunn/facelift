@@ -25,7 +25,9 @@ DEFAULT_NORMALIZED_FACE_SIZE = 256
 DEFAULT_NORMALIZED_LEFT_EYE_POSTION = (0.35, 0.35)
 
 
-def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+def get_eye_positions(
+    face: Face,
+) -> Tuple[Tuple[numpy.int64, numpy.int64], Tuple[numpy.int64, numpy.int64]]:
     """Get the center position tuples of eyes from the given face.
 
     Args:
@@ -36,8 +38,7 @@ def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
         ValueError: If the given face is missing either left or right eye landmarks
 
     Returns:
-        Tuple[Tuple[int, int], Tuple[int, int]]:
-            A tuple of (left eye position, right eye position)
+        A tuple of (left eye position, right eye position)
     """
 
     left_eye = face.landmarks.get(FaceFeature.LEFT_EYE)
@@ -52,7 +53,7 @@ def get_eye_positions(face: Face) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     )
 
 
-def get_eye_center_position(face: Face) -> Tuple[int, int]:
+def get_eye_center_position(face: Face) -> Tuple[numpy.int64, numpy.int64]:
     """Get the center position between the eyes of the given face.
 
     Args:
@@ -60,14 +61,15 @@ def get_eye_center_position(face: Face) -> Tuple[int, int]:
             The face to extract the center position from.
 
     Returns:
-        Tuple[int, int]: The position directly between the eyes of the face
+        Tuple[:data:`numpy.int64`, :data:`numpy.int64`]:
+            The position directly between the eyes of the face
     """
 
     (left_start, left_end), (right_start, right_end) = get_eye_positions(face)
     return (left_start + right_start) // 2, (left_end + right_end) // 2
 
 
-def get_eye_deltas(face: Face) -> Tuple[int, int]:
+def get_eye_deltas(face: Face) -> Tuple[numpy.int64, numpy.int64]:
     """Get the difference between eye positions of the given face.
 
     Args:
@@ -75,14 +77,15 @@ def get_eye_deltas(face: Face) -> Tuple[int, int]:
             The face to get the eye deltas from.
 
     Returns:
-        Tuple[int, int]: A tuple of (x delta, y delta) for the given face's eyes
+        Tuple[:data:`numpy.int64`, :data:`numpy.int64`]:
+            A tuple of (x delta, y delta) for the given face's eyes
     """
 
     (left_start, left_end), (right_start, right_end) = get_eye_positions(face)
     return ((right_start - left_start), (right_end - left_end))
 
 
-def get_eye_angle(face: Face) -> numpy.ndarray:
+def get_eye_angle(face: Face) -> numpy.float64:
     """Get the angle the eyes are currently at for the given face.
 
     Args:
@@ -90,15 +93,15 @@ def get_eye_angle(face: Face) -> numpy.ndarray:
             The face to get the eye angle from.
 
     Returns:
-        numpy.ndarray:
-            A matrix describing the current angle of the eyes in the face.
+        :data:`numpy.float64`:
+            The floating point value describing the angle of the eyes in the face.
     """
 
     delta_x, delta_y = get_eye_deltas(face)
     return numpy.degrees(numpy.arctan2(delta_y, delta_x)) - 180
 
 
-def get_eye_distance(face: Face) -> numpy.ndarray:
+def get_eye_distance(face: Face) -> numpy.float64:
     """Get the distance between the eyes of the given face.
 
     Args:
@@ -106,8 +109,8 @@ def get_eye_distance(face: Face) -> numpy.ndarray:
             The face to get the eye distance from.
 
     Returns:
-        numpy.ndarray:
-            A matrix describing the difference between the face's eye landmarks.
+        :data:`numpy.float64`:
+            A floating point value describing the distance between the face's eye.
     """
 
     delta_x, delta_y = get_eye_deltas(face)

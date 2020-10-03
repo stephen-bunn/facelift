@@ -51,7 +51,7 @@ DEFAULT_WINDOW_STEP_KEY = 0x20
 
 
 class WindowStyle:
-    """Enumeration of available OpenCV window styles.
+    """Object namespace of available OpenCV window styles.
 
     Attributes:
         DEFAULT (int):

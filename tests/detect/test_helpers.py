@@ -76,11 +76,15 @@ def test_get_eye_positions(test_face: Face):
     assert len(result) == 2
     assert (
         result[0]
-        == test_face.landmarks[FaceFeature.LEFT_EYE].mean(axis=0).astype("int")
+        == test_face.landmarks[FaceFeature.LEFT_EYE]  # type: ignore
+        .mean(axis=0)
+        .astype("int")
     ).all()
     assert (
         result[1]
-        == test_face.landmarks[FaceFeature.RIGHT_EYE].mean(axis=0).astype("int")
+        == test_face.landmarks[FaceFeature.RIGHT_EYE]  # type: ignore
+        .mean(axis=0)
+        .astype("int")
     ).all()
 
 

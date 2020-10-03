@@ -44,13 +44,13 @@ def test_opencv_window_default():
 @given(one_of(none(), just("")))
 def test_opencv_window_validates_title(title: Optional[str]):
     with pytest.raises(ValueError):
-        opencv_window(title=title)
+        opencv_window(title=title)  # type: ignore
 
 
 @given(one_of(none(), integers(max_value=0)))
 def test_opencv_window_validates_delay(delay: Optional[int]):
     with pytest.raises(ValueError):
-        opencv_window(delay=delay)
+        opencv_window(delay=delay)  # type: ignore
 
 
 def test_opencv_window_context():

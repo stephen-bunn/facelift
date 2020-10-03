@@ -37,7 +37,6 @@ Attributes:
 """
 
 from contextlib import AbstractContextManager
-from enum import IntEnum
 from types import TracebackType
 from typing import Optional, Type
 
@@ -51,33 +50,48 @@ DEFAULT_WINDOW_DELAY = 1
 DEFAULT_WINDOW_STEP_KEY = 0x20
 
 
-class WindowStyle(IntEnum):
+class WindowStyle:
     """Enumeration of available OpenCV window styles.
 
     Attributes:
-        DEFAULT:
+        DEFAULT (int):
             The default OpenCV window style.
-        GUI_NORMAL:
+        AUTOSIZE (int):
+            Automatically fit window size on creation.
+        GUI_NORMAL (int):
             Window with a basic GUI experience.
-        GUI_EXPANDED:
+        GUI_EXPANDED (int):
             Window with an expanded GUI experience.
-        FULLSCREEN:
+        FULLSCREEN (int):
             Window that displays frames fullscreen (full-canvas).
-        FREE_RATIO:
+        FREE_RATIO (int):
             Window that allows for any window ratio.
-        KEEP_RATIO:
+        KEEP_RATIO (int):
             Window that maintains the original window ratio.
-        OPENGL:
+        OPENGL (int):
             Window rendered via OpenGL (may not work for some machines).
     """
 
     DEFAULT = cv2.WINDOW_NORMAL
+    AUTOSIZE = cv2.WINDOW_AUTOSIZE
     GUI_NORMAL = cv2.WINDOW_GUI_NORMAL
     GUI_EXPANDED = cv2.WINDOW_GUI_EXPANDED
     FULLSCREEN = cv2.WINDOW_FULLSCREEN
     FREE_RATIO = cv2.WINDOW_FREERATIO
     KEEP_RATIO = cv2.WINDOW_KEEPRATIO
     OPENGL = cv2.WINDOW_OPENGL
+
+    # This property is currently just used for testing
+    __all__ = [
+        DEFAULT,
+        AUTOSIZE,
+        GUI_NORMAL,
+        GUI_EXPANDED,
+        FULLSCREEN,
+        FREE_RATIO,
+        KEEP_RATIO,
+        OPENGL,
+    ]
 
 
 @attr.s
@@ -113,7 +127,7 @@ class opencv_window(AbstractContextManager):
     """
 
     title: str = attr.ib(default=DEFAULT_WINDOW_TITLE)
-    style: WindowStyle = attr.ib(default=WindowStyle.DEFAULT)
+    style: int = attr.ib(default=WindowStyle.DEFAULT)
     delay: float = attr.ib(default=DEFAULT_WINDOW_DELAY)
     step: bool = attr.ib(default=False)
     step_key: int = attr.ib(default=DEFAULT_WINDOW_STEP_KEY)
@@ -130,7 +144,7 @@ class opencv_window(AbstractContextManager):
             ValueError: If the title is an empty string
         """
 
-        if len(value) <= 0:
+        if not isinstance(value, str) or len(value) <= 0:
             raise ValueError(
                 f"Window title must be a non-empty string, received {value!r}"
             )
@@ -147,7 +161,7 @@ class opencv_window(AbstractContextManager):
             ValueError: If the delay is less than or equal to 0
         """
 
-        if value <= 0:
+        if not isinstance(value, int) or value <= 0:
             raise ValueError(
                 f"Window delay must be a non-zero value, received {value!r}"
             )
@@ -172,7 +186,7 @@ class opencv_window(AbstractContextManager):
     def create(self):
         """Create a new window with the current context's title and style."""
 
-        cv2.namedWindow(winname=self.title, flags=self.style.value)
+        cv2.namedWindow(winname=self.title, flags=self.style)
 
     def close(self):
         """Destroy the window with the current context's title."""
@@ -191,5 +205,5 @@ class opencv_window(AbstractContextManager):
         cv2.waitKey(delay=self.delay)
 
         if self.step:
-            while cv2.waitKey(0) != self.step_key:
+            while cv2.waitKey(delay=0) != self.step_key:
                 continue

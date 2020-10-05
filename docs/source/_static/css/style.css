@@ -51,3 +51,12 @@
     text-align: center;
   }
 }
+
+.Facelift_Badges {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Facelift_Badges a {
+  margin: 0.25rem;
+}

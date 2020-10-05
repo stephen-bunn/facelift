@@ -25,12 +25,36 @@
    </div>
 
 
+Several personal projects I've had in the past relied on some basic face feature
+detection either for face isolation, face state detection, or some kinds of perspective
+estimation.
+I found that there are plenty of resources for learning how to perform face detection in
+Python, but most of them suffer from a handful of the following issues:
+
+1. Isn't easy to use right out of the box.
+2. Doesn't provide face feature detection, just simple face detection.
+3. Relies on older and no-longer maintained methods from ``cv2`` for face detection.
+4. Is pretty greedy in terms of memory usage and scattered method calls.
+5. Doesn't provide a selection of helpers to make face detection easier and quicker.
+6. Requires that you write a whole bunch of boilerplate to get anything clean looking.
+7. Or just my own personal disagreements with some of the code structure.
+
+This project is my own attempt to provide decent face feature detection when you don't
+want to think too hard about it.
+We try to get as close as possible to a single ``pip`` install and still provide
+effective detection and recognition in Python.
+However, we do have several system dependencies that are necesary, see
+:ref:`system-requirements` for more details.
+
+Below is a simple example of full face feature detection and rendering out to a standard
+OpenCV window using some of the features available in Facelift.
+**To get started using this package, please see the** :ref:`getting-started` **guide.**
+
 .. literalinclude:: _static/assets/examples/basic_face_detection.py
    :linenos:
 
 .. image:: _static/assets/recordings/basic_face_detection.gif
 
-**To get started using this package, please see the** :ref:`getting-started` **page!**
 
 User Documentation
 ------------------

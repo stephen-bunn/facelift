@@ -7,6 +7,9 @@ Getting Started
 | **Welcome to Facelift!**
 | This page should hopefully provide you with enough information to get you started detecting and recognizing faces.
 
+
+.. _system-requirements:
+
 System Requirements
 ===================
 

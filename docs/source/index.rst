@@ -63,6 +63,7 @@ User Documentation
    :maxdepth: 1
 
    getting-started
+   usage
    contributing
    code-of-conduct
    changelog

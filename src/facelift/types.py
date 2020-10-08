@@ -115,6 +115,8 @@ class Face:
     """Describes a detected face.
 
     Args:
+        raw (:class:`dlib.full_object_detection`):
+            The raw ``dlib`` object detection container.
         landmarks (Dict[:class:`~FaceFeature`, :attr:`~PointSequence`]):
             Mapping of extracted face features to the sequence of points describing
             those features.
@@ -122,5 +124,6 @@ class Face:
             The base non-normalized cropped frame of just the face.
     """
 
+    raw: dlib.full_object_detection
     landmarks: Dict[FaceFeature, PointSequence]
     frame: Frame

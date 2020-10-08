@@ -53,7 +53,7 @@ def get_predictor(model_filepath: Path) -> Predictor:
     """
 
     if not model_filepath.is_file():
-        raise FileNotFoundError(f"no such file {model_filepath!s} exists")
+        raise FileNotFoundError(f"No such file {model_filepath!s} exists")
 
     return dlib.shape_predictor(model_filepath.as_posix())
 
@@ -237,6 +237,7 @@ class BaseLandmarkDetector(abc.ABC):
             face_shape = self.predictor(frame, face_bounds)
 
             yield Face(
+                raw=face_shape,
                 landmarks=self.get_landmarks(self.shape_to_points(face_shape)),
                 frame=crop(
                     frame,

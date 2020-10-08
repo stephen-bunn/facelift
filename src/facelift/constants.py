@@ -21,7 +21,10 @@ from pathlib import Path
 
 DATA_DIRPATH = Path(__file__).parent.joinpath("data").absolute()
 LANDMARKS_DIRPATH = DATA_DIRPATH.joinpath("landmarks")
+ENCODERS_DIRPATH = DATA_DIRPATH.joinpath("encoders")
 
 BASIC_FACE_DETECTOR_MODEL_NAME = "shape_predictor_5_face_landmarks.dat"
 PARTIAL_FACE_DETECTOR_MODEL_NAME = "shape_predictor_68_face_landmarks.dat"
 FULL_FACE_DETECTOR_MODEL_NAME = "shape_predictor_81_face_landmarks.dat"
+
+DLIB_RESNET_ENCODER_V1_MODEL_NAME = "dlib_face_recognition_resnet_model_v1.dat"

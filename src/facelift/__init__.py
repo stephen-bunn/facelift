@@ -16,6 +16,7 @@ Basic usage looks something like this:
 
 from .content import iter_media_frames, iter_stream_frames
 from .detect import BasicFaceDetector, FullFaceDetector, PartialFaceDetector
+from .encode import BasicResnetEncoder
 
 __all__ = [
     "iter_media_frames",
@@ -23,4 +24,5 @@ __all__ = [
     "BasicFaceDetector",
     "FullFaceDetector",
     "PartialFaceDetector",
+    "BasicResnetEncoder",
 ]

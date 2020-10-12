@@ -11,8 +11,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+      - name: Build LFS Manifest
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-manifest
+      - name: Cache LFS Assets
+        uses: actions/cache@v2
         with:
-          lfs: true
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.lfs-manifest') }}-v1
+      - name: Fetch LFS Assets
+        run: git lfs pull
       - name: Use Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:

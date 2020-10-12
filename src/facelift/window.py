@@ -13,7 +13,7 @@ For example:
 
 >>> from pathlib import Path
 >>> from facelift.window import opencv_window
->>> from facelift.content.capture import iter_media_frames
+>>> from facelift.capture import iter_media_frames
 >>> with opencv_window() as window:
 ...     for frame in iter_media_frames(Path("~/my-file.mp4")):
 ...         window.render(frame)

@@ -14,9 +14,9 @@ Basic usage looks something like this:
 ...         # Do something with the face
 """
 
-from .content import iter_media_frames, iter_stream_frames
+from .capture import iter_media_frames, iter_stream_frames
 from .detect import BasicFaceDetector, FullFaceDetector, PartialFaceDetector
-from .encode import BasicResnetEncoder
+from .encode import BasicFaceEncoder
 
 __all__ = [
     "iter_media_frames",
@@ -24,5 +24,5 @@ __all__ = [
     "BasicFaceDetector",
     "FullFaceDetector",
     "PartialFaceDetector",
-    "BasicResnetEncoder",
+    "BasicFaceEncoder",
 ]

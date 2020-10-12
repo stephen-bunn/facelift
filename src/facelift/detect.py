@@ -11,7 +11,7 @@ If you have a custom ``face_landmarks`` model, you can inherit from
 
 Examples:
     >>> from facelift.detect import BasicFaceDetector
-    >>> from facelift.content import iter_media_frames
+    >>> from facelift.capture import iter_media_frames
     >>> detector = BasicFaceDetector()
     >>> for frame in iter_media_frames(MEDIA_FILEPATH):
     ...     for face in detector.iter_faces(frame):
@@ -27,14 +27,14 @@ import dlib
 import numpy
 from cached_property import cached_property
 
-from ..constants import (
+from .constants import (
     BASIC_FACE_DETECTOR_MODEL_NAME,
     FULL_FACE_DETECTOR_MODEL_NAME,
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from ..content.transform import crop
-from ..types import Detector, Face, FaceFeature, Frame, PointSequence, Predictor
+from .transform import crop
+from .types import Detector, Face, FaceFeature, Frame, PointSequence, Predictor
 
 
 @lru_cache()
@@ -213,8 +213,8 @@ class BaseLandmarkDetector(abc.ABC):
         Examples:
             Get detected faces from the first available webcam.
 
-            >>> from facelift.content.capture import iter_stream_frames
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.capture import iter_stream_frames
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for frame in iter_stream_frames():
             ...     for face in detector.iter_faces(frame):

@@ -15,7 +15,7 @@ degrees, we could do something like the following:
 
 .. code-block:: python
 
-    from facelift.content.transform import rotate, scale
+    from facelift.transform import rotate, scale
     transformed_frame = rotate(scale(frame, 0.5), 90)
 
 Attributes:
@@ -30,7 +30,7 @@ from typing import Optional, Tuple
 import cv2
 import numpy
 
-from ..types import Frame
+from .types import Frame
 
 DEFAULT_INTERPOLATION: int = cv2.INTER_AREA
 
@@ -39,7 +39,7 @@ def copy(frame: Frame) -> Frame:
     """Copy the given frame to a new location in memory.
 
     Examples:
-        >>> from facelift.content.transform import copy
+        >>> from facelift.transform import copy
         >>> copied_frame = copy(frame)
         >>> assert frame == copied_frame
         >>> assert frame is not copied_frame
@@ -64,7 +64,7 @@ def scale(
         For example, scaling a frame to half of its original size would require a scale
         factor of 0.5.
 
-        >>> from facelift.content.transform import scale
+        >>> from facelift.transform import scale
         >>> assert frame.shape[:1] == [512, 512]
         >>> downscaled_frame = scale(frame, 0.5)
         >>> assert downscaled_frame.shape[:1] == [256, 256]
@@ -74,7 +74,7 @@ def scale(
         For example, scaling a frame to double its original size would require a scale
         factor of 2.
 
-        >>> from facelift.content.transform import scale
+        >>> from facelift.transform import scale
         >>> assert frame.shape[:1] == [512, 512]
         >>> upscaled_frame = scale(frame, 2)
         >>> assert upscaled_frame.shape[:1] == [1024, 1024]
@@ -149,21 +149,21 @@ def resize(
     Examples:
         Resize a frame's width while keeping the height relative:
 
-        >>> from facelift.content.transform import resize
+        >>> from facelift.transform import resize
         >>> assert frame.shape[:1] == [512, 512]
         >>> resized_frame = resize(frame, width=256, lock_aspect=True)
         >>> assert resized_frame.shape[:1] == [256, 256]
 
         Resize a frame's width while keeping the original height:
 
-        >>> from facelift.content.transform import resize
+        >>> from facelift.transform import resize
         >>> assert frame.shape[:1] == [512, 512]
         >>> resized_frame = resize(frame, width=256, lock_aspect=False)
         >>> assert resized_frame.shape[:1] == [512, 256]
 
         Resize both a frame's width and height:
 
-        >>> from facelift.content.transform import resize
+        >>> from facelift.transform import resize
         >>> assert frame.shape[:1] == [512, 512]
         >>> resized_frame = resize(frame, width=256, height=128)
         >>> assert resized_frame.shape[:1] == [128, 256]
@@ -239,7 +239,7 @@ def rotate(
     """Rotate a frame while keeping the whole frame visible.
 
     Examples:
-        >>> from facelift.content.transform import rotate
+        >>> from facelift.transform import rotate
         >>> rotated_90 = rotate(frame, 90)
         >>> rotated_neg_90 = rotate(frame, -90)
 
@@ -301,7 +301,7 @@ def crop(frame: Frame, start: Tuple[int, int], end: Tuple[int, int]) -> Frame:
     Examples:
         Crop a frame from the first pixel to the center pixel.
 
-        >>> from facelift.content.transform import crop
+        >>> from facelift.transform import crop
         >>> assert frame.shape[:1] == [512, 512]
         >>> cropped_frame = crop(frame, (0, 0), (256, 256))
         >>> assert cropped_frame.shape[:1] == [256, 256]
@@ -345,7 +345,7 @@ def translate(
     """Translate the given frame a specific distance away from its origin.
 
     Examples:
-        >>> from facelift.content.transform import translate
+        >>> from facelift.transform import translate
         >>> translated_neg_90_x_frame = translate(frame, delta_x=-90)
 
     .. important::
@@ -386,7 +386,7 @@ def flip(frame: Frame, x_axis: bool = False, y_axis: bool = False) -> Frame:
     """Flip the given frame over either or both the x and y axis.
 
     Examples:
-        >>> from facelift.content.transform import flip
+        >>> from facelift.transform import flip
         >>> vertically_flipped_frame = flip(frame, x_axis=True)
         >>> horizontally_flipped_frame = flip(frame, y_axis=True)
         >>> inverted_frame = flip(frame, x_axis=True, y_axis=True)
@@ -425,7 +425,7 @@ def grayscale(frame: Frame) -> Frame:
     during face encoding.
 
     Examples:
-        >>> from facelift.content.transform import grayscale
+        >>> from facelift.transform import grayscale
         >>> grayscale_frame = grayscale(bgr_frame)
 
     Args:
@@ -446,7 +446,7 @@ def rgb(frame: Frame) -> Frame:
     in RGB coordinates while OpenCV works in BGR coordinates.
 
     Examples:
-        >>> from facelift.content.transform import rgb
+        >>> from facelift.transform import rgb
         >>> rgb_frame = rgb(bgr_frame)
 
     Args:

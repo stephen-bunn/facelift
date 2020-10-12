@@ -13,8 +13,8 @@ from typing import List, Optional
 import dlib
 import numpy
 
-from ..constants import DLIB_RESNET_ENCODER_V1_MODEL_NAME, ENCODERS_DIRPATH
-from ..types import Face, FaceFeature, Frame
+from .constants import DLIB_RESNET_ENCODER_V1_MODEL_NAME, ENCODERS_DIRPATH
+from .types import Face, FaceFeature, Frame
 
 DEFAULT_ENCODING_JITTER = 0
 DEFAULT_ENCODING_PADDING = 0.25
@@ -28,7 +28,7 @@ def get_encoder(model_filepath: Path) -> dlib.face_recognition_model_v1:
     return dlib.face_recognition_model_v1(model_filepath.as_posix())
 
 
-class BaseResnetEncoder(abc.ABC):
+class BaseEncoder(abc.ABC):
     @abc.abstractproperty
     def model_filepath(self) -> Path:
         raise NotImplementedError(
@@ -67,7 +67,7 @@ class BaseResnetEncoder(abc.ABC):
         )
 
 
-class BasicResnetEncoder(BaseResnetEncoder):
+class BasicFaceEncoder(BaseEncoder):
 
     model_filepath: Path = ENCODERS_DIRPATH.joinpath(DLIB_RESNET_ENCODER_V1_MODEL_NAME)
 

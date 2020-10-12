@@ -278,6 +278,7 @@ def face_shape(draw) -> SearchStrategy[dlib.full_object_detection]:
 @composite
 def face(
     draw,
+    raw_strategy: Optional[SearchStrategy[dlib.full_object_detection]] = None,
     frame_strategy: Optional[SearchStrategy[Frame]] = None,
     landmarks_strategy: Optional[
         SearchStrategy[Dict[FaceFeature, PointSequence]]
@@ -298,6 +299,7 @@ def face(
     return draw(
         just(
             Face(
+                raw=draw(raw_strategy if raw_strategy else face_shape()),
                 frame=draw(frame_strategy if frame_strategy else frame()),
                 landmarks=draw(
                     landmarks_strategy

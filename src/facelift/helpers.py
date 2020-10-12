@@ -19,7 +19,7 @@ from typing import Optional, Tuple
 import cv2
 import numpy
 
-from ..types import Face, FaceFeature, Frame
+from .types import Face, FaceFeature, Frame
 
 DEFAULT_NORMALIZED_FACE_SIZE = 256
 DEFAULT_NORMALIZED_LEFT_EYE_POSTION = (0.35, 0.35)

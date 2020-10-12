@@ -15,9 +15,10 @@ import pytest
 from hypothesis import assume, given
 from hypothesis.strategies import text
 
-from facelift.content import magic
+from facelift import magic
+from facelift.types import MediaType
 
-from ..strategies import media_details, pathlib_path
+from .strategies import media_details, pathlib_path
 
 
 @given(pathlib_path())
@@ -69,14 +70,14 @@ def test_get_media_type_returns_correct_media_type(
         with open(file_descriptor, "wb") as temp_fp:
             temp_fp.write(buffer)
 
-        assert magic.get_media_type(Path(filename)) == magic.MediaType(media_type)
+        assert magic.get_media_type(Path(filename)) == MediaType(media_type)
     finally:
         os.remove(filename)
 
 
 @given(text(), text())
 def test_get_media_type_returns_None_for_no_validate(prefix: str, suffix: str):
-    assume(prefix not in map(str, magic.MediaType))
+    assume(prefix not in map(str, MediaType))
     invalid_mimetype = f"{prefix!s}/{suffix!s}"
 
     with patch.object(magic, "get_mimetype") as mocked_get_mimetype:
@@ -87,7 +88,7 @@ def test_get_media_type_returns_None_for_no_validate(prefix: str, suffix: str):
 
 @given(text(), text())
 def test_get_media_type_raises_ValueError_for_validate(prefix: str, suffix: str):
-    assume(prefix not in map(str, magic.MediaType))
+    assume(prefix not in map(str, MediaType))
     invalid_mimetype = f"{prefix!s}/{suffix!s}"
 
     with patch.object(magic, "get_mimetype") as mocked_get_mimetype:

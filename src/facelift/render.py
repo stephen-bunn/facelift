@@ -12,7 +12,7 @@ can easily visualize what features are being detected.
 For example, if we wanted to draw lines for each detected feature from the
 :class:`~.detect.landmark.PartialFaceDetector` we can do the following:
 
->>> from facelift.content import iter_stream_frames
+>>> from facelift.capture import iter_stream_frames
 >>> from facelift.window import opencv_window
 >>> from facelift.detect import PartialFaceDetector
 >>> from facelift.render import draw_line

@@ -129,7 +129,7 @@ def get_normalized_frame(
     Examples:
         Get a normalized face frame from a detected face from the given frame:
 
-        >>> from facelift.detect.helpers import get_normalized_frame
+        >>> from facelift.helpers import get_normalized_frame
         >>> normalized_frame = get_normalized_frame(frame, face)
 
     Args:

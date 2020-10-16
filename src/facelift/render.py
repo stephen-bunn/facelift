@@ -10,7 +10,7 @@ With a combination of the :mod:`~.window` module and some of these helper functi
 can easily visualize what features are being detected.
 
 For example, if we wanted to draw lines for each detected feature from the
-:class:`~.detect.landmark.PartialFaceDetector` we can do the following:
+:class:`~.detect.PartialFaceDetector` we can do the following:
 
 >>> from facelift.capture import iter_stream_frames
 >>> from facelift.window import opencv_window

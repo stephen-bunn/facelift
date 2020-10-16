@@ -9,7 +9,7 @@ tests seems a bit overkill. The included tests are simply ensuring that inputs a
 outputs are expected types with generic value checks.
 
 The only real functionality being tested here is that of
-:func:`~.detect.helpers.get_normalized_frame` as that is the only method that is used
+:func:`~.helpers.get_normalized_frame` as that is the only method that is used
 externally of the :mod:`~.helpers` module.
 """
 

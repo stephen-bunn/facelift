@@ -133,7 +133,7 @@ class BaseLandmarkDetector(abc.ABC):
             After getting a detected face shape from dlib, we need to convert it back
             into a ``numpy.ndarray`` so OpenCV can use it.
 
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for face_bounds in detector.detector(frame, 0):
             ...     face_shape = detector.predictor(frame, face_bounds)
@@ -168,7 +168,7 @@ class BaseLandmarkDetector(abc.ABC):
         discovered from the dlib predictor as an actual :class:`~.types.FaceFeature`.
 
         Examples:
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for face_bounds in detector.detector(frame, 0):
             ...     face_shape = detector.predictor(frame, face_bounds)

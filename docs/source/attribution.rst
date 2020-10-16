@@ -16,7 +16,7 @@ Below are callouts to the projects or resources that were used to create this pa
 | — Created by **codeniko** pulled from
    `codeniko/shape_predictor_81_face_landmarks
    <https://github.com/codeniko/shape_predictor_81_face_landmarks>`_
-| This model is used as part of the :class:`~facelift.detect.landmark.FullFaceDetector`
+| This model is used as part of the :class:`~facelift.detect.FullFaceDetector`
    to allow for detecting the :attr:`~facelift.types.FaceFeature.FOREHEAD` feature.
    Thanks to codeniko for traning this model.
 

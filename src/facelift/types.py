@@ -62,12 +62,11 @@ class MediaType(Enum):
 
     Attributes:
         IMAGE:
-            Defines media that contains a single frame to process.
+            Defines media that contains just a single frame to process.
         VIDEO:
-            Defines media that contains a known number of frames to process that is more
-            than more than 1.
+            Defines media that contains a known number of frames to process.
         STREAM:
-            Defines media that contains an unknown number of frames to process
+            Defines media that contains an unknown number of frames to process.
     """
 
     IMAGE = "image"

@@ -418,6 +418,43 @@ def flip(frame: Frame, x_axis: bool = False, y_axis: bool = False) -> Frame:
     return cv2.flip(src=frame, flipCode=flip_code)
 
 
+def adjust(
+    frame: Frame,
+    brightness: Optional[int] = None,
+    sharpness: Optional[float] = None,
+) -> Frame:
+    """Adjust the brightness or sharpness of a frame.
+
+    Examples:
+        >>> from facelift.transform import adjust
+        >>> sharper_frame = adjust(frame, sharpness=1.4)
+        >>> brighter_frame = adjust(frame, brightness=10)
+        >>> sharper_and_brighter_frame = adjust(frame, sharpness=1.4, brightness=10)
+
+    Args:
+        frame (:attr:`~.types.Frame`): The frame to adjust
+        brightness (Optional[int], optional):
+            The new brightness of the frame (can be negative, default is 0).
+            Defaults to 0.
+        sharpness (Optional[float], optional):
+            The new sharpness of the frame (0.0 is black, default is 1.0).
+            Defaults to 1.0.
+
+    Returns:
+        :attr:`~.types.Frame`: The newly adjusted frame
+    """
+
+    if brightness is None and sharpness is None:
+        return frame
+
+    if brightness is None:
+        brightness = 0
+    if sharpness is None:
+        sharpness = 1.0
+
+    return cv2.convertScaleAbs(src=frame, alpha=sharpness, beta=brightness)
+
+
 def grayscale(frame: Frame) -> Frame:
     """Convert the given frame to grayscale.
 

@@ -63,7 +63,7 @@ User Documentation
    :maxdepth: 1
 
    getting-started
-   usage
+   usage/index
    contributing
    code-of-conduct
    changelog

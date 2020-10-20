@@ -64,6 +64,7 @@ attrs = "^20.2.0"
 opencv-python = "^4.4.0"
 dlib = "^19.21.0"
 cached-property = "^1.5.2"
+typing-extensions = "^3.7.4"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

@@ -1173,7 +1173,7 @@ python-versions = "*"
 version = "1.4.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
@@ -1251,7 +1251,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 profile = []
 
 [metadata]
-content-hash = "0309acdc428f3e1b1c1643c0b1f5484b0beda4b40b31b5b3a400db8bf3ab5be1"
+content-hash = "f6cb2e466ca44475761a082dda6c5a43cf43f99843a09f5f1423bbd33350b6ac"
 lock-version = "1.0"
 python-versions = "^3.7"
 

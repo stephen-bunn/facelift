@@ -17,6 +17,8 @@ Attributes:
     PointSequence (``NDArray[(Any, 2), Int32]``):
         A sequence of points that is typically used to describe a face feature or a line
         during rendering.
+    Encoding (``NDArray[(128,), Int32]``):
+        A 128 dimension encoding of a detected face for a given frame.
 
     Detector (Callable[[:attr:`~Frame`, :class:`int`], :attr:`~PointSequence`]):
         Callable that takes a frame and an upsample count and discovers the bounds of
@@ -32,6 +34,9 @@ from typing import Callable, Dict, List, Tuple, Type
 
 import dlib
 import numpy
+from typing_extensions import (  # NOTE: extensions not required with Python >=3.9
+    Protocol,
+)
 
 # XXX: Numpy does not currently support typing, so we are forced to hack around this for
 # now. There are several other projects that are WIP to provide some typing around
@@ -42,6 +47,7 @@ import numpy
 Frame = Type[numpy.ndarray]  # FIXME: this type is NDArray[(Any, Any, 3), UInt8]
 Point = Tuple[int, int]  # FIXME: this type is NDArray[(2,), Int]
 PointSequence = List[Point]  # FIXME: this type is NDArray[(Any, 2), Int]
+Encoding = Type[numpy.ndarray]  # FIXME: this type is NDArray[(128,), Int]
 
 # Type manually derived from `dlib.fhog_object_detector` for mypy's sake
 # http://dlib.net/python/index.html#dlib.fhog_object_detector
@@ -55,6 +61,37 @@ Detector = Callable[[Frame, int], PointSequence]
 # (frame: numpy.ndarray, face_bound_shape: dlib.rectangle) -> dlib.full_object_detection
 # `face_bound_shape` comes directly from a dlib object detector
 Predictor = Callable[[Frame, dlib.rectangle], dlib.full_object_detection]
+
+
+# Type manually derived from `dlib.face_recognition_model_v1` for mypy's sake
+# http://dlib.net/python/index.html#dlib.face_recognition_model_v1
+class Encoder(Protocol):
+    """Protocol class for ``dlib.face_recognition_model_v1.``."""
+
+    def compute_face_descriptor(
+        self,
+        frame: Frame,
+        num_jitters: int = 0,
+        padding: float = 0.25,
+    ) -> dlib.vector:
+        """Compute a descriptor for a detected face frame.
+
+        Args:
+            frame (:attr:`~.types.Frame`):
+                The frame containing just the detected face.
+            num_jitters (int):
+                The number of jitters to run through the dector projection.
+                Defaults to 0.
+            padding (float):
+                The default padding around the face.
+                Defaults to 0.25.
+
+        Returns:
+            dlib.vector:
+                The face descriptor (encoding).
+        """
+
+        ...
 
 
 class MediaType(Enum):

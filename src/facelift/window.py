@@ -69,7 +69,9 @@ class WindowStyle:
         KEEP_RATIO (int):
             Window that maintains the original window ratio.
         OPENGL (int):
-            Window rendered via OpenGL (may not work for some machines).
+            Window rendered via OpenGL.
+            May not work for some machines and will only work if OpenCV is compiled with
+            GPU support.
     """
 
     DEFAULT = cv2.WINDOW_NORMAL
@@ -109,7 +111,7 @@ class opencv_window(AbstractContextManager):
     Args:
         title (str):
             The title of the OpenCV window.
-        style (:class:`~WindowStyle`):
+        style (int):
             The style of the OpenCV window.
         delay (float):
             The number of milliseconds to delay between displaying frames.

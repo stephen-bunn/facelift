@@ -61,17 +61,10 @@ In this case, you likely can find what you need already built into OpenCV_.
 Chaining Transforms
 -------------------
 
-
-.. figure:: ../_static/assets/images/transform-flow.png
-   :width: 75%
-   :align: center
-
-   Sample Transform Flow
-
-
-Each of these transforms takes a single frame, mutates it with some options, and returns
-it.
-
+Most of the time you will end up with several necessary transformations to get the frame
+in a position that is optimal for face detection.
+In these cases, it's fairly straightforward to compose multiple transforms together
+through the following type of composition:
 
 .. code-block:: python
    :linenos:
@@ -84,3 +77,22 @@ it.
        for frame in iter_stream_frames():
            frame = rotate(flip(scale(frame, 0.35), x_axis=True), 90)
            window.render(frame)
+
+
+In this example, we are first scaling down the frame to 35%, flipping the frame on the
+x-axis, and the rotating it by +90 degrees.
+Potentially useful for large, inverted media files where faces are aligned left to right
+rather than top-down.
+Internally the frame is going through each transformation just as you would expect.
+
+.. figure:: ../_static/assets/images/transform-flow.png
+   :width: 75%
+   :align: center
+
+   Sample Transform Flow
+
+
+This was just a quick overview of the concept of transforming frames before we attempt to
+detect face features.
+We will see more explicitly how transformations benefit feature detection in the next
+section.

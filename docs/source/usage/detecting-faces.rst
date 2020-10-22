@@ -246,5 +246,5 @@ include the curvature and angle of the forehead.
 The included model is not as heavily trained as the
 :class:`~.detect.PartialFaceDetector` so you may see some inconsistencies between the
 two detectors.
-Regardless, with the inclusion of the :attr:`~.types.FaceFeature.FOREHEAD` feature, we
+Regardless, with the inclusion of the :attr:`~.types.FaceFeature.FOREHEAD` feature, you
 get another dimension to work with that may be valuable for your use case.

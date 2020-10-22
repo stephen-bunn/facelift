@@ -57,11 +57,11 @@ responsibility of these names.
 
 ----
 
-.. include:: detecting-faces.rst
+.. include:: drawing-on-frames.rst
 
 ----
 
-.. include:: drawing-faces.rst
+.. include:: detecting-faces.rst
 
 ----
 

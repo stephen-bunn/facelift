@@ -37,6 +37,7 @@ from enum import Enum, IntEnum
 from typing import List, Optional, Tuple
 
 import cv2
+import numpy
 
 from .types import Frame, Point, PointSequence
 
@@ -284,6 +285,9 @@ def draw_contour(
         :attr:`~.types.Frame` The frame with the contour drawn on it
     """
 
+    if isinstance(line, list):
+        line = numpy.asarray(line)
+
     convex_hull = cv2.convexHull(points=line)
     cv2.drawContours(
         image=frame,
@@ -360,6 +364,7 @@ def draw_text(
     y_position: Position = Position.START,
     x_offset: int = 0,
     y_offset: int = 0,
+    allow_overflow: bool = False,
 ) -> Frame:
     """Draw some text on the given frame.
 
@@ -411,9 +416,13 @@ def draw_text(
             position.
             Defaults to 0.
         y_offset (int, optional):
-            The y-axis offset from the tex container to add to the calculated relative
+            The y-axis offset from the text container to add to the calculated relative
             position.
             Defaults to 0.
+        allow_overflow (bool, optional):
+            If set to ``True``, the provided text will start drawing at the given start
+            and end points without obeying them as a bounding text container.
+            Defaults to False.
 
     Returns:
         :attr:`~.types.Frame` The frame with the text drawn on it
@@ -431,6 +440,17 @@ def draw_text(
         fontScale=font_scale,
         thickness=thickness,
     )[0]
+
+    # handle constraining the text to the given bounding container
+    if not allow_overflow:
+        if y_position == Position.START:
+            y_offset += text_height
+        if x_position == Position.END:
+            x_offset -= text_width
+
+    # handle offsetting by the text's height if we are attempting to center vertically
+    if y_position == Position.CENTER:
+        y_offset += text_height
 
     text_x = _get_positioned_index(
         index=start_x,

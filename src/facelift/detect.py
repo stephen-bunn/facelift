@@ -11,7 +11,7 @@ If you have a custom ``face_landmarks`` model, you can inherit from
 
 Examples:
     >>> from facelift.detect import BasicFaceDetector
-    >>> from facelift.content import iter_media_frames
+    >>> from facelift.capture import iter_media_frames
     >>> detector = BasicFaceDetector()
     >>> for frame in iter_media_frames(MEDIA_FILEPATH):
     ...     for face in detector.iter_faces(frame):
@@ -27,14 +27,14 @@ import dlib
 import numpy
 from cached_property import cached_property
 
-from ..constants import (
+from .constants import (
     BASIC_FACE_DETECTOR_MODEL_NAME,
     FULL_FACE_DETECTOR_MODEL_NAME,
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from ..content.transform import crop
-from ..types import Detector, Face, FaceFeature, Frame, PointSequence, Predictor
+from .transform import crop
+from .types import Detector, Face, FaceFeature, Frame, PointSequence, Predictor
 
 
 @lru_cache()
@@ -53,7 +53,7 @@ def get_predictor(model_filepath: Path) -> Predictor:
     """
 
     if not model_filepath.is_file():
-        raise FileNotFoundError(f"no such file {model_filepath!s} exists")
+        raise FileNotFoundError(f"No such file {model_filepath!s} exists")
 
     return dlib.shape_predictor(model_filepath.as_posix())
 
@@ -81,7 +81,7 @@ class BaseLandmarkDetector(abc.ABC):
 
     @abc.abstractproperty
     def model_filepath(self) -> Path:  # pragma: no cover
-        """Property filepath to the landmarks model that shuold be used for detection.
+        """Property filepath to the landmarks model that should be used for detection.
 
         Raises:
             NotImplementedError: Must be implemented by subclasses
@@ -133,7 +133,7 @@ class BaseLandmarkDetector(abc.ABC):
             After getting a detected face shape from dlib, we need to convert it back
             into a ``numpy.ndarray`` so OpenCV can use it.
 
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for face_bounds in detector.detector(frame, 0):
             ...     face_shape = detector.predictor(frame, face_bounds)
@@ -168,7 +168,7 @@ class BaseLandmarkDetector(abc.ABC):
         discovered from the dlib predictor as an actual :class:`~.types.FaceFeature`.
 
         Examples:
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for face_bounds in detector.detector(frame, 0):
             ...     face_shape = detector.predictor(frame, face_bounds)
@@ -213,8 +213,8 @@ class BaseLandmarkDetector(abc.ABC):
         Examples:
             Get detected faces from the first available webcam.
 
-            >>> from facelift.content.capture import iter_stream_frames
-            >>> from facelift.detect.landmark import BasicFaceDetector
+            >>> from facelift.capture import iter_stream_frames
+            >>> from facelift.detect import BasicFaceDetector
             >>> detector = BasicFaceDetector()
             >>> for frame in iter_stream_frames():
             ...     for face in detector.iter_faces(frame):
@@ -237,6 +237,7 @@ class BaseLandmarkDetector(abc.ABC):
             face_shape = self.predictor(frame, face_bounds)
 
             yield Face(
+                raw=face_shape,
                 landmarks=self.get_landmarks(self.shape_to_points(face_shape)),
                 frame=crop(
                     frame,
@@ -325,7 +326,7 @@ class FullFaceDetector(BaseLandmarkDetector):
         landmarks = {}
         for feature, point_slice in self.landmark_slices.items():
             if feature == FaceFeature.FOREHEAD:
-                # NOTE: The 81 point face landmark model has inproper ordering for the
+                # NOTE: The 81 point face landmark model has improper ordering for the
                 # forehead feature. This is us correcting the point ordering for
                 # better classification and rendering
                 forehead_points = points[slice(*point_slice)]

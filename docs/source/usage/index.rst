@@ -20,11 +20,12 @@ responsibility of these names.
 
 * | :attr:`~facelift.types.Point`
   | Describes an (x, y) coordinate relative to a specific frame.
-  | Represented by a :class:`numpy.ndarray` of shape (2) of type :data:`numpy.int64`.
+  | Represented by a :class:`numpy.ndarray` of shape ``(2,)`` of type
+      :data:`numpy.int64`.
 
 * | :attr:`~facelift.types.PointSequence`
   | Describes a sequence of points that typically define a feature.
-  | Represented by a :class:`numpy.ndarray` of shape (Any, 2) of type
+  | Represented by a :class:`numpy.ndarray` of shape ``(Any, 2)`` of type
       :data:`numpy.int64`.
 
 * | :class:`~facelift.types.FaceFeature`
@@ -37,14 +38,40 @@ responsibility of these names.
       :class:`~facelift.types.FaceFeature` to :attr:`~facelift.types.PointSequence`
       to describe the detected face features.
 
+* | :attr:`~facelift.types.Encoding`
+  | Describes an encoded face frame that can later be used to recognize the same face.
+  | Represented by a :class:`numpy.ndarray` of shape ``(128,)`` of type
+      :data:`numpy.int64`
 
-Reading Frames
-==============
+----
 
+.. include:: reading-frames.rst
 
-Detecting Faces
-===============
+----
 
+.. include:: rendering-frames.rst
 
-Drawing Face Features
-=====================
+----
+
+.. include:: transforming-frames.rst
+
+----
+
+.. include:: drawing-on-frames.rst
+
+----
+
+.. include:: detecting-faces.rst
+
+----
+
+.. include:: recognizing-faces.rst
+
+----
+
+At this point you should have enough details to get started using some of the features
+available in this package.
+If you find anything that you think could be improved, you can interact with development
+in the `Facelift GitHub`_ repository.
+
+🎉 Thanks for reading through these docs! 🎉

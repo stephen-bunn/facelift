@@ -9,7 +9,7 @@ tests seems a bit overkill. The included tests are simply ensuring that inputs a
 outputs are expected types with generic value checks.
 
 The only real functionality being tested here is that of
-:func:`~.detect.helpers.get_normalized_frame` as that is the only method that is used
+:func:`~.helpers.get_normalized_frame` as that is the only method that is used
 externally of the :mod:`~.helpers` module.
 """
 
@@ -31,8 +31,9 @@ from hypothesis.strategies import (
     sampled_from,
 )
 
-from facelift.content.capture import iter_media_frames
-from facelift.detect.helpers import (
+from facelift.capture import iter_media_frames
+from facelift.detect import BasicFaceDetector
+from facelift.helpers import (
     DEFAULT_NORMALIZED_FACE_SIZE,
     DEFAULT_NORMALIZED_LEFT_EYE_POSTION,
     get_eye_angle,
@@ -42,10 +43,9 @@ from facelift.detect.helpers import (
     get_eye_positions,
     get_normalized_frame,
 )
-from facelift.detect.landmark import BasicFaceDetector
 from facelift.types import Face, FaceFeature, Frame
 
-from ..strategies import face, frame, image_path, point_sequence
+from .strategies import face, frame, image_path, point_sequence
 
 
 @composite
@@ -149,8 +149,8 @@ def test_get_normalized_frame(filepath: Path, size: int, offset: float):
 
 @given(frame(), face_with_eyes())
 def test_get_normalized_frame_uses_defaults(test_frame: Frame, test_face: Face):
-    with patch("facelift.detect.helpers.cv2") as mocked_cv2, patch(
-        "facelift.detect.helpers.get_eye_distance"
+    with patch("facelift.helpers.cv2") as mocked_cv2, patch(
+        "facelift.helpers.get_eye_distance"
     ) as mocked_get_eye_distance:
         # forcing return value of get_eye_distance to be 1 to avoid randomly getting
         # zero division errors from our random face generation

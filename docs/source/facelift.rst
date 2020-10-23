@@ -14,28 +14,30 @@ Facelift Package
 ----
 
 
-``facelift.content``
+``facelift.capture``
 --------------------
 
-.. automodule:: facelift.content
-
-
-``facelift.content.capture``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: facelift.content.capture
+.. automodule:: facelift.capture
    :members:
 
-``facelift.content.transform``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: facelift.content.transform
+----
+
+
+``facelift.transform``
+----------------------
+
+.. automodule:: facelift.transform
    :members:
 
-``facelift.content.magic``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: facelift.content.magic
+----
+
+
+``facelift.magic``
+------------------
+
+.. automodule:: facelift.magic
    :members:
 
 
@@ -49,16 +51,23 @@ Facelift Package
    :members:
 
 
-``facelift.detect.landmark``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----
 
-.. automodule:: facelift.detect.landmark
+
+``facelift.encode``
+-------------------
+
+.. automodule:: facelift.encode
    :members:
 
-``facelift.detect.helpers``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: facelift.detect.helpers
+----
+
+
+``facelift.helpers``
+--------------------
+
+.. automodule:: facelift.helpers
    :members:
 
 

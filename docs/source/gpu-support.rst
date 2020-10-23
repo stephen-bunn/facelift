@@ -2,7 +2,7 @@ GPU Support
 ===========
 
 To drastically speed up the processing and detection of face features we need to
-manually build both ``opencv`` and ``dlib`` for the machine's GPU.
+manually build both OpenCV_ and dlib_ for the machine's GPU.
 To do this we need to override the prebuilt CPU-only libraries included in the default
 installation of the package.
 
@@ -15,10 +15,12 @@ installation of the package.
 Building OpenCV
 ---------------
 
-TODO
+.. todo::
+   Need to write a guide for building OpenCV_ with GPU support for each platform.
 
 
 Building Dlib
 -------------
 
-TODO
+.. todo::
+   Need to write a guide for building dlib_ with GPU support for each platform.

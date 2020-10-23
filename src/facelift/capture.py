@@ -18,7 +18,7 @@ following:
 .. code-block:: python
 
     from pathlib import Path
-    from facelift.content.capture import iter_media_frames
+    from facelift.capture import iter_media_frames
 
     MY_FILE = Path("~/my-file.mp4").expanduser()
     for frame in iter_media_frames(MY_FILE):
@@ -32,7 +32,7 @@ If you want to instead iterate over the frames from a webcam, you should use the
 
 .. code-block:: python
 
-    from facelift.content.capture import iter_stream_frames
+    from facelift.capture import iter_stream_frames
     # will default the device id to a value of 0
     # this means OpenCV will attempt to discover the first available webcam
     for frame in iter_stream_frames():
@@ -51,8 +51,8 @@ from typing import Generator, Optional, Union
 import cv2
 import numpy
 
-from ..types import Frame, MediaType
 from .magic import get_media_type
+from .types import Frame, MediaType
 
 
 @contextmanager
@@ -71,13 +71,13 @@ def media_capture(
 
     Examples:
         >>> # build a media capture for a specific media file
-        >>> from facelift.content.capture import media_capture
+        >>> from facelift.capture import media_capture
         >>> with media_capture("/home/a-user/Desktop/test.mp4") as capture:
         ...     print(capture)
         <VideoCapture 0x1234567890>
 
         >>> # build a media capture around the first available webcam
-        >>> from facelift.content.capture import media_capture
+        >>> from facelift.capture import media_capture
         >>> with media_capture(0) as capture:
         ...     print(capture)
         <VideoCapture 0x1234567890>
@@ -124,7 +124,7 @@ def file_capture(filepath: Path) -> Generator[cv2.VideoCapture, None, None]:
 
     Examples:
         >>> from pathlib import Path
-        >>> from facelift.content.capture import file_capture
+        >>> from facelift.capture import file_capture
         >>> MY_FILEPATH = Path("~/my-file.mp4").expanduser()
         >>> with file_capture(MY_FILEPATH) as capture:
         ...     print(capture)
@@ -168,13 +168,13 @@ def stream_capture(
 
     Examples:
         >>> # build a frame capture from the first available webcam
-        >>> from facelift.content.capture import stream_capture
+        >>> from facelift.capture import stream_capture
         >>> with stream_capture() as capture:
         ...     print(capture)
         <VideoCapture 0x1234567890>
 
         >>> # build a frame capture from the second available webcam
-        >>> from facelift.content.capture import stream_capture
+        >>> from facelift.capture import stream_capture
         >>> with stream_capture(1) as capture:
         ...     print(capture)
         <VideoCapture 0x1234567890>
@@ -226,7 +226,7 @@ def iter_media_frames(
 
     Examples:
         >>> from pathlib import Path
-        >>> from facelift.content.capture import iter_media_frames
+        >>> from facelift.capture import iter_media_frames
         >>> MEDIA_PATH = Path("~/my-media.mp4").expanduser()
         >>> for frame in iter_media_frames(MEDIA_PATH):
         ...     # do something with the frame
@@ -259,11 +259,11 @@ def iter_stream_frames(
 
     By default this iterator will attempt to connect to the first available webcam and
     yield the webcam's streamed frames.
-    You can specifiy the appropriate device index 0-99 (0 being the default), or a
+    You can specify the appropriate device index 0-99 (0 being the default), or a
     custom stream type defined by the `OpenCV video IO enum <https://bit.ly/3cctIN8>`_.
 
     Examples:
-        >>> from facelift.content.capture import iter_stream_frames
+        >>> from facelift.capture import iter_stream_frames
         >>> # iterate over frames available from the second available webcam
         >>> for frame in iter_stream_frames(1):
         ...     # do something with the frame

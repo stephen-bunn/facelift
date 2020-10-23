@@ -5,6 +5,8 @@
 """Contains base Invoke task functions and groups."""
 
 import pathlib
+import webbrowser
+from tempfile import NamedTemporaryFile
 
 import invoke
 import toml
@@ -51,7 +53,10 @@ def profile(ctx, filename, calltree=False):
             )
         else:
             report.info(ctx, "profile", f"profiling script {filepath!s}")
-            ctx.run(f"vprof -c cmhp {filepath!s}")
+            report_result = ctx.run(f"pyinstrument -r html {filepath!s}", hide="out")
+            with NamedTemporaryFile("w", delete=False, suffix=".html") as file_handle:
+                file_handle.write(report_result.stdout)
+                webbrowser.open(f"file://{file_handle.name!s}")
 
 
 @invoke.task(post=[package.test])

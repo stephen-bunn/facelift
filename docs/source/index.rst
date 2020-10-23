@@ -43,11 +43,11 @@ This project is my own attempt to provide decent face feature detection when you
 want to think too hard about it.
 We try to get as close as possible to a single ``pip`` install and still provide
 effective detection and recognition in Python.
-However, we do have several system dependencies that are necesary, see
+However, we do have several system dependencies that are necessary, see
 :ref:`system-requirements` for more details.
 
 Below is a simple example of full face feature detection and rendering out to a standard
-OpenCV window using some of the features available in Facelift.
+OpenCV_ window using some of the features available in Facelift.
 **To get started using this package, please see the** :ref:`getting-started` **guide.**
 
 .. literalinclude:: _static/assets/examples/basic_face_detection.py
@@ -63,7 +63,7 @@ User Documentation
    :maxdepth: 1
 
    getting-started
-   usage
+   usage/index
    contributing
    code-of-conduct
    changelog

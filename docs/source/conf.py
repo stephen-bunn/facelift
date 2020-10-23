@@ -61,6 +61,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx_autodoc_typehints",
     "sphinx_tabs.tabs",
     "hoverxref.extension",
@@ -89,6 +90,9 @@ set_type_checking_flag = True
 typehints_fully_qualified = False
 always_document_param_types = True
 typehints_document_rtype = True
+
+# Todo settings
+todo_include_todos = True
 
 # Hoverxref settings
 hoverxref_role_types = {
@@ -127,11 +131,15 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-# exclude_patterns = []
+exclude_patterns = ["_links.rst"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
+# Handle global project external link references
+rst_epilog = ""
+with open("./_links.rst", "r") as file_handle:
+    rst_epilog = file_handle.read()
 
 # -- Options for HTML output -------------------------------------------------
 

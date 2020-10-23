@@ -13,13 +13,13 @@ import pytest
 from hypothesis import given, settings
 from hypothesis.strategies import dictionaries, just
 
+from facelift.capture import iter_media_frames
 from facelift.constants import (
     BASIC_FACE_DETECTOR_MODEL_NAME,
     FULL_FACE_DETECTOR_MODEL_NAME,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from facelift.content.capture import iter_media_frames
-from facelift.detect.landmark import (
+from facelift.detect import (
     BaseLandmarkDetector,
     BasicFaceDetector,
     FullFaceDetector,
@@ -29,7 +29,7 @@ from facelift.detect.landmark import (
 )
 from facelift.types import Face, FaceFeature
 
-from ..strategies import (
+from .strategies import (
     face_feature,
     face_shape,
     image_path,

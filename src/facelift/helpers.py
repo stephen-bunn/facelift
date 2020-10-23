@@ -19,7 +19,7 @@ from typing import Optional, Tuple
 import cv2
 import numpy
 
-from ..types import Face, FaceFeature, Frame
+from .types import Face, FaceFeature, Frame
 
 DEFAULT_NORMALIZED_FACE_SIZE = 256
 DEFAULT_NORMALIZED_LEFT_EYE_POSTION = (0.35, 0.35)
@@ -129,7 +129,7 @@ def get_normalized_frame(
     Examples:
         Get a normalized face frame from a detected face from the given frame:
 
-        >>> from facelift.detect.helpers import get_normalized_frame
+        >>> from facelift.helpers import get_normalized_frame
         >>> normalized_frame = get_normalized_frame(frame, face)
 
     Args:

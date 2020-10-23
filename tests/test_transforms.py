@@ -12,10 +12,10 @@ import pytest
 from hypothesis import given
 from hypothesis.strategies import floats, integers, just, sampled_from, tuples
 
-from facelift.content import transform
+from facelift import transform
 from facelift.types import Frame
 
-from ..strategies import frame
+from .strategies import frame
 
 
 @given(frame())
@@ -224,7 +224,7 @@ def test_flip_returns_inverted_frame(frame: Frame):
 
 @given(frame())
 def test_grayscale(frame: Frame):
-    with patch("facelift.content.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
+    with patch("facelift.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
         transform.grayscale(frame)
 
     mocked_cv2_cvtColor.assert_called_once_with(src=frame, code=cv2.COLOR_BGR2GRAY)
@@ -232,7 +232,7 @@ def test_grayscale(frame: Frame):
 
 @given(frame())
 def test_rgb(frame: Frame):
-    with patch("facelift.content.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
+    with patch("facelift.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
         transform.rgb(frame)
 
     mocked_cv2_cvtColor.assert_called_once_with(src=frame, code=cv2.COLOR_BGR2RGB)

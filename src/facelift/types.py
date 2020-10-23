@@ -17,6 +17,8 @@ Attributes:
     PointSequence (``NDArray[(Any, 2), Int32]``):
         A sequence of points that is typically used to describe a face feature or a line
         during rendering.
+    Encoding (``NDArray[(128,), Int32]``):
+        A 128 dimension encoding of a detected face for a given frame.
 
     Detector (Callable[[:attr:`~Frame`, :class:`int`], :attr:`~PointSequence`]):
         Callable that takes a frame and an upsample count and discovers the bounds of
@@ -32,6 +34,9 @@ from typing import Callable, Dict, List, Tuple, Type
 
 import dlib
 import numpy
+from typing_extensions import (  # NOTE: extensions not required with Python >=3.9
+    Protocol,
+)
 
 # XXX: Numpy does not currently support typing, so we are forced to hack around this for
 # now. There are several other projects that are WIP to provide some typing around
@@ -42,6 +47,7 @@ import numpy
 Frame = Type[numpy.ndarray]  # FIXME: this type is NDArray[(Any, Any, 3), UInt8]
 Point = Tuple[int, int]  # FIXME: this type is NDArray[(2,), Int]
 PointSequence = List[Point]  # FIXME: this type is NDArray[(Any, 2), Int]
+Encoding = Type[numpy.ndarray]  # FIXME: this type is NDArray[(128,), Int]
 
 # Type manually derived from `dlib.fhog_object_detector` for mypy's sake
 # http://dlib.net/python/index.html#dlib.fhog_object_detector
@@ -57,17 +63,50 @@ Detector = Callable[[Frame, int], PointSequence]
 Predictor = Callable[[Frame, dlib.rectangle], dlib.full_object_detection]
 
 
+# Type manually derived from `dlib.face_recognition_model_v1` for mypy's sake
+# http://dlib.net/python/index.html#dlib.face_recognition_model_v1
+class Encoder(Protocol):
+    """Protocol class for ``dlib.face_recognition_model_v1.``."""
+
+    def compute_face_descriptor(
+        self,
+        frame: Frame,
+        face: dlib.full_object_detection,
+        num_jitters: int = 0,
+        padding: float = 0.25,
+    ) -> dlib.vector:
+        """Compute a descriptor for a detected face frame.
+
+        Args:
+            frame (:attr:`~.types.Frame`):
+                The frame containing just the detected face.
+            face (:class:`dlib.full_object_detection`):
+                The raw detected face bounds within the given face frame.
+            num_jitters (int):
+                The number of jitters to run through the dector projection.
+                Defaults to 0.
+            padding (float):
+                The default padding around the face.
+                Defaults to 0.25.
+
+        Returns:
+            dlib.vector:
+                The face descriptor (encoding).
+        """
+
+        ...
+
+
 class MediaType(Enum):
     """Enumeration of acceptable media types for processing.
 
     Attributes:
         IMAGE:
-            Defines media that contains a single frame to process.
+            Defines media that contains just a single frame to process.
         VIDEO:
-            Defines media that contains a known number of frames to process that is more
-            than more than 1.
+            Defines media that contains a known number of frames to process.
         STREAM:
-            Defines media that contains an unknown number of frames to process
+            Defines media that contains an unknown number of frames to process.
     """
 
     IMAGE = "image"
@@ -90,7 +129,7 @@ class FaceFeature(Enum):
         RIGHT_EYE:
             The external and internal bounds of the right eye of a face.
         LEFT_EYE:
-            The extenral and internal bounds of the left eye of a face.
+            The external and internal bounds of the left eye of a face.
         RIGHT_EYEBROW:
             The right eyebrow of a face.
         LEFT_EYEBROW:
@@ -115,6 +154,8 @@ class Face:
     """Describes a detected face.
 
     Args:
+        raw (:class:`dlib.full_object_detection`):
+            The raw ``dlib`` object detection container.
         landmarks (Dict[:class:`~FaceFeature`, :attr:`~PointSequence`]):
             Mapping of extracted face features to the sequence of points describing
             those features.
@@ -122,5 +163,24 @@ class Face:
             The base non-normalized cropped frame of just the face.
     """
 
+    raw: dlib.full_object_detection
     landmarks: Dict[FaceFeature, PointSequence]
     frame: Frame
+
+    @property
+    def rectangle(self) -> PointSequence:
+        """Point sequence representation of the detected face's bounds.
+
+        This property is useful for properly positioning text around the detected face
+        as the :func:`~.render.draw_text` needs a text container to be defined.
+
+        Returns:
+            :attr:`~.types.PointSequence`:
+                A sequence of 2 points indicating the top-left and bottom-right corners
+                of the detected face's bounds.
+        """
+
+        start = self.raw.rect.tl_corner()
+        end = self.raw.rect.br_corner()
+
+        return numpy.asarray([[start.x, start.y], [end.x, end.y]])

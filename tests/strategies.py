@@ -33,6 +33,8 @@ from hypothesis.strategies import (
 
 from facelift.constants import (
     BASIC_FACE_DETECTOR_MODEL_NAME,
+    DLIB_RESNET_ENCODER_V1_MODEL_NAME,
+    ENCODERS_DIRPATH,
     FULL_FACE_DETECTOR_MODEL_NAME,
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
@@ -163,6 +165,19 @@ def landmark_model_path(draw) -> SearchStrategy[Path]:
 
 
 @composite
+def resnet_model_path(draw) -> SearchStrategy[Path]:
+    """Composite strategy for getting an included resnet model path."""
+
+    return draw(
+        just(
+            ENCODERS_DIRPATH.joinpath(
+                draw(sampled_from([DLIB_RESNET_ENCODER_V1_MODEL_NAME]))
+            )
+        )
+    )
+
+
+@composite
 def media(draw) -> SearchStrategy[Tuple[Path, MediaType]]:
     """Composite strategy for getting a testing filepath and the desired media type."""
 
@@ -278,6 +293,7 @@ def face_shape(draw) -> SearchStrategy[dlib.full_object_detection]:
 @composite
 def face(
     draw,
+    raw_strategy: Optional[SearchStrategy[dlib.full_object_detection]] = None,
     frame_strategy: Optional[SearchStrategy[Frame]] = None,
     landmarks_strategy: Optional[
         SearchStrategy[Dict[FaceFeature, PointSequence]]
@@ -298,6 +314,7 @@ def face(
     return draw(
         just(
             Face(
+                raw=draw(raw_strategy if raw_strategy else face_shape()),
                 frame=draw(frame_strategy if frame_strategy else frame()),
                 landmarks=draw(
                     landmarks_strategy

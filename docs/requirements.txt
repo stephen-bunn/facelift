@@ -5,4 +5,5 @@ sphinx-tabs
 sphinx-hoverxref
 attrs
 cached-property
+typing-extensions
 -e git://github.com/stephen-bunn/sphinx_rtd_theme.git@dracula-pro#egg=sphinx_rtd_theme

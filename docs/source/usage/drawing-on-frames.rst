@@ -165,6 +165,10 @@ Since it is **much** easier to place a rectangle, drawing text within that recta
 bounds is much easier in turn.
 This is all handled by the :func:`~.render.draw_text` function.
 
+In the below examples, we are drawing a red rectangle to visualize where the text lives
+within the defined text container.
+The defined container from the call to :func:`~.render.draw_text` will be invisible.
+
 .. code-block:: python
    :linenos:
 

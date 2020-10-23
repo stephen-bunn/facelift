@@ -71,6 +71,7 @@ class Encoder(Protocol):
     def compute_face_descriptor(
         self,
         frame: Frame,
+        face: dlib.full_object_detection,
         num_jitters: int = 0,
         padding: float = 0.25,
     ) -> dlib.vector:
@@ -79,6 +80,8 @@ class Encoder(Protocol):
         Args:
             frame (:attr:`~.types.Frame`):
                 The frame containing just the detected face.
+            face (:class:`dlib.full_object_detection`):
+                The raw detected face bounds within the given face frame.
             num_jitters (int):
                 The number of jitters to run through the dector projection.
                 Defaults to 0.
@@ -163,3 +166,21 @@ class Face:
     raw: dlib.full_object_detection
     landmarks: Dict[FaceFeature, PointSequence]
     frame: Frame
+
+    @property
+    def rectangle(self) -> PointSequence:
+        """Point sequence representation of the detected face's bounds.
+
+        This property is useful for properly positioning text around the detected face
+        as the :func:`~.render.draw_text` needs a text container to be defined.
+
+        Returns:
+            :attr:`~.types.PointSequence`:
+                A sequence of 2 points indicating the top-left and bottom-right corners
+                of the detected face's bounds.
+        """
+
+        start = self.raw.rect.tl_corner()
+        end = self.raw.rect.br_corner()
+
+        return numpy.asarray([[start.x, start.y], [end.x, end.y]])

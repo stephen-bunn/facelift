@@ -66,3 +66,12 @@ responsibility of these names.
 ----
 
 .. include:: recognizing-faces.rst
+
+----
+
+At this point you should have enough details to get started using some of the features
+available in this package.
+If you find anything that you think could be improved, you can interact with development
+in the `Facelift GitHub`_ repository.
+
+🎉 Thanks for reading through these docs! 🎉

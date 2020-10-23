@@ -135,10 +135,12 @@ class BaseEncoder(abc.ABC):
         """
 
         encoder = get_encoder(self.model_filepath)
-        face_frame: Frame = dlib.get_face_chip(frame, face.raw)
         return numpy.array(
             encoder.compute_face_descriptor(
-                face_frame, num_jitters=jitter, padding=padding
+                frame,
+                face.raw,
+                num_jitters=jitter,
+                padding=padding,
             )
         )
 
@@ -146,7 +148,6 @@ class BaseEncoder(abc.ABC):
         self,
         source_encoding: Encoding,
         known_encodings: List[Encoding],
-        tolerance: float,
     ) -> float:
         """Score a source encoding against a list of known encodings.
 
@@ -169,26 +170,22 @@ class BaseEncoder(abc.ABC):
             known_encodings (List[:attr:`~.types.Encoding`]):
                 A list of known encodings we are scoring against.
                 These encodings should all encodings from a single person's face.
-            tolerance (float):
-                The amount of tolerance to allow for in the scoring.
-                This value should be between 0.0 and 1.0
 
         Returns:
             float:
                 The score of a given encoding against a list of known encodings.
-                This value should be between 0.0 and 1.0
+                This value should be between 0.0 and 1.0 (higher is better).
         """
 
         if len(known_encodings) <= 0:
             return 0.0
 
-        return (
+        return 1.0 - (
             numpy.sum(
                 numpy.linalg.norm(
-                    x=[encoding for encoding in known_encodings] - source_encoding,
+                    x=known_encodings - source_encoding,
                     axis=1,
                 )
-                <= tolerance
             )
             / len(known_encodings)
         )

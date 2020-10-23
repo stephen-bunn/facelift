@@ -23,13 +23,13 @@ capture frames from.
 
 
 Actually opening and reading frames from content is typically performed using a mix of
-OpenCV functions that use completel different syntax for each of these types of media.
+_ functions that use completel different syntax for each of these types of media.
 For most all use cases we really shouldn't care about the differences of how
-OpenCV opens, processes, and closes media.
+OpenCV_ opens, processes, and closes media.
 So we reduced the mental overhead of this process a bit and namespaced it within the
 :mod:`~.capture` module.
 
-   This module's overall purpose is to effeciently encapsulate the OpenCV calls
+   This module's overall purpose is to effeciently encapsulate the OpenCV_ calls
    necessary to capture the frames from the given media.
 
 .. figure:: ../_static/assets/images/capture-flow.png

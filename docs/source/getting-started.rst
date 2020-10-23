@@ -41,10 +41,10 @@ Or you can build and install the package from the git repo.
 
 Installing ``opencv-python`` *should* be quick for many environments as prebuilt
 packages are provided from PyPi.
-If you find that you are building OpenCV on installation, it's likely that you are
+If you find that you are building OpenCV_ on installation, it's likely that you are
 installing an old version from ``pythonhosted.org`` which does **not** include prebuilt
 binaries.
-This will likely cause many issues with OpenCV not being built with proper support for
+This will likely cause many issues with OpenCV_ not being built with proper support for
 GTK X11 support which is necessary for reading media and opening windows.
 If you run into this, try updating your local ``pip`` to the newest version (which
 should install the dependency from PyPi).

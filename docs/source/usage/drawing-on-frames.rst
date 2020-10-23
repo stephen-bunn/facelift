@@ -2,12 +2,12 @@ Drawing on Frames
 =================
 
 We've included a few drawing features are just quick and easy to use wrappers for some
-of the builtin drawing functionality OpenCV provides by default.
+of the builtin drawing functionality OpenCV_ provides by default.
 These helper functions are found in the :mod:`~.render` module.
 The original reason we added these drawing helpers in was to make it easier to debug
 what is being detected.
 
-As these drawing features are already common to OpenCV, we will give just a quick
+As these drawing features are already common to OpenCV_, we will give just a quick
 overview of what is available in this package.
 For a more full description of the available parameters and constants, you should just
 read through the :mod:`~.render` module auto-generated documentation.
@@ -83,7 +83,7 @@ Shapes
 
 Instead of having to use a combination of just points and lines to draw everything, we
 have a few other functions that provide basic shape drawing.
-These are still mostly all just wrappers around the default functionality that OpenCV
+These are still mostly all just wrappers around the default functionality that OpenCV_
 provides.
 
 Rectangles
@@ -234,7 +234,7 @@ Container Overflow
 ~~~~~~~~~~~~~~~~~~
 
 If you don't actually want to utilize the bounding box as a container, and instead want
-to use it as basically just a big reference to start OpenCV's default text drawing, you
+to use it as basically just a big reference to start OpenCV_'s default text drawing, you
 can set ``allow_overflow`` to ``True``.
 
 

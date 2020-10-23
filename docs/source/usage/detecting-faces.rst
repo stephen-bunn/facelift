@@ -1,5 +1,3 @@
-.. _dlib: http://dlib.net/python/
-
 Detecting Faces
 ===============
 

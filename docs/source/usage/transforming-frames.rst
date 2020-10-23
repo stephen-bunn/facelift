@@ -1,5 +1,3 @@
-.. _OpenCV: https://docs.opencv.org/3.4/modules.html
-
 Transforming Frames
 ===================
 

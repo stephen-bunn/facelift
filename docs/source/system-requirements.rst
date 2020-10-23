@@ -9,7 +9,7 @@ requirements.
 `cmake <https://cmake.org/>`_
 -----------------------------
 
-This tool is necessary as `dlib <http://dlib.net/>`_ needs to be built upon install.
+This tool is necessary as dlib_ needs to be built upon install.
 
 .. tabs::
 
@@ -51,7 +51,7 @@ This tool is necessary as `dlib <http://dlib.net/>`_ needs to be built upon inst
 
 This library helps us to determine the type of content we are attempting to process.
 We need this to be able to optimally determine how to consume the data for an arbitrary
-media file since OpenCV is pretty lacking in this area.
+media file since OpenCV_ is pretty lacking in this area.
 
 .. tabs::
 

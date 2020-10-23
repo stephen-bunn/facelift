@@ -3,14 +3,14 @@ Rendering Frames
 
 Now that we are reading frames in, we probably want to be able to preview what is going
 to be processed.
-OpenCV provides a *semi-decent* window utility that we take advantage of for our basic
+OpenCV_ provides a *semi-decent* window utility that we take advantage of for our basic
 frame preview.
-If you want to display these frames in a more production-level applciation, I would
+If you want to display these frames in a more production-level application, I would
 recommend looking into using a canvas powered by OpenGL instead of relying on the hacky
-and inflexible solution provided by OpenCV.
+and inflexible solution provided by OpenCV_.
 
-   It is not within the scope of this project to provide an optimial canvas for
-   displaying the frames read in through OpenCV.
+   It is not within the scope of this project to provide an optimal canvas for
+   displaying the frames read in through OpenCV_.
    There are likely other projects out there that can display frames (numpy pixel
    arrays) or a transformed variant of this frame while taking advantage of the GPU.
 
@@ -50,7 +50,7 @@ Customization
 There are several available options that allow you to *slightly* tweak the created
 window.
 The options are fairly limited as we are just forwarding the desired tweaks to the
-creation of the window in OpenCV.
+creation of the window in OpenCV_.
 *Don't expect much in terms of flexibility of customization for these windows.*
 
 Window Title
@@ -65,15 +65,15 @@ Window Title
    with opencv_window(title="My Window") as window:
        ...
 
-This title will be used to also destroy the window as OpenCV naively destroys windows
+This title will be used to also destroy the window as OpenCV_ naively destroys windows
 based on window titles.
-This isn't such a big issue as OpenCV (and in turn the :class:`~.window.opencv_window`
+This isn't such a big issue as OpenCV_ (and in turn the :class:`~.window.opencv_window`
 manager) doesn't allow mutation of a window title once the window is opened.
 
 Window Style
 ~~~~~~~~~~~~
 
-OpenCV windows have several different style features they can pick and choose from.
+OpenCV_ windows have several different style features they can pick and choose from.
 These features are defined in the :class:`~.window.WindowStyle` object and can be joined
 together with the boolean ``|`` and passed through to the ``style`` parameter.
 
@@ -94,7 +94,7 @@ these options yourself to see what works best for you.
 Display Delay
 ~~~~~~~~~~~~~
 
-The delay at which OpenCV attempts to render frames is another feature that can be
+The delay at which OpenCV_ attempts to render frames is another feature that can be
 controlled.
 This is fairly useful when you want to slow down the frames being rendered in the window
 rather than the speed at which frames are being read.
@@ -128,7 +128,7 @@ That solution may be a better path forward if you are running into issues with t
    >>> with opencv_window(delay=1) as window:
    ...   window.delay = 0
 
-   This will very likely break the frame rendering as OpenCV will enter a waiting state
+   This will very likely break the frame rendering as OpenCV_ will enter a waiting state
    with no refresh interval when the window delay is set to 0.
 
 

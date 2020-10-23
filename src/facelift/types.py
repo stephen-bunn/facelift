@@ -129,7 +129,7 @@ class FaceFeature(Enum):
         RIGHT_EYE:
             The external and internal bounds of the right eye of a face.
         LEFT_EYE:
-            The extenral and internal bounds of the left eye of a face.
+            The external and internal bounds of the left eye of a face.
         RIGHT_EYEBROW:
             The right eyebrow of a face.
         LEFT_EYEBROW:

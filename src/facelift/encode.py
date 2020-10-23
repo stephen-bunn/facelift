@@ -4,7 +4,7 @@
 
 """Contains the available builtin face encoders.
 
-The included encoders will handle the necessarys steps to take a given frame and
+The included encoders will handle the necessary steps to take a given frame and
 detected face to generate an encoding that can be used for future recognition.
 I highly recommend that you use the :class:`~.detect.BasicFaceDetector` if attempting to
 encode faces as it is lightweight and other detectors don't provide any added benefit to
@@ -16,7 +16,7 @@ Examples:
     >>> from facelift.encode import BasicFaceEncoder
     >>> detector = BasicFaceDetector()
     >>> encoder = BasicFaceEncoder()
-    >>> for frame in iter_meida_frames(MEDIA_FILEPATH):
+    >>> for frame in iter_media_frames(MEDIA_FILEPATH):
     ...     for face in detector.iter_faces(frame):
     ...         face_encoding = encoder.get_encoding(frame, face)
 
@@ -112,7 +112,7 @@ class BaseEncoder(abc.ABC):
             >>> from facelift.encode import BasicFaceEncoder
             >>> detector = BasicFaceDetector()
             >>> encoder = BasicFaceEncoder()
-            >>> for frame in iter_meida_frames(MEDIA_FILEPATH):
+            >>> for frame in iter_media_frames(MEDIA_FILEPATH):
             ...     for face in detector.iter_faces(frame):
             ...         face_encoding = encoder.get_encoding(frame, face)
 
@@ -223,7 +223,7 @@ class BasicFaceEncoder(BaseEncoder):
             >>> from facelift.encode import BasicFaceEncoder
             >>> detector = BasicFaceDetector()
             >>> encoder = BasicFaceEncoder()
-            >>> for frame in iter_meida_frames(MEDIA_FILEPATH):
+            >>> for frame in iter_media_frames(MEDIA_FILEPATH):
             ...     for face in detector.iter_faces(frame):
             ...         face_encoding = encoder.get_encoding(frame, face)
 

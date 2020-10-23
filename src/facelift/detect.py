@@ -81,7 +81,7 @@ class BaseLandmarkDetector(abc.ABC):
 
     @abc.abstractproperty
     def model_filepath(self) -> Path:  # pragma: no cover
-        """Property filepath to the landmarks model that shuold be used for detection.
+        """Property filepath to the landmarks model that should be used for detection.
 
         Raises:
             NotImplementedError: Must be implemented by subclasses
@@ -326,7 +326,7 @@ class FullFaceDetector(BaseLandmarkDetector):
         landmarks = {}
         for feature, point_slice in self.landmark_slices.items():
             if feature == FaceFeature.FOREHEAD:
-                # NOTE: The 81 point face landmark model has inproper ordering for the
+                # NOTE: The 81 point face landmark model has improper ordering for the
                 # forehead feature. This is us correcting the point ordering for
                 # better classification and rendering
                 forehead_points = points[slice(*point_slice)]

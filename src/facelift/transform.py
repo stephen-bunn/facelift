@@ -69,7 +69,7 @@ def scale(
         >>> downscaled_frame = scale(frame, 0.5)
         >>> assert downscaled_frame.shape[:1] == [256, 256]
 
-        Upscaling a frame with this method is **very** naive and unoptimal.
+        Upscaling a frame with this method is **very** naive and suboptimal.
         However, any value >1 will result in a upscaled frame.
         For example, scaling a frame to double its original size would require a scale
         factor of 2.
@@ -221,10 +221,10 @@ def resize(
             interpolation=interpolation,
         )
     elif width is not None:
-        realative_height = int(frame_height * (width / float(frame_width))) or 1
+        relative_height = int(frame_height * (width / float(frame_width))) or 1
         return cv2.resize(
             src=frame,
-            dsize=(width, realative_height),
+            dsize=(width, relative_height),
             fx=None,
             fy=None,
             interpolation=interpolation,
@@ -259,7 +259,7 @@ def rotate(
         frame (:attr:`~.types.Frame`):
             The frame to rotate
         degrees (int):
-            The number of degress to rotate the given frame
+            The number of degrees to rotate the given frame
         interpolation (int, optional):
             The type of interpolation to use in the produced rotation matrix.
             Defaults to :attr:`~DEFAULT_INTERPOLATION`.

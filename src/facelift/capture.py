@@ -259,7 +259,7 @@ def iter_stream_frames(
 
     By default this iterator will attempt to connect to the first available webcam and
     yield the webcam's streamed frames.
-    You can specifiy the appropriate device index 0-99 (0 being the default), or a
+    You can specify the appropriate device index 0-99 (0 being the default), or a
     custom stream type defined by the `OpenCV video IO enum <https://bit.ly/3cctIN8>`_.
 
     Examples:

@@ -33,6 +33,8 @@ from hypothesis.strategies import (
 
 from facelift.constants import (
     BASIC_FACE_DETECTOR_MODEL_NAME,
+    DLIB_RESNET_ENCODER_V1_MODEL_NAME,
+    ENCODERS_DIRPATH,
     FULL_FACE_DETECTOR_MODEL_NAME,
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
@@ -157,6 +159,19 @@ def landmark_model_path(draw) -> SearchStrategy[Path]:
                         ]
                     )
                 )
+            )
+        )
+    )
+
+
+@composite
+def resnet_model_path(draw) -> SearchStrategy[Path]:
+    """Composite strategy for getting an included resnet model path."""
+
+    return draw(
+        just(
+            ENCODERS_DIRPATH.joinpath(
+                draw(sampled_from([DLIB_RESNET_ENCODER_V1_MODEL_NAME]))
             )
         )
     )

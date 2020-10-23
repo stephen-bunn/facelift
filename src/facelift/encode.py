@@ -86,7 +86,7 @@ class BaseEncoder(abc.ABC):
     """
 
     @abc.abstractproperty
-    def model_filepath(self) -> Path:
+    def model_filepath(self) -> Path:  # pragma: no cover
         """Property filepath to the encoding model that should be used for encoding.
 
         Raises:

@@ -36,7 +36,7 @@ Upon instantiation of the subclass, that model will be open and read into memory
 
 
 Each instance of these subclass comes with a helpful little generator that will produce
-instances of :class:`~.types.Face` for a given :class:`~.types.Frame`.
+instances of :class:`~.types.Face` for a given :attr:`~.types.Frame`.
 This generator is called :meth:`~.detect.BaseLandmarkDetector.iter_faces` and will
 utilize the loaded model to handle feature detection ✨ automagically ✨.
 

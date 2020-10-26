@@ -86,7 +86,7 @@ We haven't yet actually performed any recognition yet.
 But now that we have some registered encodings, we can start taking newly detected faces
 and score them against our known face encodings to get a good idea whose face we are
 detecting.
-This scoring is provided by the :meth:`~.encode.BasicFaceEncoder.score_encoding` method
+This scoring is provided by the :meth:`~.encode.BaseEncoder.score_encoding` method
 which takes an unknown face encoding and a list of known faces for a **single** person
 to see how similar they are.
 The closer the score is to ``0.0``, the more likely that face encoding is the same as

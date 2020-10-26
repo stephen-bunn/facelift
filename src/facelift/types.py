@@ -74,7 +74,7 @@ class Encoder(Protocol):
         face: dlib.full_object_detection,
         num_jitters: int = 0,
         padding: float = 0.25,
-    ) -> dlib.vector:
+    ) -> dlib.vector:  # pragma: no cover
         """Compute a descriptor for a detected face frame.
 
         Args:

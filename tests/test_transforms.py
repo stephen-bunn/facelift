@@ -205,7 +205,7 @@ def test_flip_returns_same_frame_with_no_axis_specified(frame: Frame):
 
 
 @given(frame())
-def test_flip_returns_verically_flipped_frame(frame: Frame):
+def test_flip_returns_vertically_flipped_frame(frame: Frame):
     flipped_frame = transform.flip(frame, x_axis=True)
     assert (flipped_frame[0][0] == frame[0][-1]).all()  # type: ignore
 

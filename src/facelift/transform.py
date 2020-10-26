@@ -487,7 +487,7 @@ def rgb(frame: Frame) -> Frame:
         >>> rgb_frame = rgb(bgr_frame)
 
     Args:
-        frame (:attr:`~.types.Frame`): The BGR frame to conver to RGB
+        frame (:attr:`~.types.Frame`): The BGR frame to convert to RGB
 
     Returns:
         :attr:`~.types.Frame`: The new RGB frame

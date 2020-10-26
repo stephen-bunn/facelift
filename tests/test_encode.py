@@ -84,6 +84,5 @@ def test_BasicFaceEncoder_score_encoding(
 ):
     encoder = BasicFaceEncoder()
     score = encoder.score_encoding(source_encoding, known_encodings)
-    print(score)
     assert isinstance(score, float)
     assert score >= 0

@@ -223,6 +223,29 @@ def test_flip_returns_inverted_frame(frame: Frame):
 
 
 @given(frame())
+def test_adjust_returns_same_frame_with_no_options_specified(frame: Frame):
+    adjusted_frame = transform.adjust(frame)
+    assert (adjusted_frame == frame).all()
+    assert adjusted_frame is frame
+
+
+@given(frame(), floats(min_value=0, max_value=2.0))
+def test_adjust_defaults_brightness_to_0(frame: Frame, sharpness: float):
+    with patch("facelift.transform.cv2.convertScaleAbs") as mocked_cv2_convert:
+        transform.adjust(frame, sharpness=sharpness)
+
+    mocked_cv2_convert.assert_called_once_with(src=frame, alpha=sharpness, beta=0)
+
+
+@given(frame(), integers(min_value=0, max_value=10))
+def test_adjust_defaults_sharpness_to_1(frame: Frame, brightness: int):
+    with patch("facelift.transform.cv2.convertScaleAbs") as mocked_cv2_convert:
+        transform.adjust(frame, brightness=brightness)
+
+    mocked_cv2_convert.assert_called_once_with(src=frame, alpha=1.0, beta=brightness)
+
+
+@given(frame())
 def test_grayscale(frame: Frame):
     with patch("facelift.transform.cv2.cvtColor") as mocked_cv2_cvtColor:
         transform.grayscale(frame)

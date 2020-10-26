@@ -152,11 +152,12 @@ class BaseEncoder(abc.ABC):
     ) -> float:
         """Score a source encoding against a list of known encodings.
 
-        .. important:
+        .. important::
             This score is the average Euclidian distance between the given encodings.
             So the most similar encodings will result in a score closest to ``0.0``.
 
-            If no encodings are given
+            If no encodings are given, then we will default to using :data:`math.inf`
+            as it is the greatest distance from ``0.0`` that we can define.
 
         Examples:
             >>> from facelift.capture import iter_media_frames

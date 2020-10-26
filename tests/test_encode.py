@@ -4,18 +4,22 @@
 
 """Contains tests for basic dlib face encoding."""
 
+import math
 from pathlib import Path
+from typing import List, Optional
 
 import dlib
+import numpy
 import pytest
 from hypothesis import given, settings
+from hypothesis.strategies import just, lists, none
 
 from facelift.capture import iter_media_frames
 from facelift.detect import BasicFaceDetector, FullFaceDetector
 from facelift.encode import BasicFaceEncoder, get_encoder
-from facelift.types import Encoder, Face
+from facelift.types import Encoder, Encoding, Face
 
-from .strategies import image_path, pathlib_path, resnet_model_path
+from .strategies import encoding, image_path, pathlib_path, resnet_model_path
 
 
 @settings(deadline=None)
@@ -48,3 +52,38 @@ def test_BasicFaceEncoder_raises_ValueError_with_faces_from_FullFaceDetector(
 
     with pytest.raises(ValueError):
         encoder.get_encoding(frame, face)
+
+
+@settings(deadline=None)
+@given(image_path())
+def test_BasicFaceEncoder_get_encoding(media_filepath: Path):
+    encoder = BasicFaceEncoder()
+    detector = BasicFaceDetector()
+    frame = next(iter_media_frames(media_filepath))
+    face = next(detector.iter_faces(frame))
+    assert isinstance(face, Face)
+
+    encoding = encoder.get_encoding(frame, face)
+    assert isinstance(encoding, numpy.ndarray)
+    assert encoding.shape == (128,)
+
+
+@given(none(), just([]))
+def test_BasicFaceEncoder_get_encoding_returns_infinity_with_no_known_encodings(
+    source_encoding: Optional[Encoding], known_encodings: List[Encoding]
+):
+    encoder = BasicFaceEncoder()
+    score = encoder.score_encoding(source_encoding, known_encodings)  # noqa
+    assert isinstance(score, float)
+    assert score == math.inf
+
+
+@given(encoding(), lists(encoding(), min_size=1))
+def test_BasicFaceEncoder_score_encoding(
+    source_encoding: Encoding, known_encodings: List[Encoding]
+):
+    encoder = BasicFaceEncoder()
+    score = encoder.score_encoding(source_encoding, known_encodings)
+    print(score)
+    assert isinstance(score, float)
+    assert score >= 0

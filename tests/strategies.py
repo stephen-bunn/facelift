@@ -39,7 +39,15 @@ from facelift.constants import (
     LANDMARKS_DIRPATH,
     PARTIAL_FACE_DETECTOR_MODEL_NAME,
 )
-from facelift.types import Face, FaceFeature, Frame, MediaType, Point, PointSequence
+from facelift.types import (
+    Encoding,
+    Face,
+    FaceFeature,
+    Frame,
+    MediaType,
+    Point,
+    PointSequence,
+)
 
 from .buffers import SAMPLE_MAGIC
 from .constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
@@ -328,3 +336,10 @@ def face(
             )
         )
     )
+
+
+@composite
+def encoding(draw, size: int = 128) -> SearchStrategy[Encoding]:
+    """Composite strategy for generating ResNet encoding arrays."""
+
+    return draw(numpy_arrays(numpy.float64, (size,), elements=floats(-1, 1)))

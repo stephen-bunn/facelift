@@ -44,6 +44,7 @@ Attributes:
 
 import abc
 from functools import lru_cache
+from math import inf
 from pathlib import Path
 from typing import List, Optional
 
@@ -151,6 +152,12 @@ class BaseEncoder(abc.ABC):
     ) -> float:
         """Score a source encoding against a list of known encodings.
 
+        .. important:
+            This score is the average Euclidian distance between the given encodings.
+            So the most similar encodings will result in a score closest to ``0.0``.
+
+            If no encodings are given
+
         Examples:
             >>> from facelift.capture import iter_media_frames
             >>> from facelift.detect import BasicFaceDetector
@@ -174,21 +181,15 @@ class BaseEncoder(abc.ABC):
         Returns:
             float:
                 The score of a given encoding against a list of known encodings.
-                This value should be between 0.0 and 1.0 (higher is better).
+                This value should be greater than 0.0 (lower is better).
         """
 
         if len(known_encodings) <= 0:
-            return 0.0
+            return inf
 
-        return 1.0 - (
-            numpy.sum(
-                numpy.linalg.norm(
-                    x=known_encodings - source_encoding,
-                    axis=1,
-                )
-            )
-            / len(known_encodings)
-        )
+        return numpy.sum(
+            [numpy.linalg.norm(known - source_encoding) for known in known_encodings]
+        ) / len(known_encodings)
 
 
 class BasicFaceEncoder(BaseEncoder):

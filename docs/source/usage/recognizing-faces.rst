@@ -89,7 +89,7 @@ detecting.
 This scoring is provided by the :meth:`~.encode.BasicFaceEncoder.score_encoding` method
 which takes an unknown face encoding and a list of known faces for a **single** person
 to see how similar they are.
-The closer the score is to ``1.0``, the more likely that face encoding is the same as
+The closer the score is to ``0.0``, the more likely that face encoding is the same as
 those described in the list of known encodings.
 
 .. code-block:: python
@@ -158,7 +158,7 @@ the best fit for each detected face my webcam stream.
                )
 
                # get the best scored name for this face
-               best_name = max(scores, key=lambda x: x[0])[-1]
+               best_name = min(scores, key=lambda x: x[0])[-1]
 
                # draw the best name right above the face
                frame = draw_text(
@@ -176,7 +176,7 @@ the best fit for each detected face my webcam stream.
 
 
 You can see that when we are printing results in the terminal, the score for my name is
-closer to ``1.0`` than the score we get for Terry.
+closer to ``0.0`` than the score we get for Terry.
 
 .. raw:: html
 

@@ -52,6 +52,8 @@ from facelift.types import (
 from .buffers import SAMPLE_MAGIC
 from .constants import IMAGES_DIRPATH, VIDEOS_DIRPATH
 
+MAX_POINT = 2 ^ 32 - 1
+
 
 @composite
 def builtin_types(
@@ -108,7 +110,7 @@ def builtin_types(
 
 @composite
 def pathlib_path(draw) -> SearchStrategy[Path]:
-    """Composite strategy for buliding a random :class:`~pathlib.Path` instance."""
+    """Composite strategy for building a random :class:`~pathlib.Path` instance."""
 
     return draw(
         just(Path(*draw(lists(text(alphabet=printable, min_size=1), min_size=1))))
@@ -198,15 +200,32 @@ def media(draw) -> SearchStrategy[Tuple[Path, MediaType]]:
 
 
 @composite
-def point(draw) -> SearchStrategy[Point]:
+def point(
+    draw, elements_strategy: Optional[SearchStrategy[int]] = None, unique: bool = False
+) -> SearchStrategy[Point]:
     """Composite strategy to generate a single Point type."""
 
-    return draw(numpy_arrays(numpy.uint32, 2))
+    return draw(
+        numpy_arrays(
+            numpy.uint32,
+            2,
+            elements=(
+                elements_strategy
+                if elements_strategy
+                else integers(min_value=0, max_value=MAX_POINT)
+            ),
+            unique=unique,
+        )
+    )
 
 
 @composite
 def point_sequence(
-    draw, min_size: int = 1, max_size: int = 32
+    draw,
+    elements_strategy: Optional[SearchStrategy[int]] = None,
+    min_size: int = 1,
+    max_size: int = 32,
+    unique: bool = False,
 ) -> SearchStrategy[PointSequence]:
     """Composite strategy to generate a PointSequence type.
 
@@ -225,7 +244,14 @@ def point_sequence(
 
     return draw(
         numpy_arrays(
-            numpy.uint32, (draw(integers(min_value=min_size, max_value=max_size)), 2)
+            numpy.uint32,
+            (draw(integers(min_value=min_size, max_value=max_size)), 2),
+            elements=(
+                elements_strategy
+                if elements_strategy
+                else integers(min_value=0, max_value=MAX_POINT)
+            ),
+            unique=unique,
         )
     )
 

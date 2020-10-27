@@ -89,6 +89,26 @@ def _get_positioned_index(
     position: Position,
     offset: Optional[int] = None,
 ) -> int:
+    """Build the appropriate index for positioning some content in some container size.
+
+    Args:
+        index (int):
+            The starting index of the content to be positioned within a container size.
+        container_size (int):
+            The total size of the container we are trying to position content within.
+        content_size (int):
+            The size of the content we are attempting to place within the container.
+        position (:class:`~.render.Position`):
+            The position we are using to place contin within the container.
+        offset (Optional[int], optional):
+            An optional offset to apply to the built positioned index.
+            Defaults to None.
+
+    Returns:
+        int:
+            The built index for the content to be placed within the container size.
+    """
+
     base_index = index
     if position == Position.CENTER:
         base_index += (container_size - content_size) // 2
@@ -288,7 +308,7 @@ def draw_contour(
     if isinstance(line, list):
         line = numpy.asarray(line)
 
-    convex_hull = cv2.convexHull(points=line)
+    convex_hull = cv2.convexHull(points=line.astype("int32"))  # type: ignore
     cv2.drawContours(
         image=frame,
         contours=[convex_hull],
@@ -428,6 +448,9 @@ def draw_text(
         :attr:`~.types.Frame` The frame with the text drawn on it
     """
 
+    if len(text) <= 0:
+        return frame
+
     start_x, start_y = tuple(start)
     end_x, end_y = tuple(end)
 
@@ -475,7 +498,7 @@ def draw_text(
         fontScale=font_scale,
         color=color,
         thickness=thickness,
-        lineType=line_type,
+        lineType=line_type.value,
     )
 
     return frame

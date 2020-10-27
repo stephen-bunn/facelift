@@ -73,7 +73,7 @@ def test_BasicFaceEncoder_get_encoding_returns_infinity_with_no_known_encodings(
     source_encoding: Optional[Encoding], known_encodings: List[Encoding]
 ):
     encoder = BasicFaceEncoder()
-    score = encoder.score_encoding(source_encoding, known_encodings)  # noqa
+    score = encoder.score_encoding(source_encoding, known_encodings)  # type: ignore
     assert isinstance(score, float)
     assert score == math.inf
 

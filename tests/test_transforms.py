@@ -225,7 +225,7 @@ def test_flip_returns_inverted_frame(frame: Frame):
 @given(frame())
 def test_adjust_returns_same_frame_with_no_options_specified(frame: Frame):
     adjusted_frame = transform.adjust(frame)
-    assert (adjusted_frame == frame).all()
+    assert (adjusted_frame == frame).all()  # type: ignore
     assert adjusted_frame is frame
 
 

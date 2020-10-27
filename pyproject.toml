@@ -50,7 +50,8 @@ exclude = [
   ".editorconfig",
   ".pre-commit-config.yaml",
   ".readthedocs.yaml",
-  "requirements*.txt"
+  "requirements*.txt",
+  "src/facelift/data/encoders/*"
 ]
 
 [tool.poetry.urls]

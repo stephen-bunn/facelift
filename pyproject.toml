@@ -19,6 +19,7 @@ documentation = "https://facelift.readthedocs.io"
 keywords = [
   "facelift",
   "face",
+  "feature",
   "detection",
   "recognition",
   "dlib",

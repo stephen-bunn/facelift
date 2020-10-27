@@ -115,7 +115,7 @@ def test_get_eye_angle(test_face: Face):
     # XXX: There is not much we can test here other than explicit logic
     result = get_eye_angle(test_face)
     assert isinstance(result, numpy.float64)
-    assert result < 0.0 and result > -360.0
+    assert result <= 0.0 and result >= -360.0
 
 
 @given(face_with_eyes())

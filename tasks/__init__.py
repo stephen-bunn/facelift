@@ -4,14 +4,17 @@
 
 """Contains base Invoke task functions and groups."""
 
+import json
+import os
 import pathlib
 import webbrowser
+from getpass import getpass
 from tempfile import NamedTemporaryFile
 
 import invoke
 import toml
 
-from . import docs, linter, package
+from . import docs, linter, package, publish
 from .utils import report
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
@@ -87,10 +90,33 @@ def lint(ctx):
     report.success(ctx, "lint", "linting project")
 
 
-namespace = invoke.Collection(build, clean, test, lint, docs, package, profile, linter)
+@invoke.task(pre=[clean, lint, test, build])
+def release(ctx, draft=False):
+    """Publish a release on GitHub and PyPi for the project."""
+
+    if draft:
+        report.error(ctx, "publish", "running in draft mode, nothing will be published")
+
+    publish.github(ctx, draft=draft)
+    publish.pypi(ctx, draft=draft)
+
+
+namespace = invoke.Collection(
+    build,
+    clean,
+    test,
+    lint,
+    docs,
+    package,
+    profile,
+    linter,
+    publish,
+    release,
+)
 namespace.configure(
     {
         "metadata": metadata,
+        "version": metadata["version"],
         "directory": BASE_DIR,
         "package": {
             "name": metadata["packages"][0]["include"],

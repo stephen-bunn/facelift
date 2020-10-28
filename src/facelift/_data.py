@@ -11,6 +11,34 @@ each GitHub release.
 This asset manifest will then further inform the little downloading script we have
 provided where to find and place the assets in the installed package.
 
+This helper utility currently expects the following of the GitHub release:
+
+1. A ``data-manifest.json`` is provided as a GitHub release asset.
+2. All models within the asset manifest are included as GitHub release assets.
+
+.. important::
+    The ``data-manifest.json`` must following the following structure:
+
+    .. code-block:: json
+
+        {
+            "relative filepath from package root for asset": [
+                "download url of asset",
+                "md5 hash of asset"
+            ]
+        }
+
+    As an example:
+
+    .. code-block:: json
+
+        {
+            "data/encoders/dlib_face_recognition_resnet_model_v1.dat": [
+                "https://github.com/stephen-bunn/facelift/releases/download/v0.1.0/dlib_face_recognition_resnet_model_v1.dat",
+                "2316b25ae80acf4ad9b620b00071c423"
+            ]
+        }
+
 Examples:
     >>> from facelift._data import download_data
     >>> download_data(display_progress=True)
@@ -142,6 +170,8 @@ def build_manifest(
     Args:
         release_tag (str):
             The release tag the manifest is being built for.
+        asset_filepaths (:class:`pathlib.Path`):
+            Multiple existing local asset filepaths.
 
     Raises:
         FileNotFoundError:

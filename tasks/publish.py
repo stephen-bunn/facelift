@@ -43,6 +43,14 @@ def _get_repo(ctx):
     return _get_github(ctx).get_user().get_repo(ctx.package.name)
 
 
+def _prompt_continue(message):
+    prompt = None
+    while not prompt or len(prompt) <= 0:
+        prompt = input(f"{message}, Continue? [y/n]: ").trim()
+
+    return prompt.startswith("y")
+
+
 def _verify_release_new(ctx, release_tag):
     try:
         if _get_repo(ctx).get_release(release_tag):
@@ -145,7 +153,7 @@ def _upload_release_assets(ctx, release, asset_filepaths, draft=False):
 
 
 @invoke.task()
-def github(ctx, draft=False):
+def github(ctx, yes=False, draft=False):
     """Publish the latest pushed commit as a release to GitHub."""
 
     release_tag = f"v{ctx.version!s}"
@@ -160,7 +168,17 @@ def github(ctx, draft=False):
     _verify_commit_exists(ctx, local_commit_sha)
 
     manifest, manifest_filepath = _create_manifest(ctx, release_tag)
+
+    if not draft and not yes:
+        if not _prompt_continue("About to create a GitHub tag"):
+            sys.exit(1)
+
     _create_tag(ctx, release_tag, release_name, local_commit_sha, draft=draft)
+
+    if not draft and not yes:
+        if not _prompt_continue("About to create a GitHub release"):
+            sys.exit(1)
+
     release = _create_release(ctx, release_tag, release_name, "", draft=draft)
 
     release_assets = _get_release_assets(ctx, manifest)
@@ -182,10 +200,14 @@ def github(ctx, draft=False):
 
 
 @invoke.task()
-def pypi(ctx, draft=False):
+def pypi(ctx, yes=False, draft=False):
     """Publish existing distributables to PyPi."""
 
     report.info(ctx, "publish.pypi", "uploading dist to PyPi")
+
+    if not draft and not yes:
+        if not _prompt_continue("About to publish to PyPi"):
+            sys.exit(1)
 
     if not draft:
         ctx.run("poetry publish")

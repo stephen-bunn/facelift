@@ -3,12 +3,17 @@ Detecting Faces
 
 Now onto the fun part.
 Face feature detection is powered by good ol' dlib_.
-As part of this package, we have bundled 3 pre-trained landmark models for face features
-each detecting various different face landmarks.
+As part of this package, we have provided 3 pre-trained landmark models for face
+features each detecting various different face landmarks.
+
+.. tip::
+   To learn how to acquire these models, please see the :ref:`model-installation`
+   documentation.
+
 The face features (interchangeably termed landmarks) we are able to detect are
 classified in the :class:`~.types.FaceFeature` enumeration.
 
-The included landmark models are programmatically provided through the following
+The landmark models are programmatically provided through the following
 :class:`~.detect.BaseLandmarkDetector` subclasses:
 
 - :class:`~.detect.BasicFaceDetector`
@@ -65,7 +70,7 @@ before attempting to perform detection).
 
    Detect Flow
 
-If you are finding that the bundled face landmark models are not as accurate as you
+If you are finding that the face landmark models we install are not as accurate as you
 require, you should look further into training your own landmark models for dlib_.
 **Note that this is not a trivial task.**
 
@@ -241,8 +246,7 @@ include the curvature and angle of the forehead.
    </video>
 
 
-The included model is not as heavily trained as the
-:class:`~.detect.PartialFaceDetector` so you may see some inconsistencies between the
-two detectors.
+This model is not as heavily trained as the :class:`~.detect.PartialFaceDetector`
+so you may see some inconsistencies between the two detectors.
 Regardless, with the inclusion of the :attr:`~.types.FaceFeature.FOREHEAD` feature, you
 get another dimension to work with that may be valuable for your use case.

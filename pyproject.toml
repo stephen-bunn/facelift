@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "facelift"
-version = "0.1.0"
+version = "0.2.0"
 description = "A simple wrapper for face detection and recognition"
 authors = ["Stephen Bunn <stephen@bunn.io>"]
 maintainers = []
@@ -50,8 +50,7 @@ exclude = [
   ".pre-commit-config.yaml",
   ".readthedocs.yaml",
   "requirements*.txt",
-  "src/facelift/data/landmarks/*",
-  "src/facelift/data/encoders/*",
+  "src/facelift/data/**/*",
 ]
 
 [tool.poetry.urls]

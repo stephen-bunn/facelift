@@ -126,7 +126,7 @@ def _download(
     response.release_conn()
 
 
-def _get_latest_release_tag() -> str:
+def _get_latest_release_tag() -> Optional[str]:
     """Get the latest release's tag from GitHub.
 
     Returns:

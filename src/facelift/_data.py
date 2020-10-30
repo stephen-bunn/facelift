@@ -114,8 +114,8 @@ def _download(
                 sys.stdout.write(f"\r{url!s} [{current_size} / ?]")
             else:
                 sys.stdout.write(
-                    f"\r{url!s} [{current_size} / {total_size}] "
-                    f"{(total_size / current_size) * 100.0:.2f}%",
+                    f"\r{url!s} [{current_size} / {int(total_size)}] "
+                    f"{(current_size / int(total_size)) * 100.0:.2f}%",
                 )
 
         yield chunk

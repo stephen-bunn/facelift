@@ -10,6 +10,16 @@ Changelog
 
 .. towncrier release notes start
 
+`0.2.1 <https://github.com/stephen-bunn/facelift/releases/tag/v0.2.1>`_ (*2020-10-30*)
+======================================================================================
+
+Bug Fixes
+---------
+
+- Fixing the release task and some inconsistencies that were causing the
+  :func:`~._data.download_data` function to raise a :class:`ValueError`.
+
+
 `0.2.0 <https://github.com/stephen-bunn/facelift/releases/tag/v0.2.0>`_ (*2020-10-30*)
 ======================================================================================
 

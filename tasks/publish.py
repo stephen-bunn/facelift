@@ -46,7 +46,7 @@ def _get_repo(ctx):
 def _prompt_continue(message):
     prompt = None
     while not prompt or len(prompt) <= 0:
-        prompt = input(f"{message}, Continue? [y/n]: ").trim()
+        prompt = input(f"{message}, Continue? [y/n]: ").strip()
 
     return prompt.startswith("y")
 
@@ -110,7 +110,7 @@ def _create_tag(ctx, release_tag, release_name, commit_sha, draft=False):
     if not draft:
         return _get_repo(ctx).create_git_tag(
             tag=release_tag,
-            tag_message=release_name,
+            message=release_name,
             object=commit_sha,
             type="commit",
         )
@@ -132,10 +132,12 @@ def _create_release(ctx, release_tag, release_name, release_message, draft=False
 
 
 def _get_release_assets(ctx, manifest):
+    from facelift._data import BASE_PATH
+
     dist_dirpath = _get_dist_dirpath(ctx)
     dist_assets = [asset for asset in dist_dirpath.iterdir() if asset.is_file()]
     manifest_assets = [
-        dist_dirpath.joinpath(relative_path) for relative_path in manifest.keys()
+        BASE_PATH.joinpath(relative_path) for relative_path in manifest.keys()
     ]
 
     return dist_assets + manifest_assets

@@ -89,3 +89,12 @@ Facelift Package
 
 .. automodule:: facelift.window
    :members:
+
+
+----
+
+``facelift._data``
+------------------
+
+.. automodule:: facelift._data
+   :members:

@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "facelift"
-version = "0.1.0"
+version = "0.2.0"
 description = "A simple wrapper for face detection and recognition"
 authors = ["Stephen Bunn <stephen@bunn.io>"]
 maintainers = []
@@ -44,14 +44,13 @@ include = [
   "CHANGELOG.md",
   "CONTRIBUTING.rst",
   "CONTRIBUTING.md",
-  "src/facelift/data/*"
 ]
 exclude = [
   ".editorconfig",
   ".pre-commit-config.yaml",
   ".readthedocs.yaml",
   "requirements*.txt",
-  "src/facelift/data/encoders/*"
+  "src/facelift/data/**/*",
 ]
 
 [tool.poetry.urls]
@@ -67,6 +66,7 @@ opencv-python = "^4.4.0"
 dlib = "^19.21.0"
 cached-property = "^1.5.2"
 typing-extensions = "^3.7.4"
+urllib3 = "^1.25.11"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
@@ -97,6 +97,7 @@ sphinx-hoverxref = "^0.5b1"
 sphinx-autodoc-typehints = "^1.11.0"
 sphinx-rtd-theme = {git = "https://github.com/stephen-bunn/sphinx_rtd_theme", rev = "dracula-pro"}
 pyinstrument = "^3.2.0"
+pygithub = "^1.53"
 
 [tool.poetry.extras]
 profile = ["pyprof2calltree", "pyinstrument"]

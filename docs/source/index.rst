@@ -11,11 +11,17 @@
             <a href="https://pypi.org/project/facelift/" target="_blank">
                <img alt="Supported Versions" src="https://img.shields.io/pypi/pyversions/facelift.svg" />
             </a>
+            <a href="https://pypi.org/project/facelift/" target="_blank">
+               <img alt="PyPi Status" src="https://img.shields.io/pypi/status/facelift" />
+            </a>
+            <a href="https://github.com/stephen-bunn/facelift/" target="_blank">
+               <img alt="License" src="https://img.shields.io/github/license/stephen-bunn/facelift">
+            </a>
             <a href="https://github.com/stephen-bunn/facelift/actions?query=workflow%3A%22Test+Package%22" target="_blank">
-               <img alt="Test Status" src="https://github.com/stephen-bunn/facelift/workflows/Test%20Package/badge.svg" />
+               <img alt="Test Status" src="https://img.shields.io/github/workflow/status/stephen-bunn/facelift/Test%20Package" />
             </a>
             <a href="https://codecov.io/gh/stephen-bunn/facelift" target="_blank">
-               <img alt="Coverage" src="https://codecov.io/gh/stephen-bunn/facelift/branch/master/graph/badge.svg?token=xhhZQr8l76" />
+               <img alt="Coverage" src="https://img.shields.io/codecov/c/github/stephen-bunn/facelift?token=xhhZQr8l76" />
             </a>
             <a href="https://github.com/ambv/black" target="_blank">
                <img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-000000.svg" />
@@ -23,7 +29,6 @@
          </div>
       </div>
    </div>
-
 
 Several personal projects I've had in the past relied on some basic face feature
 detection either for face isolation, face state detection, or some kinds of perspective

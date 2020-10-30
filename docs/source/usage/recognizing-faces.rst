@@ -4,8 +4,7 @@ Recognizing Faces
 Recognition is performed by producing an :attr:`~.types.Encoding` for a detected face.
 This encoding is just an array of dimensions that *should* be pretty unique for that
 person's face.
-The encoding itself is produced by yet another bundled pre-trained model produced by
-dlib_.
+The encoding itself is produced by yet another pre-trained model produced by dlib_.
 This model is a ResNet_ model trained for producing identifiers for images of faces.
 There are other trained models for producing identifiers for detected faces, however we
 are only bundling the one produced and used by dlib_.
@@ -176,7 +175,11 @@ the best fit for each detected face my webcam stream.
 
 
 You can see that when we are printing results in the terminal, the score for my name is
-closer to ``0.0`` than the score we get for Terry.
+actually further from ``0.0`` than the score we get for Terry.
+This is because I'm actually subtracting from ``1.0`` in this recording which is
+something I forgot to remove and I'm too lazy to remake the recoding.
+You can ignore the numbers being written to ``stdout`` in this case as they contradict
+what you should be expecting from :meth:`~.encode.BaseEncoder.score_encoding`.
 
 .. raw:: html
 

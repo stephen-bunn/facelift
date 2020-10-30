@@ -19,7 +19,7 @@ from unittest.mock import ANY, patch
 import cv2
 import numpy
 import pytest
-from hypothesis import given, settings
+from hypothesis import HealthCheck, given, settings
 from hypothesis.strategies import (
     SearchStrategy,
     composite,
@@ -147,6 +147,7 @@ def test_get_normalized_frame(filepath: Path, size: int, offset: float):
             assert result.shape == (size, size, 3)
 
 
+@settings(suppress_health_check=[HealthCheck.too_slow])
 @given(frame(), face_with_eyes())
 def test_get_normalized_frame_uses_defaults(test_frame: Frame, test_face: Face):
     with patch("facelift.helpers.cv2") as mocked_cv2, patch(

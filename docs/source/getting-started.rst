@@ -54,17 +54,58 @@ The ``dlib`` dependency will always need to be built when installing ``facelift`
 This requires that ``cmake`` is available on the system and doesn't build with any GPU
 support.
 
-.. note::
-   The size of the package is fairly large at ~90MB unpacked.
-   Since we bundle the ``dlib`` and ``resnet`` models along with the release, most of
-   what you are downloading are actually just trained models for face detection and
-   recognition.
 
-   Currently, we don't have the method for avoiding this installation as the core
-   functionality of the package depends on these models existing and being declared and
-   loaded in a specific way.
-   I have several ideas on how to separate the data from the code.
-   However, this isn't a huge concern to me for a ``v1.0.0`` release.
+.. _model-installation:
 
+Model Installation
+==================
+
+Due to PyPi's upload limits, we cannot bundle the associated landmark and ResNet models
+for face detection or face encoding.
+Similar to how other projects have dealt with this issue in the past, we have supplied a
+special module :mod:`~._data` to programmatically fetch the necessary pre-trained models
+for using this package.
+
+The :func:`~._data.download_data` function will attempt to fetch the models uploaded to
+the latest GitHub release.
+
+.. code-block:: python
+
+   from facelift._data import download_data
+   download_data()
+
+
+If for some reason we mess up and forget to upload the models to the GitHub release, you
+can manually specify the release tag using the ``release_tag`` parameter.
+This will attempt to fetch the models from a very release instead of the very latest.
+
+.. code-block:: python
+
+   from facelift._data import download_data
+   download_data(release_tag="v0.1.0")
+
+
+You can also see the basic download status written out to ``stdout`` by setting the
+``display_progress`` parameter to ``True``.
+
+.. code-block:: python
+
+   from facelift._data import download_data
+   download_data(display_progress=True)
+
+
+I would prefer to be able to bundle the models along with the package since we are
+building a project revolving around **very specific** feature models and frameworks
+(rather than providing an open-ended framework for face detection).
+However, this is just something we need to do to satisfy PyPi.
+
+.. important::
+   At the moment, the downloaded models will be placed in a ``data`` directory within
+   the ``facelift`` package.
+   This means that your system or virtual environment will contain the downloaded
+   models.
+   If you are interested in the absolute path that the downloaded models are being
+   written to, you should set the ``display_progress`` flag to ``True`` as we write out
+   where files are being stored.
 
 .. include:: ./gpu-support.rst

@@ -100,7 +100,7 @@ def _download(
         raise ValueError(f"Failed to fetch data from {url!r}, {response.data!r}")
 
     total_size = response.getheaders().get("content-length")
-    if display_progress and total_size is None:
+    if display_progress and total_size is None:  # pragma: no cover
         print(
             f"Failed to determine Content-Length for {url!r}, "
             "download progress will not be reported"
@@ -109,7 +109,7 @@ def _download(
     current_size = 0
     for chunk in response.stream(chunk_size):
         current_size += len(chunk)
-        if display_progress:
+        if display_progress:  # pragma: no cover
             if total_size is None:
                 sys.stdout.write(f"\r{url!s} [{current_size} / ?]")
             else:
@@ -120,7 +120,7 @@ def _download(
 
         yield chunk
 
-    if display_progress:
+    if display_progress:  # pragma: no cover
         sys.stdout.write("\n")
 
     response.release_conn()
@@ -275,7 +275,8 @@ def download_data(
                 checksum_hash.update(chunk)
 
         checksum = checksum_hash.hexdigest()
-        sys.stdout.write(f"Downloaded {asset_url} to {asset_path} ({checksum})\n")
+        if display_progress:  # pragma: no cover
+            sys.stdout.write(f"Downloaded {asset_url} to {asset_path} ({checksum})\n")
 
         if validate and checksum != asset_checksum:
             raise ValueError(
